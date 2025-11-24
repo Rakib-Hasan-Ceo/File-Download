@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rakib - File Downloader</title>
+    <title>File Downloader Pro</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -207,8 +207,18 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // আপনার প্রোভাইড করা কনফিগারেশন
-        
+        // -----------------------------------------------------------
+        // ✅ FIXED FIREBASE CONFIGURATION
+        // -----------------------------------------------------------
+        const firebaseConfig = {
+          apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
+          authDomain: "file-downloader-da43f.firebaseapp.com",
+          databaseURL: "https://file-downloader-da43f-default-rtdb.firebaseio.com",
+          projectId: "file-downloader-da43f",
+          storageBucket: "file-downloader-da43f.firebasestorage.app",
+          messagingSenderId: "168637957444",
+          appId: "1:168637957444:web:8bfa0abe5fcb3db45c4311"
+        };
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -218,19 +228,11 @@
         let timerDuration = 10;
         let currentSlide = 0;
 
-        // Translations
+        // Translations (Fixed the Bengali String Error)
         const translations = {
             en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
             hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "डाउनलोड करें", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
-            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউconst firebaseConfig = {
-  apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
-  authDomain: "file-downloader-da43f.firebaseapp.com",
-  databaseURL: "https://file-downloader-da43f-default-rtdb.firebaseio.com",
-  projectId: "file-downloader-da43f",
-  storageBucket: "file-downloader-da43f.firebasestorage.app",
-  messagingSenderId: "168637957444",
-  appId: "1:168637957444:web:8bfa0abe5fcb3db45c4311"
-};নলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
+            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
         };
 
         // --- Helper Functions ---
@@ -442,7 +444,7 @@
                 content.innerText = getTxt('toast_ad_load');
                 showToast('toast_ad_load');
                 
-                await show_10207269();
+                await show_10207269(); // Use the provided Adsterra code
                 
                 done++;
                 localStorage.setItem(`ad_${id}`, done);
