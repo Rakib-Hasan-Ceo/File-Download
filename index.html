@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rakib - File Downloader</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        darkBg: '#0f172a',
+                        darkCard: '#1e293b',
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Ad SDK (Adsterra) -->
+    <script src='//libtl.com/sdk.js' data-zone='10207269' data-sdk='show_10207269'></script>
+    
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .sidebar-open { transform: translateX(0) !important; }
+        .sidebar-closed { transform: translateX(100%); }
+        
+        body { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        
+        /* Marquee Styles */
+        marquee { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden">
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity" onclick="toggleMenu()"></div>
+
+    <!-- Sidebar Menu (Right Side) -->
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkCard z-50 shadow-2xl sidebar-closed transition-transform duration-300 overflow-y-auto">
+        <!-- Sidebar Header -->
+        <div class="p-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex justify-between items-center">
+            <h2 class="text-lg font-bold"><i class="fas fa-bars mr-2"></i> Menu</h2>
+            <button onclick="toggleMenu()" class="text-white hover:text-gray-200 text-xl"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- Sidebar Content -->
+        <div class="p-4 space-y-1">
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
+            <div id="sidebar-social-links" class="space-y-2">
+                <!-- Links will load here from Admin Panel -->
+                <p class="text-sm text-gray-400 pl-3">Loading links...</p>
+            </div>
+
+            <hr class="border-gray-200 dark:border-gray-700 my-4">
+
+            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
+            
+            <!-- Language Change -->
+            <button onclick="document.getElementById('language-modal').classList.remove('hidden'); toggleMenu()" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <i class="fas fa-language text-green-500 w-6 text-xl"></i> 
+                <span class="font-medium">Change Language</span>
+            </button>
+
+            <!-- Dark Mode Toggle (Inside Sidebar) -->
+            <button id="sidebar-theme-toggle" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <div class="w-6 flex justify-center">
+                    <i id="theme-icon" class="fas fa-moon text-purple-500 text-xl"></i>
+                </div>
+                <span id="theme-text" class="font-medium">Dark Mode</span>
+            </button>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="absolute bottom-0 w-full p-4 border-t dark:border-gray-700 text-center text-xs text-gray-400">
+            &copy; 2025 Web Rakib
+        </div>
+    </aside>
+
+    <!-- Announcement Bar (Big Size & Improved) -->
+    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
+        <div class="container mx-auto px-2 flex items-center">
+            <!-- Badge -->
+            <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">
+                NOTICE
+            </span>
+            <!-- Marquee Text -->
+            <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">
+                Welcome to Web App Rakib!
+            </marquee>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b dark:border-gray-700 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
+            <!-- Brand -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-cloud-download-alt text-xl"></i>
+                </div>
+                <!-- Updated Name -->
+                <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
+            </div>
+
+            <!-- Controls (Dark mode removed from here) -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMenu()" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-600 flex items-center justify-center transition shadow-sm">
+                    <i class="fas fa-ellipsis-v text-lg"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+        
+        <!-- Search Bar -->
+        <div class="relative max-w-xl mx-auto mb-8 group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i>
+            </div>
+            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." 
+                   class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
+        </div>
+
+        <!-- Ad Slot 1 -->
+        <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+
+        <!-- Image Slider -->
+        <div id="slider-container" class="relative w-full h-40 sm:h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group">
+            <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-out"></div>
+            <!-- Dots -->
+            <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+        </div>
+
+        <!-- Ad Slot 2 -->
+        <div id="ad-container-2" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+
+        <!-- Files Section -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
+                <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
+            </div>
+
+            <!-- Grid -->
+            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Cards will be injected here -->
+            </div>
+
+            <!-- No Results -->
+            <div id="no-results" class="hidden text-center py-20">
+                <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3">
+                    <i class="fas fa-folder-open text-4xl text-gray-400"></i>
+                </div>
+                <p data-key="no_results_text" class="text-gray-500 dark:text-gray-400 text-lg">No files found matching your search.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-darkCard border-t dark:border-gray-700 py-10 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div id="ad-container-3" class="mb-8 flex justify-center min-h-[60px]"></div>
+            
+            <!-- Social Footer Links -->
+            <div id="footer-socials" class="flex justify-center gap-6 mb-6"></div>
+            
+            <p class="text-gray-500 dark:text-gray-400 text-sm">&copy; 2025 Web Rakib. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
+        <i class="fas fa-info-circle text-blue-400"></i>
+        <span id="toast-message" class="text-sm font-medium">Notification</span>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="language-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-100 transition-all">
+            <h3 class="text-xl font-bold mb-4 text-center dark:text-white">Select Language</h3>
+            <div class="space-y-3">
+                <button onclick="setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">
+                    <span class="text-2xl">🇺🇸</span> <span class="font-semibold dark:text-gray-200">English</span>
+                </button>
+                <button onclick="setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">
+                    <span class="text-2xl">🇮🇳</span> <span class="font-semibold dark:text-gray-200">हिन्दी</span>
+                </button>
+                <button onclick="setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">
+                    <span class="text-2xl">🇧🇩</span> <span class="font-semibold dark:text-gray-200">বাংলা</span>
+                </button>
+            </div>
+            <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // আপনার প্রোভাইড করা কনফিগারেশন
+        const firebaseConfig = {
+          apiKey: "AIzaSyDw0dG76LvkhW0-qKLxWDyTAdMcGAuFmjM",
+          authDomain: "game-store-38027.firebaseapp.com",
+          databaseURL: "https://game-store-38027-default-rtdb.firebaseio.com",
+          projectId: "game-store-38027",
+          storageBucket: "game-store-38027.firebasestorage.app",
+          messagingSenderId: "782890454632",
+          appId: "1:782890454632:web:77b99bd27c88e8162975dd"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // State Variables
+        let currentLang = localStorage.getItem('lang') || 'en';
+        let timerDuration = 10;
+        let currentSlide = 0;
+
+        // Translations
+        const translations = {
+            en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
+            hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "डाउनलोड करें", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
+            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
+        };
+
+        // --- Helper Functions ---
+        const getTxt = (k, p={}) => {
+            let t = translations[currentLang][k] || k;
+            for(let key in p) t = t.replace(`{${key}}`, p[key]);
+            return t;
+        };
+
+        const showToast = (msgKey, p={}) => {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = getTxt(msgKey, p);
+            t.classList.remove('opacity-0', 'translate-y-10');
+            setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
+        };
+
+        const renderAd = (id, code) => {
+            const el = document.getElementById(id);
+            if(el && code) {
+                el.innerHTML = code;
+                Array.from(el.querySelectorAll('script')).forEach(s => {
+                    const ns = document.createElement('script');
+                    Array.from(s.attributes).forEach(a => ns.setAttribute(a.name, a.value));
+                    ns.appendChild(document.createTextNode(s.innerHTML));
+                    s.parentNode.replaceChild(ns, s);
+                });
+            }
+        };
+
+        // --- Main Data Loader ---
+        async function loadData() {
+            try {
+                // General
+                const genDoc = await getDoc(doc(db, "settings", "general"));
+                if(genDoc.exists()) {
+                    timerDuration = genDoc.data().timerDuration || 10;
+                    const annText = genDoc.data().announcementText;
+                    if(annText) {
+                        document.getElementById('announcement-container').classList.remove('hidden');
+                        document.getElementById('announcement-text').textContent = annText;
+                    }
+                }
+
+                // Socials (For Sidebar)
+                const socDoc = await getDoc(doc(db, "settings", "socials"));
+                if(socDoc.exists()) {
+                    const s = socDoc.data();
+                    let html = '';
+                    const makeLink = (url, icon, color, label) => `
+                        <a href="${url}" target="_blank" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition group">
+                            <div class="w-8 h-8 rounded-full ${color} flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
+                                <i class="${icon}"></i>
+                            </div>
+                            <span class="font-medium text-gray-700 dark:text-gray-200">${label}</span>
+                        </a>`;
+
+                    if(s.telegram) html += makeLink(s.telegram, 'fab fa-telegram-plane', 'bg-blue-500', 'Join Telegram');
+                    if(s.youtube) html += makeLink(s.youtube, 'fab fa-youtube', 'bg-red-600', 'Subscribe YouTube');
+                    if(s.tiktok) html += makeLink(s.tiktok, 'fab fa-tiktok', 'bg-black', 'Follow TikTok');
+
+                    document.getElementById('sidebar-social-links').innerHTML = html || '<p class="text-sm text-gray-400 pl-3">No links added.</p>';
+                    
+                    let footerHtml = '';
+                    if(s.telegram) footerHtml += `<a href="${s.telegram}" class="text-blue-500 hover:text-blue-600 text-2xl"><i class="fab fa-telegram"></i></a>`;
+                    if(s.youtube) footerHtml += `<a href="${s.youtube}" class="text-red-600 hover:text-red-700 text-2xl"><i class="fab fa-youtube"></i></a>`;
+                    if(s.tiktok) footerHtml += `<a href="${s.tiktok}" class="text-gray-800 dark:text-white hover:text-gray-600 text-2xl"><i class="fab fa-tiktok"></i></a>`;
+                    document.getElementById('footer-socials').innerHTML = footerHtml;
+                }
+
+                // Ads
+                const adDoc = await getDoc(doc(db, "settings", "ads"));
+                if(adDoc.exists()) {
+                    renderAd('ad-container-1', adDoc.data().adSlot1);
+                    renderAd('ad-container-2', adDoc.data().adSlot2);
+                    renderAd('ad-container-3', adDoc.data().adSlot3);
+                }
+
+            } catch(e) { console.error("Settings Load Error:", e); }
+
+            // Sliders
+            try {
+                const sSnap = await getDocs(query(collection(db, "sliders")));
+                const wrapper = document.getElementById('slider-wrapper');
+                const dots = document.getElementById('slider-dots');
+                wrapper.innerHTML = ''; dots.innerHTML = '';
+                
+                const slides = [];
+                sSnap.forEach(d => slides.push(d.data()));
+
+                if(slides.length) {
+                    slides.forEach((s, i) => {
+                        const img = document.createElement('img');
+                        img.src = s.imageUrl;
+                        img.className = 'w-full h-full object-cover flex-shrink-0';
+                        if(s.linkUrl) img.onclick = () => window.open(s.linkUrl, '_blank');
+                        wrapper.appendChild(img);
+                        
+                        const dot = document.createElement('div');
+                        dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
+                        dots.appendChild(dot);
+                    });
+
+                    setInterval(() => {
+                        currentSlide = (currentSlide + 1) % slides.length;
+                        wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                        Array.from(dots.children).forEach((d, i) => {
+                            d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`;
+                        });
+                    }, 4000);
+                } else {
+                    document.getElementById('slider-container').style.display = 'none';
+                }
+            } catch(e) { console.error("Slider Error:", e); }
+
+            // Files
+            try {
+                const fSnap = await getDocs(query(collection(db, "files")));
+                const grid = document.getElementById('files-grid');
+                grid.innerHTML = '';
+                
+                let count = 0;
+                fSnap.forEach(d => {
+                    count++;
+                    const f = {id: d.id, ...d.data()};
+                    const card = document.createElement('div');
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
+                    card.innerHTML = `
+                        <div class="relative h-40 overflow-hidden">
+                            <img src="${f.thumbnailUrl}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md">
+                                <i class="fas fa-star text-yellow-400"></i> Premium
+                            </div>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 mb-4 flex-1">${f.description}</p>
+                            
+                            <!-- Progress Bar -->
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1">
+                                    <span>Unlock Progress</span>
+                                    <span class="prog-txt">0%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                    <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+
+                            <button data-id="${f.id}" data-req="${f.requiredAds}" data-url="${f.downloadUrl}" class="dl-btn w-full py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+                                <span class="relative z-10 btn-content"></span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-opacity btn-bg"></div>
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                    updateBtn(card.querySelector('.dl-btn'));
+                });
+                document.getElementById('file-count').innerText = `${count} Items`;
+            } catch(e) { console.error("File Error:", e); }
+        }
+
+        // --- Unlock Logic ---
+        function updateBtn(btn) {
+            const id = btn.dataset.id;
+            const req = parseInt(btn.dataset.req);
+            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            const isUnlocked = done >= req;
+            
+            const card = btn.closest('.file-card');
+            const progBar = card.querySelector('.prog-bar');
+            const progTxt = card.querySelector('.prog-txt');
+            
+            const pct = Math.min((done / req) * 100, 100);
+            progBar.style.width = `${pct}%`;
+            progTxt.innerText = `${Math.floor(pct)}%`;
+
+            const content = btn.querySelector('.btn-content');
+            const bg = btn.querySelector('.btn-bg');
+            btn.disabled = false;
+
+            if(isUnlocked) {
+                content.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
+                bg.className = "absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600";
+            } else {
+                content.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
+                bg.className = "absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:opacity-90";
+            }
+        }
+
+        async function handleUnlock(e) {
+            const btn = e.target.closest('.dl-btn');
+            if(!btn || btn.disabled) return;
+
+            const id = btn.dataset.id;
+            const req = parseInt(btn.dataset.req);
+            const url = btn.dataset.url;
+            let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+
+            if(done >= req) {
+                window.open(url, '_blank');
+                return;
+            }
+
+            btn.disabled = true;
+            const content = btn.querySelector('.btn-content');
+            const originalHtml = content.innerHTML;
+            
+            try {
+                content.innerText = getTxt('toast_ad_load');
+                showToast('toast_ad_load');
+                
+                await show_10207269();
+                
+                done++;
+                localStorage.setItem(`ad_${id}`, done);
+                
+                if(done >= req) {
+                    showToast('toast_unlocked');
+                    updateBtn(btn);
+                    return;
+                }
+
+                showToast('toast_progress', {done, req});
+                
+                let t = timerDuration;
+                const int = setInterval(() => {
+                    content.innerText = getTxt('toast_wait', {t});
+                    t--;
+                    if(t < 0) {
+                        clearInterval(int);
+                        updateBtn(btn);
+                    }
+                }, 1000);
+
+            } catch(err) {
+                console.error("Ad Failed", err);
+                btn.disabled = false;
+                content.innerHTML = originalHtml;
+                alert("Failed to load ad. Please try again.");
+            }
+        }
+
+        // --- Initialization ---
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme === 'dark') {
+                setTheme('dark');
+            } else {
+                setTheme('light');
+            }
+
+            if(!localStorage.getItem('lang')) {
+                document.getElementById('language-modal').classList.remove('hidden');
+            } else {
+                updateTexts();
+            }
+
+            loadData();
+        });
+
+        window.toggleMenu = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sidebar.classList.contains('sidebar-closed')) {
+                sidebar.classList.remove('sidebar-closed');
+                sidebar.classList.add('sidebar-open');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('sidebar-closed');
+                sidebar.classList.remove('sidebar-open');
+                overlay.classList.add('hidden');
+            }
+        };
+
+        window.setLang = (l) => {
+            currentLang = l;
+            localStorage.setItem('lang', l);
+            document.getElementById('language-modal').classList.add('hidden');
+            updateTexts();
+            loadData();
+        };
+
+        function updateTexts() {
+            document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
+            document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
+        }
+
+        document.getElementById('files-grid').addEventListener('click', handleUnlock);
+        
+        // Sidebar Theme Toggle
+        function setTheme(mode) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
+                if(text) text.textContent = 'Light Mode';
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
+                if(text) text.textContent = 'Dark Mode';
+            }
+        }
+
+        document.getElementById('sidebar-theme-toggle').onclick = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        };
+
+        // Search
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let visible = 0;
+            document.querySelectorAll('.file-card').forEach(c => {
+                const match = c.innerText.toLowerCase().includes(term);
+                c.style.display = match ? 'flex' : 'none';
+                if(match) visible++;
+            });
+            const noRes = document.getElementById('no-results');
+            if(visible === 0) noRes.classList.remove('hidden');
+            else noRes.classList.add('hidden');
+        });
+
+    </script>
+</body>
+</html>
