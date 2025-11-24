@@ -207,9 +207,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // -----------------------------------------------------------
-        // ✅ FIXED FIREBASE CONFIGURATION
-        // -----------------------------------------------------------
+        // আপনার প্রোভাইড করা কনফিগারেশন
         const firebaseConfig = {
           apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
           authDomain: "file-downloader-da43f.firebaseapp.com",
@@ -228,7 +226,7 @@
         let timerDuration = 10;
         let currentSlide = 0;
 
-        // Translations (Fixed the Bengali String Error)
+        // Translations
         const translations = {
             en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
             hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "डाउनलोड करें", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
@@ -326,7 +324,8 @@
                     slides.forEach((s, i) => {
                         const img = document.createElement('img');
                         img.src = s.imageUrl;
-                        img.className = 'w-full h-full object-cover flex-shrink-0';
+                        // --- CHANGED THIS LINE TO OBJECT-FILL ---
+                        img.className = 'w-full h-full object-fill flex-shrink-0';
                         if(s.linkUrl) img.onclick = () => window.open(s.linkUrl, '_blank');
                         wrapper.appendChild(img);
                         
@@ -361,7 +360,8 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
                     card.innerHTML = `
                         <div class="relative h-40 overflow-hidden">
-                            <img src="${f.thumbnailUrl}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
+                            <!-- --- CHANGED THIS LINE TO OBJECT-FILL --- -->
+                            <img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">
                             <div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md">
                                 <i class="fas fa-star text-yellow-400"></i> Premium
                             </div>
@@ -444,7 +444,7 @@
                 content.innerText = getTxt('toast_ad_load');
                 showToast('toast_ad_load');
                 
-                await show_10207269(); // Use the provided Adsterra code
+                await show_10207269();
                 
                 done++;
                 localStorage.setItem(`ad_${id}`, done);
