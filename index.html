@@ -78,10 +78,6 @@
                 <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
             </div>
             <div class="flex items-center gap-3">
-                <!-- User Auth Button -->
-                <button id="nav-user-btn" onclick="openAuthModal()" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-600 flex items-center justify-center transition shadow-sm font-bold text-lg">
-                    <i class="fas fa-user"></i>
-                </button>
                 <button onclick="toggleMenu()" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-600 flex items-center justify-center transition shadow-sm">
                     <i class="fas fa-ellipsis-v text-lg"></i>
                 </button>
@@ -150,43 +146,6 @@
         </div>
     </div>
 
-    <!-- Auth Modal (Login / Register) -->
-    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden relative">
-            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-xl z-10"><i class="fas fa-times"></i></button>
-            
-            <!-- User Profile View (If Logged In) -->
-            <div id="auth-profile-view" class="hidden p-8 text-center">
-                <div id="profile-avatar" class="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center text-white text-3xl font-bold mb-4 shadow-lg">U</div>
-                <h3 id="profile-name" class="text-xl font-bold text-gray-800 dark:text-white mb-1">User Name</h3>
-                <p id="profile-email" class="text-sm text-gray-500 dark:text-gray-400 mb-6">user@email.com</p>
-                <button onclick="logoutUser()" class="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl shadow-md transition">Log Out</button>
-            </div>
-
-            <!-- Login / Register Forms (If Not Logged In) -->
-            <div id="auth-form-view" class="p-8">
-                <h3 id="auth-title" class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Welcome Back!</h3>
-                <div class="space-y-4">
-                    <input type="text" id="auth-name" placeholder="Full Name (e.g. Rakib)" class="hidden w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
-                    <input type="email" id="auth-email" placeholder="Email Address" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
-                    <div>
-                        <input type="password" id="auth-password" placeholder="Password" class="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-700 dark:text-white border border-gray-200 dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
-                        <div class="text-right mt-1">
-                            <button onclick="resetPassword()" class="text-xs text-blue-500 hover:text-blue-700 font-medium">Forgot Password?</button>
-                        </div>
-                    </div>
-                    <button id="auth-submit-btn" onclick="handleAuthSubmit()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition flex justify-center items-center gap-2"><span id="auth-btn-text">Login</span></button>
-                </div>
-                <div class="text-center mt-6">
-                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                        <span id="auth-switch-text">Don't have an account?</span> 
-                        <button onclick="toggleAuthMode()" id="auth-switch-btn" class="text-blue-500 font-bold ml-1 hover:underline">Register</button>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Comment Modal -->
     <div id="comment-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
         <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-0 shadow-2xl flex flex-col h-[75vh] sm:h-[60vh] animate-[fadeIn_0.3s_ease-out]">
@@ -195,18 +154,14 @@
                 <button onclick="document.getElementById('comment-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
             </div>
             <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
-            
             <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
-                <!-- If Not Logged In -->
-                <div id="comment-login-prompt" class="text-center py-2">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">You must be logged in to post a comment.</p>
-                    <button onclick="openAuthModal()" class="px-6 py-2 bg-blue-600 text-white font-bold rounded-full hover:bg-blue-700 shadow text-sm transition">Login / Register</button>
-                </div>
-                <!-- If Logged In -->
-                <div id="comment-input-area" class="hidden flex gap-2 items-center">
-                    <div id="comment-user-avatar" class="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center font-bold shadow-md flex-shrink-0">U</div>
-                    <input type="text" id="comment-text" placeholder="Add a public comment..." class="flex-1 px-4 py-3 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
-                    <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
+                <div class="flex flex-col gap-3">
+                    <input type="text" id="comment-name" placeholder="Your Name (e.g. Rakib)" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
+                    <div class="flex gap-2 items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm hidden sm:flex">U</div>
+                        <input type="text" id="comment-text" placeholder="Add a public comment..." class="flex-1 px-4 py-3 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
+                        <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -215,7 +170,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
@@ -229,18 +183,15 @@
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app);
 
-        // Keep local device ID for backward compatibility with old comments
         if(!localStorage.getItem('deviceId')) { localStorage.setItem('deviceId', 'dev_' + Math.random().toString(36).substr(2, 9)); }
-        const oldDeviceId = localStorage.getItem('deviceId');
+        const userDeviceId = localStorage.getItem('deviceId');
 
         let currentLang = localStorage.getItem('lang') || 'en';
         let timerDuration = 10;
         let currentSlide = 0;
         let currentFileIdForComment = null;
-        let currentUser = null;
-        let isLoginMode = true;
+        
         window.forceShowAll = false;
 
         const translations = {
@@ -257,117 +208,6 @@
             t.classList.remove('opacity-0', 'translate-y-10');
             setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
         };
-
-        // --- AUTHENTICATION SYSTEM ---
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            const navBtn = document.getElementById('nav-user-btn');
-            const cPrompt = document.getElementById('comment-login-prompt');
-            const cInput = document.getElementById('comment-input-area');
-            const cAvatar = document.getElementById('comment-user-avatar');
-
-            if(user) {
-                const initial = user.displayName ? user.displayName.charAt(0).toUpperCase() : 'U';
-                navBtn.innerHTML = initial;
-                navBtn.classList.add('bg-blue-600', 'text-white');
-                navBtn.classList.remove('bg-blue-50', 'text-blue-600');
-                
-                // Update Comment Modal
-                if(cPrompt) cPrompt.classList.add('hidden');
-                if(cInput) cInput.classList.remove('hidden');
-                if(cAvatar) cAvatar.innerText = initial;
-            } else {
-                navBtn.innerHTML = '<i class="fas fa-user"></i>';
-                navBtn.classList.remove('bg-blue-600', 'text-white');
-                navBtn.classList.add('bg-blue-50', 'text-blue-600');
-                
-                // Update Comment Modal
-                if(cPrompt) cPrompt.classList.remove('hidden');
-                if(cInput) cInput.classList.add('hidden');
-            }
-        });
-
-        window.openAuthModal = () => {
-            document.getElementById('auth-modal').classList.remove('hidden');
-            if(currentUser) {
-                document.getElementById('auth-profile-view').classList.remove('hidden');
-                document.getElementById('auth-form-view').classList.add('hidden');
-                document.getElementById('profile-name').innerText = currentUser.displayName || 'User';
-                document.getElementById('profile-email').innerText = currentUser.email;
-                document.getElementById('profile-avatar').innerText = currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : 'U';
-            } else {
-                document.getElementById('auth-profile-view').classList.add('hidden');
-                document.getElementById('auth-form-view').classList.remove('hidden');
-                isLoginMode = true;
-                updateAuthUI();
-            }
-        };
-
-        window.closeAuthModal = () => document.getElementById('auth-modal').classList.add('hidden');
-
-        window.toggleAuthMode = () => {
-            isLoginMode = !isLoginMode;
-            updateAuthUI();
-        };
-
-        function updateAuthUI() {
-            document.getElementById('auth-name').classList.toggle('hidden', isLoginMode);
-            document.getElementById('auth-title').innerText = isLoginMode ? 'Welcome Back!' : 'Create Account';
-            document.getElementById('auth-btn-text').innerText = isLoginMode ? 'Login' : 'Register';
-            document.getElementById('auth-switch-text').innerText = isLoginMode ? "Don't have an account?" : "Already have an account?";
-            document.getElementById('auth-switch-btn').innerText = isLoginMode ? 'Register' : 'Login';
-        }
-
-        window.handleAuthSubmit = async () => {
-            const btn = document.getElementById('auth-submit-btn');
-            const email = document.getElementById('auth-email').value.trim();
-            const pass = document.getElementById('auth-password').value;
-            const name = document.getElementById('auth-name').value.trim();
-
-            if(!email || !pass) return showToast("Please fill all fields", {}, true);
-            if(!isLoginMode && !name) return showToast("Please enter your name", {}, true);
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            btn.disabled = true;
-
-            try {
-                if(isLoginMode) {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                    showToast("Login Successful!", {}, true);
-                } else {
-                    const userCred = await createUserWithEmailAndPassword(auth, email, pass);
-                    await updateProfile(userCred.user, { displayName: name });
-                    showToast("Account Created!", {}, true);
-                }
-                closeAuthModal();
-            } catch(error) {
-                let msg = "Error occurred. Try again.";
-                if(error.code === 'auth/email-already-in-use') msg = "Email already registered.";
-                if(error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') msg = "Incorrect email or password.";
-                if(error.code === 'auth/weak-password') msg = "Password must be at least 6 characters.";
-                showToast(msg, {}, true);
-            }
-            btn.disabled = false;
-            updateAuthUI();
-        };
-
-        window.resetPassword = async () => {
-            const email = document.getElementById('auth-email').value.trim();
-            if(!email) return showToast("Type your email first to reset password.", {}, true);
-            try {
-                await sendPasswordResetEmail(auth, email);
-                showToast("Password reset link sent to your email!", {}, true);
-            } catch(err) {
-                showToast("Failed to send reset link.", {}, true);
-            }
-        };
-
-        window.logoutUser = async () => {
-            await signOut(auth);
-            closeAuthModal();
-            showToast("Logged out successfully.", {}, true);
-        };
-
 
         const renderAd = (id, code) => {
             const el = document.getElementById(id);
@@ -399,11 +239,13 @@
         async function loadData() {
             try {
                 let socialLinks = {};
+                
                 const setSnap = await getDocs(query(collection(db, "settings")));
                 
                 setSnap.forEach(d => {
                     const data = d.data();
                     const id = d.id;
+                    
                     if(id === 'general') {
                         timerDuration = data.timerDuration || 10;
                         if(data.announcementText) {
@@ -416,11 +258,13 @@
                         renderAd('ad-container-2', data.adSlot2);
                         renderAd('ad-container-3', data.adSlot3);
                     }
+                    
                     Object.keys(data).forEach(key => {
                         const k = key.toLowerCase();
                         const val = data[key];
                         if(typeof val === 'string' && val.trim() !== '') {
                             let cleanUrl = val.startsWith('http') ? val : 'https://' + val;
+                            
                             if(k.includes('facebook')) socialLinks['facebook'] = cleanUrl;
                             else if(k.includes('telegram')) socialLinks['telegram'] = cleanUrl;
                             else if(k.includes('youtube')) socialLinks['youtube'] = cleanUrl;
@@ -434,7 +278,8 @@
 
                 const sideSocials = document.getElementById('sidebar-social-links');
                 const footSocials = document.getElementById('footer-socials');
-                let sideHtml = ''; let footHtml = '';
+                let sideHtml = '';
+                let footHtml = '';
                 
                 const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok' };
                 const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
@@ -445,6 +290,7 @@
                     const iconClass = sIcons[platform] || 'fas fa-link';
                     const colorClass = sColors[platform] || 'text-gray-500';
                     const name = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    
                     sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-600"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
                     footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
                 }
@@ -469,6 +315,7 @@
                 document.getElementById('slider-container').style.display = 'none';
                 document.getElementById('search-section').style.display = 'none';
                 document.getElementById('single-view-header').innerHTML = ''; 
+                
                 document.getElementById('single-view-footer').innerHTML = `
                     <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
                         <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
@@ -513,7 +360,7 @@
                     
                     const localReact = localStorage.getItem('react_' + f.id);
                     
-                    // Video and Image triggers trackView
+                    // --- CHANGED: ভিডিও প্লে এবং ইমেজ ক্লিক উভয়ের জন্যই trackView যোগ করা হলো ---
                     const mediaElement = f.videoUrl 
                         ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
                         : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
@@ -584,32 +431,51 @@
         }
 
         document.addEventListener('click', (e) => {
-            if(!e.target.closest('.react-wrapper')) document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
-            if(!e.target.closest('.share-wrapper')) document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            if(!e.target.closest('.react-wrapper')) {
+                document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
+            if(!e.target.closest('.share-wrapper')) {
+                document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
         });
 
         window.getShareUrl = (id) => {
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) return "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                return "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
+            }
             return window.location.origin + window.location.pathname + "?v=" + id;
         };
 
         window.toggleShareMenu = (id) => {
-            document.querySelectorAll('.share-menu-dropdown').forEach(m => { if(m.id !== `share-menu-${id}`) m.classList.add('hidden'); });
+            document.querySelectorAll('.share-menu-dropdown').forEach(m => {
+                if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
+            });
             document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
         };
 
         window.copyToClip = (id) => {
-            navigator.clipboard.writeText(window.getShareUrl(id)).then(() => {
+            const url = window.getShareUrl(id);
+            navigator.clipboard.writeText(url).then(() => {
                 showToast("Link copied to clipboard!", {}, true);
                 document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            }).catch(err => {
+                alert("Failed to copy link: " + url);
             });
         };
 
         window.shareToSocial = (id) => {
             const url = window.getShareUrl(id);
             document.getElementById(`share-menu-${id}`).classList.add('hidden');
-            if (navigator.share) navigator.share({ title: 'Check this out!', text: 'View and download this amazing file:', url: url }).catch(e=>e);
-            else window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check this out!',
+                    text: 'View and download this amazing file:',
+                    url: url
+                }).catch(err => console.log('Share canceled'));
+            } else {
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
+            }
         };
 
         window.trackView = async (id) => {
@@ -621,15 +487,14 @@
             }
         };
 
-        // Require Login for Likes
         window.toggleReactMenu = (id) => {
-            if(!currentUser) return openAuthModal();
-            document.querySelectorAll('.react-menu-dropdown').forEach(m => { if(m.id !== `react-menu-${id}`) m.classList.add('hidden'); });
+            document.querySelectorAll('.react-menu-dropdown').forEach(m => {
+                if(m.id !== `react-menu-${id}`) m.classList.add('hidden');
+            });
             document.getElementById(`react-menu-${id}`).classList.toggle('hidden');
         };
 
         window.setReact = async (id, emoji) => {
-            if(!currentUser) return openAuthModal();
             document.getElementById(`react-menu-${id}`).classList.add('hidden'); 
             const currentReact = localStorage.getItem('react_' + id);
             if(currentReact === emoji) return; 
@@ -641,15 +506,13 @@
                 const cntSpan = document.getElementById(`like-count-${id}`);
                 cntSpan.innerText = parseInt(cntSpan.innerText) + 1;
                 await updateDoc(doc(db, "files", id), { likeCount: increment(1) });
-                // Store liker info so admin can see who liked
-                await setDoc(doc(db, "files", id, "likes", currentUser.uid), { name: currentUser.displayName, timestamp: new Date() });
             }
         };
 
         window.removeReact = async (id) => {
             document.getElementById(`react-menu-${id}`).classList.add('hidden');
             const currentReact = localStorage.getItem('react_' + id);
-            if(currentReact && currentUser) {
+            if(currentReact) {
                 localStorage.removeItem('react_' + id);
                 const iconSpan = document.getElementById(`react-icon-${id}`);
                 iconSpan.innerHTML = '<i class="fas fa-thumbs-up"></i>';
@@ -658,7 +521,6 @@
                 let newVal = parseInt(cntSpan.innerText) - 1;
                 cntSpan.innerText = newVal < 0 ? 0 : newVal;
                 await updateDoc(doc(db, "files", id), { likeCount: increment(-1) });
-                await deleteDoc(doc(db, "files", id, "likes", currentUser.uid));
             }
         };
 
@@ -670,7 +532,6 @@
             const cCount = document.getElementById(`comment-count-${id}`);
             document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
             list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
-            
             if(unsubscribeComments) unsubscribeComments();
             const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
             unsubscribeComments = onSnapshot(q, (snap) => {
@@ -678,18 +539,15 @@
                 if(snap.empty) list.innerHTML = '<div class="text-center text-gray-400 mt-10">No comments yet. Be the first!</div>';
                 snap.forEach(d => {
                     const c = d.data();
-                    const userName = c.name || 'User';
-                    const initial = userName.charAt(0).toUpperCase();
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
                     let timeStr = "Just now";
                     if(c.timestamp) {
                         const date = c.timestamp.toDate();
                         timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     }
-                    // Allow delete if it's the current logged in user OR if it's from their old local device storage
-                    const isMyComment = (currentUser && c.userId === currentUser.uid) || (c.deviceId === oldDeviceId);
+                    const isMyComment = c.deviceId === userDeviceId;
                     const deleteBtnHtml = isMyComment ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete"><i class="fas fa-trash-alt text-xs"></i></button>` : '';
-                    
-                    list.innerHTML += `<div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div><div class="flex-1"><div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none"><div class="flex justify-between items-baseline mb-1"><h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${userName}</h4><div class="flex items-center"><span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>${deleteBtnHtml}</div></div><p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p></div></div></div>`;
+                    list.innerHTML += `<div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div><div class="flex-1"><div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none"><div class="flex justify-between items-baseline mb-1"><h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${c.name}</h4><div class="flex items-center"><span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>${deleteBtnHtml}</div></div><p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p></div></div></div>`;
                 });
             });
         };
@@ -704,23 +562,15 @@
             }
         };
 
-        // Require Login to send comment
         document.getElementById('send-comment-btn').onclick = async () => {
-            if(!currentUser) return openAuthModal();
+            const nameInput = document.getElementById('comment-name');
             const textInput = document.getElementById('comment-text');
+            const name = nameInput.value.trim() || 'Guest User';
             const text = textInput.value.trim();
             if(!text) return;
             textInput.value = '';
             showToast("Comment posted successfully!", {}, true); 
-            
-            // Save comment with Auth user data
-            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
-                userId: currentUser.uid, 
-                name: currentUser.displayName || 'User', 
-                text: text, 
-                timestamp: new Date(), 
-                deviceId: oldDeviceId // Kept for backward compatibility
-            });
+            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { name: name, text: text, timestamp: new Date(), deviceId: userDeviceId });
             await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
             const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
             if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
@@ -755,7 +605,7 @@
             
             const id = btn.dataset.id;
             
-            // Button click triggers trackView
+            // --- CHANGED: বাটন ক্লিক করলেও ভিউ কাউন্ট হবে ---
             window.trackView(id);
 
             const req = parseInt(btn.dataset.req);
