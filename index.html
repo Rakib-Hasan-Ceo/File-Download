@@ -69,7 +69,7 @@
 
     <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b dark:border-gray-700 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.href=window.location.pathname">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.showAllFiles ? window.showAllFiles() : window.location.href=window.location.pathname">
                 <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
                     <i class="fas fa-cloud-download-alt text-xl"></i>
                 </div>
@@ -108,6 +108,10 @@
             </div>
             
             <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            
+            <!-- NEW FOOTER FOR SINGLE VIEW BUTTON -->
+            <div id="single-view-footer" class="mt-8 flex justify-center"></div>
+
             <div id="no-results" class="hidden text-center py-20">
                 <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3"><i class="fas fa-folder-open text-4xl text-gray-400"></i></div>
                 <p data-key="no_results_text" class="text-gray-500 dark:text-gray-400 text-lg">No files found.</p>
@@ -186,6 +190,9 @@
         let timerDuration = 10;
         let currentSlide = 0;
         let currentFileIdForComment = null;
+        
+        // NEW FLAG TO CONTROL RE-RENDERING WITHOUT RELOAD
+        window.forceShowAll = false;
 
         const translations = {
             en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
@@ -215,6 +222,26 @@
             }
         };
 
+        // NEW FUNCTION TO SHOW ALL FILES WITHOUT RELOAD (Fixes Telegram Bug)
+        window.showAllFiles = () => {
+            window.forceShowAll = true;
+            
+            // Clean URL smoothly if possible
+            if (window.history.pushState) {
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({path:newUrl},'',newUrl);
+            }
+
+            document.getElementById('slider-container').style.display = 'block';
+            document.getElementById('search-section').style.display = 'block';
+            document.getElementById('single-view-header').innerHTML = '';
+            document.getElementById('single-view-footer').innerHTML = '';
+            
+            document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
+            
+            loadData();
+        };
+
         async function loadData() {
             try {
                 const genDoc = await getDoc(doc(db, "settings", "general"));
@@ -233,15 +260,25 @@
                 }
             } catch(e) {}
 
-            let targetVid = new URLSearchParams(window.location.search).get('v');
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
-                targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+            let targetVid = null;
+            if(!window.forceShowAll) {
+                targetVid = new URLSearchParams(window.location.search).get('v');
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
+                    targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+                }
             }
 
             if(targetVid) {
                 document.getElementById('slider-container').style.display = 'none';
                 document.getElementById('search-section').style.display = 'none';
-                document.getElementById('single-view-header').innerHTML = `<button onclick="window.location.href=window.location.pathname" class="mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-full font-bold shadow-lg hover:shadow-xl transition flex items-center gap-2"><i class="fas fa-arrow-left"></i> View All Videos</button>`;
+                document.getElementById('single-view-header').innerHTML = ''; 
+                
+                // ADDED THE NEW BUTTON DESIGN AT THE BOTTOM (FOOTER)
+                document.getElementById('single-view-footer').innerHTML = `
+                    <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
+                        <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
+                        <span>অন্যান্য সব ফাইল দেখুন (Home)</span>
+                    </button>`;
             } else {
                 try {
                     const sSnap = await getDocs(query(collection(db, "sliders")));
@@ -400,7 +437,6 @@
                     url: url
                 }).catch(err => console.log('Share canceled'));
             } else {
-                // PC বা যেসব ব্রাউজারে share সাপোর্ট করে না, তাদের সরাসরি টেলিগ্রাম শেয়ারে নিয়ে যাবে
                 window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
             }
         };
