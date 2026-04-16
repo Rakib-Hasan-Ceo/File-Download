@@ -10,32 +10,25 @@
         tailwind.config = {
             darkMode: 'class',
             theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        darkBg: '#0f172a',
-                        darkCard: '#1e293b',
-                    }
-                }
+                extend: { colors: { primary: '#3B82F6', darkBg: '#0f172a', darkCard: '#1e293b' } }
             }
         }
     </script>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Ad SDK (Adsterra) -->
+    <!-- Adsterra SDK -->
     <script src='//libtl.com/sdk.js' data-zone='10207269' data-sdk='show_10207269'></script>
-    
     <style>
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        
         .sidebar-open { transform: translateX(0) !important; }
         .sidebar-closed { transform: translateX(100%); }
-        
         body { -webkit-tap-highlight-color: transparent; }
         html { scroll-behavior: smooth; }
-        
-        /* Marquee Styles */
         marquee { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; letter-spacing: 0.5px; }
+        
+        /* Custom Scrollbar for Comments */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scroll::-webkit-scrollbar-thumb { background: #475569; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden">
@@ -43,74 +36,45 @@
     <!-- Sidebar Overlay -->
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity" onclick="toggleMenu()"></div>
 
-    <!-- Sidebar Menu (Right Side) -->
+    <!-- Sidebar Menu -->
     <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkCard z-50 shadow-2xl sidebar-closed transition-transform duration-300 overflow-y-auto">
-        <!-- Sidebar Header -->
         <div class="p-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex justify-between items-center">
             <h2 class="text-lg font-bold"><i class="fas fa-bars mr-2"></i> Menu</h2>
             <button onclick="toggleMenu()" class="text-white hover:text-gray-200 text-xl"><i class="fas fa-times"></i></button>
         </div>
-
-        <!-- Sidebar Content -->
         <div class="p-4 space-y-1">
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
-            <div id="sidebar-social-links" class="space-y-2">
-                <!-- Links will load here from Admin Panel -->
-                <p class="text-sm text-gray-400 pl-3">Loading links...</p>
-            </div>
-
+            <div id="sidebar-social-links" class="space-y-2"><p class="text-sm text-gray-400 pl-3">Loading links...</p></div>
             <hr class="border-gray-200 dark:border-gray-700 my-4">
-
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
-            
-            <!-- Language Change -->
             <button onclick="document.getElementById('language-modal').classList.remove('hidden'); toggleMenu()" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                <i class="fas fa-language text-green-500 w-6 text-xl"></i> 
-                <span class="font-medium">Change Language</span>
+                <i class="fas fa-language text-green-500 w-6 text-xl"></i> <span class="font-medium">Change Language</span>
             </button>
-
-            <!-- Dark Mode Toggle (Inside Sidebar) -->
             <button id="sidebar-theme-toggle" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                <div class="w-6 flex justify-center">
-                    <i id="theme-icon" class="fas fa-moon text-purple-500 text-xl"></i>
-                </div>
+                <div class="w-6 flex justify-center"><i id="theme-icon" class="fas fa-moon text-purple-500 text-xl"></i></div>
                 <span id="theme-text" class="font-medium">Dark Mode</span>
             </button>
         </div>
-
-        <!-- Sidebar Footer -->
-        <div class="absolute bottom-0 w-full p-4 border-t dark:border-gray-700 text-center text-xs text-gray-400">
-            &copy; 2025 Web Rakib
-        </div>
+        <div class="absolute bottom-0 w-full p-4 border-t dark:border-gray-700 text-center text-xs text-gray-400">&copy; 2025 Web Rakib</div>
     </aside>
 
-    <!-- Announcement Bar (Big Size & Improved) -->
+    <!-- Announcement Bar -->
     <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
         <div class="container mx-auto px-2 flex items-center">
-            <!-- Badge -->
-            <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">
-                NOTICE
-            </span>
-            <!-- Marquee Text -->
-            <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">
-                Welcome to Web App Rakib!
-            </marquee>
+            <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">NOTICE</span>
+            <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">Welcome to Web App Rakib!</marquee>
         </div>
     </div>
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b dark:border-gray-700 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
-            <!-- Brand -->
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.location.reload()">
                 <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
                     <i class="fas fa-cloud-download-alt text-xl"></i>
                 </div>
-                <!-- Updated Name -->
                 <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
             </div>
-
-            <!-- Controls (Dark mode removed from here) -->
             <div class="flex items-center gap-3">
                 <button onclick="toggleMenu()" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-600 flex items-center justify-center transition shadow-sm">
                     <i class="fas fa-ellipsis-v text-lg"></i>
@@ -122,66 +86,44 @@
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
         
-        <!-- Search Bar -->
         <div class="relative max-w-xl mx-auto mb-8 group">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i>
-            </div>
-            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." 
-                   class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
+            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
         </div>
 
-        <!-- Ad Slot 1 -->
         <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
 
-        <!-- Image Slider -->
         <div id="slider-container" class="relative w-full h-40 sm:h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group">
             <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-out"></div>
-            <!-- Dots -->
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
 
-        <!-- Ad Slot 2 -->
         <div id="ad-container-2" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
 
-        <!-- Files Section -->
         <section>
             <div class="flex items-center justify-between mb-6">
                 <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
-
-            <!-- Grid -->
-            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                <!-- Cards will be injected here -->
-            </div>
-
-            <!-- No Results -->
+            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
             <div id="no-results" class="hidden text-center py-20">
-                <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3">
-                    <i class="fas fa-folder-open text-4xl text-gray-400"></i>
-                </div>
+                <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3"><i class="fas fa-folder-open text-4xl text-gray-400"></i></div>
                 <p data-key="no_results_text" class="text-gray-500 dark:text-gray-400 text-lg">No files found matching your search.</p>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="bg-white dark:bg-darkCard border-t dark:border-gray-700 py-10 mt-12">
         <div class="container mx-auto px-4 text-center">
             <div id="ad-container-3" class="mb-8 flex justify-center min-h-[60px]"></div>
-            
-            <!-- Social Footer Links -->
             <div id="footer-socials" class="flex justify-center gap-6 mb-6"></div>
-            
             <p class="text-gray-500 dark:text-gray-400 text-sm">&copy; 2025 Web Rakib. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Toast Notification -->
+    <!-- Toast -->
     <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
-        <i class="fas fa-info-circle text-blue-400"></i>
-        <span id="toast-message" class="text-sm font-medium">Notification</span>
+        <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
     </div>
 
     <!-- Language Modal -->
@@ -203,11 +145,39 @@
         </div>
     </div>
 
+    <!-- Comment Modal -->
+    <div id="comment-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
+        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-0 shadow-2xl flex flex-col h-[75vh] sm:h-[60vh] animate-[fadeIn_0.3s_ease-out]">
+            
+            <!-- Header -->
+            <div class="flex justify-between items-center p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-darkCard rounded-t-2xl z-10">
+                <h3 class="text-lg font-bold dark:text-white"><i class="fas fa-comments text-blue-500 mr-2"></i> Comments <span id="modal-comment-count" class="text-sm text-gray-500 ml-1"></span></h3>
+                <button onclick="document.getElementById('comment-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <!-- Comment List -->
+            <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll">
+                <!-- Comments load here -->
+            </div>
+            
+            <!-- Input Area -->
+            <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
+                <div class="flex flex-col gap-3">
+                    <input type="text" id="comment-name" placeholder="Your Name (e.g. Rakib)" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm">
+                    <div class="flex gap-2 items-center">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm hidden sm:flex">U</div>
+                        <input type="text" id="comment-text" placeholder="Add a public comment..." class="flex-1 px-4 py-3 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition text-sm">
+                        <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc, query } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // আপনার প্রোভাইড করা কনফিগারেশন
         const firebaseConfig = {
           apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
           authDomain: "file-downloader-da43f.firebaseapp.com",
@@ -221,28 +191,32 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // State Variables
+        // Generate Anonymous Device ID
+        if(!localStorage.getItem('deviceId')) {
+            localStorage.setItem('deviceId', 'dev_' + Math.random().toString(36).substr(2, 9));
+        }
+        const userDeviceId = localStorage.getItem('deviceId');
+
         let currentLang = localStorage.getItem('lang') || 'en';
         let timerDuration = 10;
         let currentSlide = 0;
+        let currentFileIdForComment = null;
 
-        // Translations
         const translations = {
             en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
             hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "डाउनलोड करें", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
             bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
         };
 
-        // --- Helper Functions ---
         const getTxt = (k, p={}) => {
             let t = translations[currentLang][k] || k;
             for(let key in p) t = t.replace(`{${key}}`, p[key]);
             return t;
         };
 
-        const showToast = (msgKey, p={}) => {
+        const showToast = (msgKey, p={}, raw=false) => {
             const t = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = getTxt(msgKey, p);
+            document.getElementById('toast-message').textContent = raw ? msgKey : getTxt(msgKey, p);
             t.classList.remove('opacity-0', 'translate-y-10');
             setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
         };
@@ -260,10 +234,8 @@
             }
         };
 
-        // --- Main Data Loader ---
         async function loadData() {
             try {
-                // General
                 const genDoc = await getDoc(doc(db, "settings", "general"));
                 if(genDoc.exists()) {
                     timerDuration = genDoc.data().timerDuration || 10;
@@ -273,114 +245,118 @@
                         document.getElementById('announcement-text').textContent = annText;
                     }
                 }
-
-                // Socials (For Sidebar)
                 const socDoc = await getDoc(doc(db, "settings", "socials"));
                 if(socDoc.exists()) {
                     const s = socDoc.data();
                     let html = '';
                     const makeLink = (url, icon, color, label) => `
                         <a href="${url}" target="_blank" class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition group">
-                            <div class="w-8 h-8 rounded-full ${color} flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform">
-                                <i class="${icon}"></i>
-                            </div>
+                            <div class="w-8 h-8 rounded-full ${color} flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform"><i class="${icon}"></i></div>
                             <span class="font-medium text-gray-700 dark:text-gray-200">${label}</span>
                         </a>`;
-
                     if(s.telegram) html += makeLink(s.telegram, 'fab fa-telegram-plane', 'bg-blue-500', 'Join Telegram');
                     if(s.youtube) html += makeLink(s.youtube, 'fab fa-youtube', 'bg-red-600', 'Subscribe YouTube');
                     if(s.tiktok) html += makeLink(s.tiktok, 'fab fa-tiktok', 'bg-black', 'Follow TikTok');
-
                     document.getElementById('sidebar-social-links').innerHTML = html || '<p class="text-sm text-gray-400 pl-3">No links added.</p>';
-                    
-                    let footerHtml = '';
-                    if(s.telegram) footerHtml += `<a href="${s.telegram}" class="text-blue-500 hover:text-blue-600 text-2xl"><i class="fab fa-telegram"></i></a>`;
-                    if(s.youtube) footerHtml += `<a href="${s.youtube}" class="text-red-600 hover:text-red-700 text-2xl"><i class="fab fa-youtube"></i></a>`;
-                    if(s.tiktok) footerHtml += `<a href="${s.tiktok}" class="text-gray-800 dark:text-white hover:text-gray-600 text-2xl"><i class="fab fa-tiktok"></i></a>`;
-                    document.getElementById('footer-socials').innerHTML = footerHtml;
                 }
-
-                // Ads
                 const adDoc = await getDoc(doc(db, "settings", "ads"));
                 if(adDoc.exists()) {
                     renderAd('ad-container-1', adDoc.data().adSlot1);
                     renderAd('ad-container-2', adDoc.data().adSlot2);
                     renderAd('ad-container-3', adDoc.data().adSlot3);
                 }
+            } catch(e) {}
 
-            } catch(e) { console.error("Settings Load Error:", e); }
-
-            // Sliders
             try {
                 const sSnap = await getDocs(query(collection(db, "sliders")));
                 const wrapper = document.getElementById('slider-wrapper');
                 const dots = document.getElementById('slider-dots');
                 wrapper.innerHTML = ''; dots.innerHTML = '';
-                
                 const slides = [];
                 sSnap.forEach(d => slides.push(d.data()));
-
                 if(slides.length) {
                     slides.forEach((s, i) => {
                         const img = document.createElement('img');
                         img.src = s.imageUrl;
-                        // --- CHANGED THIS LINE TO OBJECT-FILL ---
                         img.className = 'w-full h-full object-fill flex-shrink-0';
-                        if(s.linkUrl) img.onclick = () => window.open(s.linkUrl, '_blank');
                         wrapper.appendChild(img);
-                        
                         const dot = document.createElement('div');
                         dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
                         dots.appendChild(dot);
                     });
-
                     setInterval(() => {
                         currentSlide = (currentSlide + 1) % slides.length;
                         wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-                        Array.from(dots.children).forEach((d, i) => {
-                            d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`;
-                        });
+                        Array.from(dots.children).forEach((d, i) => { d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`; });
                     }, 4000);
-                } else {
-                    document.getElementById('slider-container').style.display = 'none';
-                }
-            } catch(e) { console.error("Slider Error:", e); }
+                } else { document.getElementById('slider-container').style.display = 'none'; }
+            } catch(e) {}
 
-            // Files
             try {
-                const fSnap = await getDocs(query(collection(db, "files")));
+                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
-                
                 let count = 0;
                 fSnap.forEach(d => {
                     count++;
                     const f = {id: d.id, ...d.data()};
+                    const localReact = localStorage.getItem('react_' + f.id);
+                    
+                    // Allows ANY link. If it fails to play as video, thumbnail shows.
+                    const mediaElement = f.videoUrl 
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+
                     const card = document.createElement('div');
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
                     card.innerHTML = `
-                        <div class="relative h-40 overflow-hidden">
-                            <!-- --- CHANGED THIS LINE TO OBJECT-FILL --- -->
-                            <img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">
-                            <div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md">
-                                <i class="fas fa-star text-yellow-400"></i> Premium
-                            </div>
+                        <div class="relative h-44 overflow-hidden bg-black flex justify-center">
+                            ${mediaElement}
+                            ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
                         <div class="p-4 flex flex-col flex-1">
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 mb-4 flex-1">${f.description}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 flex-1">${f.description}</p>
                             
-                            <!-- Progress Bar -->
-                            <div class="mb-3">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1">
-                                    <span>Unlock Progress</span>
-                                    <span class="prog-txt">0%</span>
+                            <!-- Views, Likes, Comments Section -->
+                            <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
+                                <div class="flex gap-5">
+                                    <!-- Reaction System -->
+                                    <div class="relative react-wrapper inline-block">
+                                        <!-- Click-to-open Reaction Menu -->
+                                        <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-full px-3 py-1.5 flex gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
+                                            <button onclick="window.setReact('${f.id}', '👍')" class="hover:scale-125 transition-transform text-xl" title="Like">👍</button>
+                                            <button onclick="window.setReact('${f.id}', '❤️')" class="hover:scale-125 transition-transform text-xl" title="Love">❤️</button>
+                                            <button onclick="window.setReact('${f.id}', '😂')" class="hover:scale-125 transition-transform text-xl" title="Haha">😂</button>
+                                            <button onclick="window.setReact('${f.id}', '😮')" class="hover:scale-125 transition-transform text-xl" title="Wow">😮</button>
+                                            <button onclick="window.setReact('${f.id}', '😢')" class="hover:scale-125 transition-transform text-xl" title="Sad">😢</button>
+                                            <div class="w-px h-6 bg-gray-300 dark:bg-gray-600 my-auto mx-1"></div>
+                                            <!-- Remove React Button -->
+                                            <button onclick="window.removeReact('${f.id}')" class="hover:bg-red-100 text-gray-400 hover:text-red-500 w-6 h-6 rounded-full flex items-center justify-center transition-colors" title="Remove Reaction"><i class="fas fa-times"></i></button>
+                                        </div>
+                                        
+                                        <!-- Main Reaction Button -->
+                                        <button onclick="window.toggleReactMenu('${f.id}')" class="flex items-center gap-1.5 font-medium transition outline-none ${localReact ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500'}">
+                                            <span id="react-icon-${f.id}" class="text-lg">${localReact || '<i class="fas fa-thumbs-up"></i>'}</span> 
+                                            <span id="like-count-${f.id}" class="text-sm">${f.likeCount || 0}</span>
+                                        </button>
+                                    </div>
+                                    
+                                    <button onclick="window.openComments('${f.id}')" class="flex items-center gap-1.5 font-medium text-gray-400 hover:text-blue-500 transition">
+                                        <i class="fas fa-comment"></i> <span id="comment-count-${f.id}" class="text-sm">${f.commentCount || 0}</span>
+                                    </button>
                                 </div>
+                                <div class="flex items-center gap-1.5 text-gray-400 text-sm font-medium" title="Views">
+                                    <i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
                                 <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
                                     <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
-
                             <button data-id="${f.id}" data-req="${f.requiredAds}" data-url="${f.downloadUrl}" class="dl-btn w-full py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
                                 <span class="relative z-10 btn-content"></span>
                                 <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-opacity btn-bg"></div>
@@ -391,28 +367,168 @@
                     updateBtn(card.querySelector('.dl-btn'));
                 });
                 document.getElementById('file-count').innerText = `${count} Items`;
-            } catch(e) { console.error("File Error:", e); }
+            } catch(e) { console.error(e); }
         }
 
-        // --- Unlock Logic ---
+        // Close menu if clicked outside
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('.react-wrapper')) {
+                document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
+        });
+
+        // View Logic
+        window.trackView = async (id) => {
+            if(!localStorage.getItem('viewed_' + id)) {
+                localStorage.setItem('viewed_' + id, 'true');
+                const vSpan = document.getElementById(`view-count-${id}`);
+                if(vSpan) vSpan.innerText = parseInt(vSpan.innerText) + 1;
+                await updateDoc(doc(db, "files", id), { views: increment(1) });
+            }
+        };
+
+        // Click Toggle Menu Logic
+        window.toggleReactMenu = (id) => {
+            document.querySelectorAll('.react-menu-dropdown').forEach(m => {
+                if(m.id !== `react-menu-${id}`) m.classList.add('hidden');
+            });
+            const menu = document.getElementById(`react-menu-${id}`);
+            menu.classList.toggle('hidden');
+        };
+
+        // Set Specific Reaction Logic
+        window.setReact = async (id, emoji) => {
+            document.getElementById(`react-menu-${id}`).classList.add('hidden'); 
+            
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) return; 
+            
+            localStorage.setItem('react_' + id, emoji);
+            
+            const iconSpan = document.getElementById(`react-icon-${id}`);
+            iconSpan.innerHTML = emoji;
+            iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
+
+            if(!currentReact) {
+                const cntSpan = document.getElementById(`like-count-${id}`);
+                cntSpan.innerText = parseInt(cntSpan.innerText) + 1;
+                await updateDoc(doc(db, "files", id), { likeCount: increment(1) });
+            }
+        };
+
+        // Remove Reaction Logic
+        window.removeReact = async (id) => {
+            document.getElementById(`react-menu-${id}`).classList.add('hidden');
+            const currentReact = localStorage.getItem('react_' + id);
+            
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                const iconSpan = document.getElementById(`react-icon-${id}`);
+                iconSpan.innerHTML = '<i class="fas fa-thumbs-up"></i>';
+                iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
+                
+                const cntSpan = document.getElementById(`like-count-${id}`);
+                let newVal = parseInt(cntSpan.innerText) - 1;
+                cntSpan.innerText = newVal < 0 ? 0 : newVal;
+                await updateDoc(doc(db, "files", id), { likeCount: increment(-1) });
+            }
+        };
+
+        // YouTube Style Comments with Delete Option
+        let unsubscribeComments = null;
+        window.openComments = (id) => {
+            currentFileIdForComment = id;
+            document.getElementById('comment-modal').classList.remove('hidden');
+            const list = document.getElementById('comment-list');
+            const cCount = document.getElementById(`comment-count-${id}`);
+            document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
+            list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
+            
+            if(unsubscribeComments) unsubscribeComments();
+            
+            const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
+            unsubscribeComments = onSnapshot(q, (snap) => {
+                list.innerHTML = '';
+                if(snap.empty) list.innerHTML = '<div class="text-center text-gray-400 mt-10">No comments yet. Be the first!</div>';
+                snap.forEach(d => {
+                    const c = d.data();
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    let timeStr = "Just now";
+                    if(c.timestamp) {
+                        const date = c.timestamp.toDate();
+                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+
+                    const isMyComment = c.deviceId === userDeviceId;
+                    const deleteBtnHtml = isMyComment 
+                        ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete your comment"><i class="fas fa-trash-alt text-xs"></i></button>` 
+                        : '';
+
+                    list.innerHTML += `
+                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]">
+                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div>
+                            <div class="flex-1">
+                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${c.name}</h4>
+                                        <div class="flex items-center">
+                                            <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
+                                            ${deleteBtnHtml}
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            });
+        };
+
+        window.deleteComment = async (fileId, commentId) => {
+            if(confirm("Are you sure you want to delete your comment?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", commentId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                
+                const cSpan = document.getElementById(`comment-count-${fileId}`);
+                if(cSpan) cSpan.innerText = Math.max(0, parseInt(cSpan.innerText) - 1);
+                
+                showToast("Comment deleted successfully!", {}, true);
+            }
+        };
+
+        document.getElementById('send-comment-btn').onclick = async () => {
+            const nameInput = document.getElementById('comment-name');
+            const textInput = document.getElementById('comment-text');
+            const name = nameInput.value.trim() || 'Guest User';
+            const text = textInput.value.trim();
+            if(!text) return;
+            
+            textInput.value = '';
+            showToast("Comment posted successfully!", {}, true); 
+            
+            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), {
+                name: name, text: text, timestamp: new Date(), deviceId: userDeviceId
+            });
+            
+            await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
+            const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
+            if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
+        };
+
         function updateBtn(btn) {
             const id = btn.dataset.id;
             const req = parseInt(btn.dataset.req);
             const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
             const isUnlocked = done >= req;
-            
             const card = btn.closest('.file-card');
             const progBar = card.querySelector('.prog-bar');
             const progTxt = card.querySelector('.prog-txt');
-            
             const pct = Math.min((done / req) * 100, 100);
             progBar.style.width = `${pct}%`;
             progTxt.innerText = `${Math.floor(pct)}%`;
-
             const content = btn.querySelector('.btn-content');
             const bg = btn.querySelector('.btn-bg');
             btn.disabled = false;
-
             if(isUnlocked) {
                 content.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
                 bg.className = "absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600";
@@ -425,71 +541,39 @@
         async function handleUnlock(e) {
             const btn = e.target.closest('.dl-btn');
             if(!btn || btn.disabled) return;
-
             const id = btn.dataset.id;
             const req = parseInt(btn.dataset.req);
             const url = btn.dataset.url;
             let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
-
-            if(done >= req) {
-                window.open(url, '_blank');
-                return;
-            }
-
+            if(done >= req) { window.open(url, '_blank'); return; }
             btn.disabled = true;
             const content = btn.querySelector('.btn-content');
             const originalHtml = content.innerHTML;
-            
             try {
                 content.innerText = getTxt('toast_ad_load');
                 showToast('toast_ad_load');
-                
                 await show_10207269();
-                
                 done++;
                 localStorage.setItem(`ad_${id}`, done);
-                
-                if(done >= req) {
-                    showToast('toast_unlocked');
-                    updateBtn(btn);
-                    return;
-                }
-
+                if(done >= req) { showToast('toast_unlocked'); updateBtn(btn); return; }
                 showToast('toast_progress', {done, req});
-                
                 let t = timerDuration;
                 const int = setInterval(() => {
                     content.innerText = getTxt('toast_wait', {t});
                     t--;
-                    if(t < 0) {
-                        clearInterval(int);
-                        updateBtn(btn);
-                    }
+                    if(t < 0) { clearInterval(int); updateBtn(btn); }
                 }, 1000);
-
             } catch(err) {
-                console.error("Ad Failed", err);
-                btn.disabled = false;
-                content.innerHTML = originalHtml;
-                alert("Failed to load ad. Please try again.");
+                btn.disabled = false; content.innerHTML = originalHtml;
+                alert("Failed to load ad.");
             }
         }
 
-        // --- Initialization ---
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
-            if(savedTheme === 'dark') {
-                setTheme('dark');
-            } else {
-                setTheme('light');
-            }
-
-            if(!localStorage.getItem('lang')) {
-                document.getElementById('language-modal').classList.remove('hidden');
-            } else {
-                updateTexts();
-            }
-
+            if(savedTheme === 'dark') setTheme('dark'); else setTheme('light');
+            if(!localStorage.getItem('lang')) document.getElementById('language-modal').classList.remove('hidden');
+            else updateTexts();
             loadData();
         });
 
@@ -497,22 +581,16 @@
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             if(sidebar.classList.contains('sidebar-closed')) {
-                sidebar.classList.remove('sidebar-closed');
-                sidebar.classList.add('sidebar-open');
-                overlay.classList.remove('hidden');
+                sidebar.classList.remove('sidebar-closed'); sidebar.classList.add('sidebar-open'); overlay.classList.remove('hidden');
             } else {
-                sidebar.classList.add('sidebar-closed');
-                sidebar.classList.remove('sidebar-open');
-                overlay.classList.add('hidden');
+                sidebar.classList.add('sidebar-closed'); sidebar.classList.remove('sidebar-open'); overlay.classList.add('hidden');
             }
         };
 
         window.setLang = (l) => {
-            currentLang = l;
-            localStorage.setItem('lang', l);
+            currentLang = l; localStorage.setItem('lang', l);
             document.getElementById('language-modal').classList.add('hidden');
-            updateTexts();
-            loadData();
+            updateTexts(); loadData();
         };
 
         function updateTexts() {
@@ -522,30 +600,24 @@
 
         document.getElementById('files-grid').addEventListener('click', handleUnlock);
         
-        // Sidebar Theme Toggle
         function setTheme(mode) {
             const icon = document.getElementById('theme-icon');
             const text = document.getElementById('theme-text');
-            
             if (mode === 'dark') {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
                 if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
                 if(text) text.textContent = 'Light Mode';
             } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
                 if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
                 if(text) text.textContent = 'Dark Mode';
             }
         }
 
         document.getElementById('sidebar-theme-toggle').onclick = () => {
-            const isDark = document.documentElement.classList.contains('dark');
-            setTheme(isDark ? 'light' : 'dark');
+            setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark');
         };
 
-        // Search
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             let visible = 0;
@@ -555,10 +627,8 @@
                 if(match) visible++;
             });
             const noRes = document.getElementById('no-results');
-            if(visible === 0) noRes.classList.remove('hidden');
-            else noRes.classList.add('hidden');
+            if(visible === 0) noRes.classList.remove('hidden'); else noRes.classList.add('hidden');
         });
-
     </script>
 </body>
 </html>
