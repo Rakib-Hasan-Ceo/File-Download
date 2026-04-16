@@ -100,7 +100,6 @@
         <div id="ad-container-2" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
 
         <section id="main-section">
-            <!-- This container will hold the "View All" button if deep-linked -->
             <div id="single-view-header"></div>
             
             <div class="flex items-center justify-between mb-6">
@@ -234,7 +233,6 @@
                 }
             } catch(e) {}
 
-            // এখানে টেলিগ্রাম এবং ওয়েব দুইটার জন্যই আইডি চেক করা হচ্ছে
             let targetVid = new URLSearchParams(window.location.search).get('v');
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
                 targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -278,7 +276,7 @@
                 let count = 0;
                 fSnap.forEach(d => {
                     const f = {id: d.id, ...d.data()};
-                    if(targetVid && f.id !== targetVid) return; // Only show specific video if deeply linked
+                    if(targetVid && f.id !== targetVid) return; 
                     count++;
                     
                     const localReact = localStorage.getItem('react_' + f.id);
@@ -297,7 +295,7 @@
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 flex-1">${f.description}</p>
                             
-                            <!-- Action Bar with Share -->
+                            <!-- Action Bar -->
                             <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
                                 <div class="flex gap-4">
                                     <div class="relative react-wrapper inline-block">
@@ -321,7 +319,16 @@
                                 </div>
                                 <div class="flex items-center gap-3 text-gray-400 text-sm font-medium">
                                     <div title="Views"><i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span></div>
-                                    <button onclick="window.copyLink('${f.id}')" class="hover:text-green-500 transition ml-1" title="Copy Link"><i class="fas fa-share-alt"></i></button>
+                                    
+                                    <!-- New Share Menu -->
+                                    <div class="relative share-wrapper inline-block ml-1">
+                                        <div id="share-menu-${f.id}" class="share-menu-dropdown hidden absolute bottom-full right-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-lg px-3 py-2 flex flex-col gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20 w-36">
+                                            <button onclick="window.copyToClip('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-500 transition w-full text-left"><i class="fas fa-copy w-4"></i> Copy Link</button>
+                                            <button onclick="window.shareToSocial('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-500 transition w-full text-left"><i class="fas fa-share-square w-4"></i> Share Now</button>
+                                        </div>
+                                        <button onclick="window.toggleShareMenu('${f.id}')" class="hover:text-green-500 transition text-lg" title="Share Options"><i class="fas fa-share-alt"></i></button>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -344,28 +351,58 @@
             } catch(e) { console.error(e); }
         }
 
+        // Close dropdowns if clicked outside
         document.addEventListener('click', (e) => {
             if(!e.target.closest('.react-wrapper')) {
                 document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
             }
+            if(!e.target.closest('.share-wrapper')) {
+                document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
         });
 
-        // Copy Deep Link
-        window.copyLink = (id) => {
-            let url = "";
+        // Get appropriate Share URL based on platform
+        window.getShareUrl = (id) => {
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-                // এটি টেলিগ্রামের ভেতরে ক্লিক করলে কপি হবে
-                url = "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
-            } else {
-                // সাধারণ ব্রাউজার থেকে ক্লিক করলে এই লিংকটি কপি হবে
-                url = window.location.origin + window.location.pathname + "?v=" + id;
+                return "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
             }
+            return window.location.origin + window.location.pathname + "?v=" + id;
+        };
 
+        // Toggle Share Menu Visibility
+        window.toggleShareMenu = (id) => {
+            document.querySelectorAll('.share-menu-dropdown').forEach(m => {
+                if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
+            });
+            document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
+        };
+
+        // Button 1: Copy Link
+        window.copyToClip = (id) => {
+            const url = window.getShareUrl(id);
             navigator.clipboard.writeText(url).then(() => {
                 showToast("Link copied to clipboard!", {}, true);
+                document.getElementById(`share-menu-${id}`).classList.add('hidden');
             }).catch(err => {
                 alert("Failed to copy link: " + url);
             });
+        };
+
+        // Button 2: Share to Social Media (Uses Native Phone Menu)
+        window.shareToSocial = (id) => {
+            const url = window.getShareUrl(id);
+            document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check this out!',
+                    text: 'View and download this amazing file:',
+                    url: url
+                }).catch(err => console.log('Share canceled'));
+            } else {
+                // PC বা যেসব ব্রাউজারে share সাপোর্ট করে না, তাদের সরাসরি টেলিগ্রাম শেয়ারে নিয়ে যাবে
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
+            }
         };
 
         window.trackView = async (id) => {
