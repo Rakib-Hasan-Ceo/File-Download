@@ -46,7 +46,10 @@
         </div>
         <div class="p-4 space-y-1">
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
-            <div id="sidebar-social-links" class="space-y-2"><p class="text-sm text-gray-400 pl-3">Loading links...</p></div>
+            <!-- Social Links Container -->
+            <div id="sidebar-social-links" class="space-y-1 px-1">
+                <p class="text-sm text-gray-400 pl-2"><i class="fas fa-spinner fa-spin mr-2"></i>Loading links...</p>
+            </div>
             <hr class="border-gray-200 dark:border-gray-700 my-4">
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
             <button onclick="document.getElementById('language-modal').classList.remove('hidden'); toggleMenu()" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
@@ -109,7 +112,6 @@
             
             <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
             
-            <!-- NEW FOOTER FOR SINGLE VIEW BUTTON -->
             <div id="single-view-footer" class="mt-8 flex justify-center"></div>
 
             <div id="no-results" class="hidden text-center py-20">
@@ -191,7 +193,6 @@
         let currentSlide = 0;
         let currentFileIdForComment = null;
         
-        // NEW FLAG TO CONTROL RE-RENDERING WITHOUT RELOAD
         window.forceShowAll = false;
 
         const translations = {
@@ -222,28 +223,23 @@
             }
         };
 
-        // NEW FUNCTION TO SHOW ALL FILES WITHOUT RELOAD (Fixes Telegram Bug)
         window.showAllFiles = () => {
             window.forceShowAll = true;
-            
-            // Clean URL smoothly if possible
             if (window.history.pushState) {
                 const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.pushState({path:newUrl},'',newUrl);
             }
-
             document.getElementById('slider-container').style.display = 'block';
             document.getElementById('search-section').style.display = 'block';
             document.getElementById('single-view-header').innerHTML = '';
             document.getElementById('single-view-footer').innerHTML = '';
-            
             document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
-            
             loadData();
         };
 
         async function loadData() {
             try {
+                // Fetch General Settings
                 const genDoc = await getDoc(doc(db, "settings", "general"));
                 if(genDoc.exists()) {
                     timerDuration = genDoc.data().timerDuration || 10;
@@ -252,13 +248,56 @@
                         document.getElementById('announcement-text').textContent = genDoc.data().announcementText;
                     }
                 }
+
+                // Fetch Ads Settings
                 const adDoc = await getDoc(doc(db, "settings", "ads"));
                 if(adDoc.exists()) {
                     renderAd('ad-container-1', adDoc.data().adSlot1);
                     renderAd('ad-container-2', adDoc.data().adSlot2);
                     renderAd('ad-container-3', adDoc.data().adSlot3);
                 }
-            } catch(e) {}
+
+                // --- NEW: Fetch Social Settings from Admin Panel accurately ---
+                let socialLinks = {};
+                const socDoc = await getDoc(doc(db, "settings", "socials"));
+                if(socDoc.exists()) {
+                    const data = socDoc.data();
+                    Object.keys(data).forEach(k => {
+                        if(data[k] && data[k].trim() !== '') {
+                            // Ensure links have 'http'
+                            socialLinks[k.toLowerCase()] = data[k].startsWith('http') ? data[k] : 'https://' + data[k];
+                        }
+                    });
+                }
+
+                // Render Social Links on Sidebar & Footer
+                const sideSocials = document.getElementById('sidebar-social-links');
+                const footSocials = document.getElementById('footer-socials');
+                let sideHtml = '';
+                let footHtml = '';
+                
+                // Added tiktok, facebook, instagram icons and colors
+                const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok' };
+                const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
+
+                let hasLinks = false;
+                for(const [platform, url] of Object.entries(socialLinks)) {
+                    hasLinks = true;
+                    const iconClass = sIcons[platform] || 'fas fa-link';
+                    const colorClass = sColors[platform] || 'text-gray-500';
+                    const name = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    
+                    sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-600"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
+                    footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
+                }
+                
+                if(hasLinks) {
+                    sideSocials.innerHTML = sideHtml;
+                    if(footSocials) footSocials.innerHTML = footHtml;
+                } else {
+                    sideSocials.innerHTML = '<p class="text-sm text-gray-400 pl-2">No social links added yet.</p>';
+                }
+            } catch(e) { console.error(e); }
 
             let targetVid = null;
             if(!window.forceShowAll) {
@@ -273,7 +312,6 @@
                 document.getElementById('search-section').style.display = 'none';
                 document.getElementById('single-view-header').innerHTML = ''; 
                 
-                // ADDED THE NEW BUTTON DESIGN AT THE BOTTOM (FOOTER)
                 document.getElementById('single-view-footer').innerHTML = `
                     <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
                         <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
@@ -317,9 +355,10 @@
                     count++;
                     
                     const localReact = localStorage.getItem('react_' + f.id);
+                    
                     const mediaElement = f.videoUrl 
-                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
-                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
 
                     const card = document.createElement('div');
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
@@ -332,7 +371,6 @@
                             <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 line-clamp-2 flex-1">${f.description}</p>
                             
-                            <!-- Action Bar -->
                             <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
                                 <div class="flex gap-4">
                                     <div class="relative react-wrapper inline-block">
@@ -357,7 +395,6 @@
                                 <div class="flex items-center gap-3 text-gray-400 text-sm font-medium">
                                     <div title="Views"><i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span></div>
                                     
-                                    <!-- New Share Menu -->
                                     <div class="relative share-wrapper inline-block ml-1">
                                         <div id="share-menu-${f.id}" class="share-menu-dropdown hidden absolute bottom-full right-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-lg px-3 py-2 flex flex-col gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20 w-36">
                                             <button onclick="window.copyToClip('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-500 transition w-full text-left"><i class="fas fa-copy w-4"></i> Copy Link</button>
@@ -388,7 +425,6 @@
             } catch(e) { console.error(e); }
         }
 
-        // Close dropdowns if clicked outside
         document.addEventListener('click', (e) => {
             if(!e.target.closest('.react-wrapper')) {
                 document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
@@ -398,7 +434,6 @@
             }
         });
 
-        // Get appropriate Share URL based on platform
         window.getShareUrl = (id) => {
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
                 return "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
@@ -406,7 +441,6 @@
             return window.location.origin + window.location.pathname + "?v=" + id;
         };
 
-        // Toggle Share Menu Visibility
         window.toggleShareMenu = (id) => {
             document.querySelectorAll('.share-menu-dropdown').forEach(m => {
                 if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
@@ -414,7 +448,6 @@
             document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
         };
 
-        // Button 1: Copy Link
         window.copyToClip = (id) => {
             const url = window.getShareUrl(id);
             navigator.clipboard.writeText(url).then(() => {
@@ -425,7 +458,6 @@
             });
         };
 
-        // Button 2: Share to Social Media (Uses Native Phone Menu)
         window.shareToSocial = (id) => {
             const url = window.getShareUrl(id);
             document.getElementById(`share-menu-${id}`).classList.add('hidden');
@@ -565,7 +597,10 @@
         async function handleUnlock(e) {
             const btn = e.target.closest('.dl-btn');
             if(!btn || btn.disabled) return;
+            
             const id = btn.dataset.id;
+            window.trackView(id);
+
             const req = parseInt(btn.dataset.req);
             const url = btn.dataset.url;
             let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
