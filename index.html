@@ -46,7 +46,6 @@
         </div>
         <div class="p-4 space-y-1">
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
-            <!-- Social Links Container -->
             <div id="sidebar-social-links" class="space-y-1 px-1">
                 <p class="text-sm text-gray-400 pl-2"><i class="fas fa-spinner fa-spin mr-2"></i>Loading links...</p>
             </div>
@@ -239,44 +238,49 @@
 
         async function loadData() {
             try {
-                // Fetch General Settings
-                const genDoc = await getDoc(doc(db, "settings", "general"));
-                if(genDoc.exists()) {
-                    timerDuration = genDoc.data().timerDuration || 10;
-                    if(genDoc.data().announcementText) {
-                        document.getElementById('announcement-container').classList.remove('hidden');
-                        document.getElementById('announcement-text').textContent = genDoc.data().announcementText;
-                    }
-                }
-
-                // Fetch Ads Settings
-                const adDoc = await getDoc(doc(db, "settings", "ads"));
-                if(adDoc.exists()) {
-                    renderAd('ad-container-1', adDoc.data().adSlot1);
-                    renderAd('ad-container-2', adDoc.data().adSlot2);
-                    renderAd('ad-container-3', adDoc.data().adSlot3);
-                }
-
-                // --- NEW: Fetch Social Settings from Admin Panel accurately ---
                 let socialLinks = {};
-                const socDoc = await getDoc(doc(db, "settings", "socials"));
-                if(socDoc.exists()) {
-                    const data = socDoc.data();
-                    Object.keys(data).forEach(k => {
-                        if(data[k] && data[k].trim() !== '') {
-                            // Ensure links have 'http'
-                            socialLinks[k.toLowerCase()] = data[k].startsWith('http') ? data[k] : 'https://' + data[k];
+                
+                const setSnap = await getDocs(query(collection(db, "settings")));
+                
+                setSnap.forEach(d => {
+                    const data = d.data();
+                    const id = d.id;
+                    
+                    if(id === 'general') {
+                        timerDuration = data.timerDuration || 10;
+                        if(data.announcementText) {
+                            document.getElementById('announcement-container').classList.remove('hidden');
+                            document.getElementById('announcement-text').textContent = data.announcementText;
+                        }
+                    }
+                    if(id === 'ads') {
+                        renderAd('ad-container-1', data.adSlot1);
+                        renderAd('ad-container-2', data.adSlot2);
+                        renderAd('ad-container-3', data.adSlot3);
+                    }
+                    
+                    Object.keys(data).forEach(key => {
+                        const k = key.toLowerCase();
+                        const val = data[key];
+                        if(typeof val === 'string' && val.trim() !== '') {
+                            let cleanUrl = val.startsWith('http') ? val : 'https://' + val;
+                            
+                            if(k.includes('facebook')) socialLinks['facebook'] = cleanUrl;
+                            else if(k.includes('telegram')) socialLinks['telegram'] = cleanUrl;
+                            else if(k.includes('youtube')) socialLinks['youtube'] = cleanUrl;
+                            else if(k.includes('whatsapp')) socialLinks['whatsapp'] = cleanUrl;
+                            else if(k.includes('twitter')) socialLinks['twitter'] = cleanUrl;
+                            else if(k.includes('instagram')) socialLinks['instagram'] = cleanUrl;
+                            else if(k.includes('tiktok')) socialLinks['tiktok'] = cleanUrl;
                         }
                     });
-                }
+                });
 
-                // Render Social Links on Sidebar & Footer
                 const sideSocials = document.getElementById('sidebar-social-links');
                 const footSocials = document.getElementById('footer-socials');
                 let sideHtml = '';
                 let footHtml = '';
                 
-                // Added tiktok, facebook, instagram icons and colors
                 const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok' };
                 const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
 
@@ -356,9 +360,10 @@
                     
                     const localReact = localStorage.getItem('react_' + f.id);
                     
+                    // --- CHANGED: ভিডিও প্লে এবং ইমেজ ক্লিক উভয়ের জন্যই trackView যোগ করা হলো ---
                     const mediaElement = f.videoUrl 
-                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
-                        : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
 
                     const card = document.createElement('div');
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
@@ -599,6 +604,8 @@
             if(!btn || btn.disabled) return;
             
             const id = btn.dataset.id;
+            
+            // --- CHANGED: বাটন ক্লিক করলেও ভিউ কাউন্ট হবে ---
             window.trackView(id);
 
             const req = parseInt(btn.dataset.req);
