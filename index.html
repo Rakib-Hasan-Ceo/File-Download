@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
     <script src='//libtl.com/sdk.js' data-zone='10207269' data-sdk='show_10207269'></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .sidebar-open { transform: translateX(0) !important; }
@@ -232,7 +234,11 @@
                 }
             } catch(e) {}
 
-            const targetVid = new URLSearchParams(window.location.search).get('v');
+            // এখানে টেলিগ্রাম এবং ওয়েব দুইটার জন্যই আইডি চেক করা হচ্ছে
+            let targetVid = new URLSearchParams(window.location.search).get('v');
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
+                targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+            }
 
             if(targetVid) {
                 document.getElementById('slider-container').style.display = 'none';
@@ -346,7 +352,15 @@
 
         // Copy Deep Link
         window.copyLink = (id) => {
-            const url = window.location.origin + window.location.pathname + "?v=" + id;
+            let url = "";
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                // এটি টেলিগ্রামের ভেতরে ক্লিক করলে কপি হবে
+                url = "https://t.me/DownloaderxRbot/WebApp?startapp=" + id;
+            } else {
+                // সাধারণ ব্রাউজার থেকে ক্লিক করলে এই লিংকটি কপি হবে
+                url = window.location.origin + window.location.pathname + "?v=" + id;
+            }
+
             navigator.clipboard.writeText(url).then(() => {
                 showToast("Link copied to clipboard!", {}, true);
             }).catch(err => {
