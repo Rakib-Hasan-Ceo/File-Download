@@ -44,6 +44,21 @@
             <h2 class="text-lg font-bold"><i class="fas fa-bars mr-2"></i> Menu</h2>
             <button onclick="toggleMenu()" class="text-white hover:text-gray-200 text-xl"><i class="fas fa-times"></i></button>
         </div>
+        
+        <!-- NEW: User Profile / Auth Section in Sidebar -->
+        <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
+            <div id="sidebar-unauth" class="text-center">
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 font-medium">লগিন করে যুক্ত হোন!</p>
+                <button onclick="window.toggleAuthModal('login'); toggleMenu()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold shadow-md hover:bg-blue-700 transition">Login / Register</button>
+            </div>
+            <div id="sidebar-auth" class="hidden flex flex-col items-center">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md mb-2" id="sidebar-avatar">U</div>
+                <h3 class="font-bold text-gray-800 dark:text-white" id="sidebar-username">User Name</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-3" id="sidebar-email">user@email.com</p>
+                <button onclick="window.handleLogout(); toggleMenu()" class="w-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 py-2 rounded-lg font-bold hover:bg-red-200 dark:hover:bg-red-900/50 transition border border-red-200 dark:border-red-800"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
+            </div>
+        </div>
+
         <div class="p-4 space-y-1">
             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
             <div id="sidebar-social-links" class="space-y-1 px-1">
@@ -129,8 +144,76 @@
     </footer>
 
     <!-- Toast -->
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
         <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
+    </div>
+
+    <!-- NEW: Auth Modal (Login, Register, Forgot Password) -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="document.getElementById('auth-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
+            
+            <!-- Login View -->
+            <div id="auth-login-view">
+                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Welcome Back</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="login-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
+                        <input type="password" id="login-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div class="text-right">
+                        <button onclick="window.switchAuthView('reset')" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</button>
+                    </div>
+                    <button id="btn-login" onclick="window.submitLogin()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Login</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Don't have an account? <button onclick="window.switchAuthView('register')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Sign up</button>
+                </div>
+            </div>
+
+            <!-- Register View -->
+            <div id="auth-register-view" class="hidden">
+                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Create Account</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Full Name</label>
+                        <input type="text" id="reg-name" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="reg-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
+                        <input type="password" id="reg-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <button id="btn-register" onclick="window.submitRegister()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition mt-2 relative">Sign Up</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Already have an account? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
+                </div>
+            </div>
+
+            <!-- Forgot Password View -->
+            <div id="auth-reset-view" class="hidden">
+                <h3 class="text-xl font-bold mb-2 text-center dark:text-white text-gray-800">Reset Password</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">Enter your email and we'll send you a link to reset your password.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="reset-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <button id="btn-reset" onclick="window.submitResetPassword()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Send Reset Link</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Remembered your password? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Language Modal -->
@@ -146,7 +229,7 @@
         </div>
     </div>
 
-    <!-- Comment Modal -->
+    <!-- Comment Modal (Updated for Auth) -->
     <div id="comment-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
         <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-0 shadow-2xl flex flex-col h-[75vh] sm:h-[60vh] animate-[fadeIn_0.3s_ease-out]">
             <div class="flex justify-between items-center p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-darkCard rounded-t-2xl z-10">
@@ -154,12 +237,19 @@
                 <button onclick="document.getElementById('comment-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
             </div>
             <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
+            
             <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
-                <div class="flex flex-col gap-3">
-                    <input type="text" id="comment-name" placeholder="Your Name (e.g. Rakib)" class="w-full px-4 py-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
+                <!-- Logged OUT state -->
+                <div id="comment-logged-out" class="text-center py-2">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">কমেন্ট করতে আপনাকে অবশ্যই লগিন করতে হবে।</p>
+                    <button onclick="document.getElementById('comment-modal').classList.add('hidden'); window.toggleAuthModal('login');" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition"><i class="fas fa-sign-in-alt mr-2"></i>লগিন করুন</button>
+                </div>
+
+                <!-- Logged IN state -->
+                <div id="comment-logged-in" class="hidden flex-col gap-3">
                     <div class="flex gap-2 items-center">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm hidden sm:flex">U</div>
-                        <input type="text" id="comment-text" placeholder="Add a public comment..." class="flex-1 px-4 py-3 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm">
+                        <div id="comment-user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0">U</div>
+                        <input type="text" id="comment-text" placeholder="কমেন্ট লিখুন..." class="flex-1 px-4 py-2.5 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm shadow-inner transition">
                         <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
@@ -170,6 +260,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        
+        // NEW: Firebase Authentication Imports
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
@@ -183,6 +276,7 @@
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app); 
 
         if(!localStorage.getItem('deviceId')) { localStorage.setItem('deviceId', 'dev_' + Math.random().toString(36).substr(2, 9)); }
         const userDeviceId = localStorage.getItem('deviceId');
@@ -191,6 +285,7 @@
         let timerDuration = 10;
         let currentSlide = 0;
         let currentFileIdForComment = null;
+        let currentUser = null; 
         
         window.forceShowAll = false;
 
@@ -208,6 +303,124 @@
             t.classList.remove('opacity-0', 'translate-y-10');
             setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
         };
+
+        // ====== NEW: AUTHENTICATION SYSTEM ======
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const sidebarUnauth = document.getElementById('sidebar-unauth');
+            const sidebarAuth = document.getElementById('sidebar-auth');
+            const commentLoggedOut = document.getElementById('comment-logged-out');
+            const commentLoggedIn = document.getElementById('comment-logged-in');
+            
+            if (user) {
+                const userName = user.displayName || "User";
+                sidebarUnauth.classList.add('hidden');
+                sidebarAuth.classList.remove('hidden');
+                document.getElementById('sidebar-username').innerText = userName;
+                document.getElementById('sidebar-email').innerText = user.email;
+                document.getElementById('sidebar-avatar').innerText = userName.charAt(0).toUpperCase();
+
+                commentLoggedOut.classList.add('hidden');
+                commentLoggedIn.classList.remove('hidden');
+                commentLoggedIn.classList.add('flex');
+                document.getElementById('comment-user-avatar').innerText = userName.charAt(0).toUpperCase();
+            } else {
+                sidebarUnauth.classList.remove('hidden');
+                sidebarAuth.classList.add('hidden');
+
+                commentLoggedOut.classList.remove('hidden');
+                commentLoggedIn.classList.add('hidden');
+                commentLoggedIn.classList.remove('flex');
+            }
+        });
+
+        window.toggleAuthModal = (viewMode = 'login') => {
+            document.getElementById('auth-modal').classList.toggle('hidden');
+            if(viewMode) window.switchAuthView(viewMode);
+        };
+
+        window.switchAuthView = (view) => {
+            document.getElementById('auth-login-view').classList.add('hidden');
+            document.getElementById('auth-register-view').classList.add('hidden');
+            document.getElementById('auth-reset-view').classList.add('hidden');
+            document.getElementById(`auth-${view}-view`).classList.remove('hidden');
+        };
+
+        window.submitLogin = async () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const btn = document.getElementById('btn-login');
+            
+            if(!email || !pass) return showToast("Please enter email and password", {}, true);
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                document.getElementById('auth-modal').classList.add('hidden');
+                showToast("লগিন সফল হয়েছে!", {}, true);
+                document.getElementById('login-password').value = '';
+            } catch (error) {
+                let msg = "Login failed!";
+                if(error.code === 'auth/invalid-credential') msg = "ভুল ইমেইল বা পাসওয়ার্ড!";
+                showToast(msg, {}, true);
+            }
+            btn.innerHTML = 'Login';
+            btn.disabled = false;
+        };
+
+        window.submitRegister = async () => {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-password').value;
+            const btn = document.getElementById('btn-register');
+
+            if(!name || !email || !pass) return showToast("সব তথ্য দিন", {}, true);
+            if(pass.length < 6) return showToast("Password must be at least 6 characters", {}, true);
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+            btn.disabled = true;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(userCredential.user, { displayName: name });
+                document.getElementById('auth-modal').classList.add('hidden');
+                showToast("একাউন্ট তৈরি সফল হয়েছে!", {}, true);
+            } catch (error) {
+                let msg = "Registration failed!";
+                if(error.code === 'auth/email-already-in-use') msg = "এই ইমেইল দিয়ে আগেই একাউন্ট খোলা হয়েছে!";
+                showToast(msg, {}, true);
+            }
+            btn.innerHTML = 'Sign Up';
+            btn.disabled = false;
+        };
+
+        window.submitResetPassword = async () => {
+            const email = document.getElementById('reset-email').value;
+            const btn = document.getElementById('btn-reset');
+            if(!email) return showToast("আপনার ইমেইল দিন", {}, true);
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showToast("পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে!", {}, true);
+                window.switchAuthView('login');
+            } catch (error) {
+                showToast("Failed to send reset email.", {}, true);
+            }
+            btn.innerHTML = 'Send Reset Link';
+            btn.disabled = false;
+        };
+
+        window.handleLogout = async () => {
+            if(confirm("আপনি কি লগআউট করতে চান?")) {
+                await signOut(auth);
+                showToast("লগআউট সফল হয়েছে!", {}, true);
+            }
+        };
+
+        // ==========================================
 
         const renderAd = (id, code) => {
             const el = document.getElementById(id);
@@ -360,7 +573,6 @@
                     
                     const localReact = localStorage.getItem('react_' + f.id);
                     
-                    // --- CHANGED: ভিডিও প্লে এবং ইমেজ ক্লিক উভয়ের জন্যই trackView যোগ করা হলো ---
                     const mediaElement = f.videoUrl 
                         ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
                         : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
@@ -533,6 +745,7 @@
             document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
             list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
             if(unsubscribeComments) unsubscribeComments();
+            
             const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
             unsubscribeComments = onSnapshot(q, (snap) => {
                 list.innerHTML = '';
@@ -545,8 +758,9 @@
                         const date = c.timestamp.toDate();
                         timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     }
-                    const isMyComment = c.deviceId === userDeviceId;
+                    const isMyComment = (currentUser && c.uid === currentUser.uid) || (c.deviceId === userDeviceId);
                     const deleteBtnHtml = isMyComment ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete"><i class="fas fa-trash-alt text-xs"></i></button>` : '';
+                    
                     list.innerHTML += `<div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div><div class="flex-1"><div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none"><div class="flex justify-between items-baseline mb-1"><h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${c.name}</h4><div class="flex items-center"><span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>${deleteBtnHtml}</div></div><p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p></div></div></div>`;
                 });
             });
@@ -563,14 +777,26 @@
         };
 
         document.getElementById('send-comment-btn').onclick = async () => {
-            const nameInput = document.getElementById('comment-name');
+            if(!currentUser) {
+                return showToast("দয়া করে লগিন করুন", {}, true);
+            }
+            
             const textInput = document.getElementById('comment-text');
-            const name = nameInput.value.trim() || 'Guest User';
             const text = textInput.value.trim();
             if(!text) return;
+            
             textInput.value = '';
+            const userName = currentUser.displayName || "User";
+            const uid = currentUser.uid;
+
             showToast("Comment posted successfully!", {}, true); 
-            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { name: name, text: text, timestamp: new Date(), deviceId: userDeviceId });
+            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
+                name: userName, 
+                text: text, 
+                timestamp: new Date(), 
+                deviceId: userDeviceId, 
+                uid: uid
+            });
             await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
             const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
             if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
@@ -604,8 +830,6 @@
             if(!btn || btn.disabled) return;
             
             const id = btn.dataset.id;
-            
-            // --- CHANGED: বাটন ক্লিক করলেও ভিউ কাউন্ট হবে ---
             window.trackView(id);
 
             const req = parseInt(btn.dataset.req);
