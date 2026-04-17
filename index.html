@@ -101,8 +101,10 @@
                 <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="toggleMenu()" class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 dark:bg-gray-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-600 flex items-center justify-center transition shadow-sm">
-                    <i class="fas fa-ellipsis-v text-lg"></i>
+                <!-- Premium Powerful 3-Dot Button Design -->
+                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/30 backdrop-blur-md" title="Menu">
+                    <span class="absolute inset-0 bg-white/20 group-hover:opacity-0 transition-opacity duration-300"></span>
+                    <i class="fas fa-ellipsis-v text-lg relative z-10 group-hover:rotate-180 transition-transform duration-500"></i>
                 </button>
             </div>
         </div>
@@ -633,6 +635,9 @@
                 let count = 0;
                 fSnap.forEach(d => {
                     const f = {id: d.id, ...d.data()};
+                    // Hide soft-deleted files from users
+                    if(f.isDeleted) return; 
+
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
                     
@@ -984,6 +989,650 @@
             const noRes = document.getElementById('no-results');
             if(visible === 0) noRes.classList.remove('hidden'); else noRes.classList.add('hidden');
         });
+    </script>
+</body>
+</html>
+--- END OF FILE files.html ---
+```
+
+### ২. Admin Panel (`files1.html`)
+এখানে **Recycle Bin** তৈরি করা হয়েছে যা শুধু Master Admin দেখতে পারবে। পুরো কোডটি কপি করে আপনার `files1.html` এ বসান:
+
+```html
+--- START OF FILE files1.html ---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div id="admin-panel" class="container mx-auto p-4 max-w-5xl">
+        <header class="bg-indigo-700 text-white p-6 rounded-xl shadow-lg mb-8 flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-bold"><i class="fas fa-cogs"></i> <span data-lang="title">Admin Dashboard</span></h1>
+                <p class="text-indigo-200 text-sm" data-lang="subtitle">Manage files, videos, ads, and settings</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <select id="admin-language-selector" onchange="window.changeAdminLang(this.value)" class="bg-indigo-800 text-white text-sm rounded border border-indigo-500 p-1 focus:outline-none hidden">
+                    <option value="en">English</option>
+                    <option value="bn">বাংলা</option>
+                </select>
+                <button id="sign-out-btn" class="hidden bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg font-bold shadow transition flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> <span data-lang="logout">Logout</span>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Login / Register Section -->
+        <div id="admin-login" class="bg-white p-8 rounded-2xl shadow-xl max-w-sm mx-auto border border-gray-200">
+             <div class="text-center mb-6">
+                 <div class="inline-block p-4 rounded-full bg-indigo-100 mb-2">
+                     <i class="fas fa-user-lock text-4xl text-indigo-600"></i>
+                 </div>
+                 <h2 class="text-2xl font-bold text-gray-700" data-lang="login_title">Admin Portal</h2>
+             </div>
+
+             <div class="space-y-4">
+                 <div>
+                     <div class="relative">
+                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-envelope"></i></span>
+                         <input type="email" id="email-input" class="w-full py-2 pl-10 pr-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="admin@example.com">
+                     </div>
+                 </div>
+                 <div>
+                     <div class="relative">
+                         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400"><i class="fas fa-lock"></i></span>
+                         <input type="password" id="password-input" class="w-full py-2 pl-10 pr-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Password">
+                     </div>
+                     <div class="text-right mt-1">
+                         <button id="forgot-pass-btn" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium transition" data-lang="forgot_pass">Forgot Password?</button>
+                     </div>
+                 </div>
+
+                 <div id="login-error" class="hidden text-red-500 text-sm text-center bg-red-50 p-2 rounded">
+                     Invalid credentials.
+                 </div>
+
+                 <button id="login-btn" class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 font-bold transition shadow-md" data-lang="btn_login">
+                    Login Dashboard
+                 </button>
+                 
+                 <div class="text-center pt-2 border-t mt-4">
+                    <p class="text-xs text-gray-500 mb-2" data-lang="new_admin_text">New Admin? Enter your approved email and a new password above, then click here:</p>
+                    <button id="register-btn" class="w-full bg-gray-800 text-white py-2 rounded-lg hover:bg-gray-900 font-bold transition text-sm" data-lang="btn_register">
+                        Create Account (For New Admins)
+                    </button>
+                 </div>
+             </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="admin-content" class="hidden grid grid-cols-1 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2"><i class="fas fa-users-cog text-purple-500"></i> <span data-lang="manage_admins">Manage Admins</span></h2>
+                <div class="flex gap-2 mb-4">
+                    <input type="email" id="new-admin-email" placeholder="Enter new admin email..." class="w-full p-2 border rounded focus:ring-2 focus:ring-purple-500">
+                    <button id="add-admin-btn" class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 font-bold shadow transition whitespace-nowrap"><i class="fas fa-plus"></i> <span data-lang="add_email">Add Email</span></button>
+                </div>
+                <div id="admin-list-container" class="space-y-2 bg-gray-50 p-3 rounded border max-h-40 overflow-y-auto"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2"><i class="fas fa-sliders-h text-indigo-500"></i> <span data-lang="app_config">App Configuration</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <label class="block font-semibold" data-lang="timer_delay">Timer Delay (Seconds)</label>
+                        <input type="number" id="timer-setting" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
+                        <div>
+                            <label class="block font-semibold mb-1" data-lang="announce_text">Announcement Text</label>
+                            <input type="text" id="announce-setting" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <button id="save-gen-btn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 w-full font-bold shadow transition"><i class="fas fa-save"></i> <span data-lang="save_config">Save Config</span></button>
+                    </div>
+                    <div class="space-y-3 bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-gray-600" data-lang="social_links">Social Media Links</h3>
+                        <input type="url" id="social-telegram" placeholder="Telegram URL" class="w-full p-2 border rounded text-sm">
+                        <input type="url" id="social-youtube" placeholder="YouTube URL" class="w-full p-2 border rounded text-sm">
+                        <input type="url" id="social-tiktok" placeholder="TikTok URL" class="w-full p-2 border rounded text-sm">
+                        <input type="url" id="social-facebook" placeholder="Facebook URL (Optional)" class="w-full p-2 border rounded text-sm">
+                        <input type="url" id="social-instagram" placeholder="Instagram URL (Optional)" class="w-full p-2 border rounded text-sm">
+                        <button id="save-social-btn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full font-bold shadow transition"><i class="fas fa-share-alt"></i> <span data-lang="update_links">Update Links</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2"><i class="fas fa-ad text-orange-500"></i> <span data-lang="ad_placements">Ad Placements</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <textarea id="ad-slot-1" rows="3" placeholder="Header Ad" class="w-full p-2 border rounded text-xs font-mono"></textarea>
+                    <textarea id="ad-slot-2" rows="3" placeholder="Middle Ad" class="w-full p-2 border rounded text-xs font-mono"></textarea>
+                    <textarea id="ad-slot-3" rows="3" placeholder="Footer Ad" class="w-full p-2 border rounded text-xs font-mono"></textarea>
+                </div>
+                <button id="save-ads-btn" class="mt-4 bg-orange-500 text-white px-6 py-2 rounded hover:bg-orange-600 font-bold shadow transition"><i class="fas fa-check"></i> <span data-lang="save_ads">Save Ads</span></button>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2"><i class="fas fa-images text-pink-500"></i> <span data-lang="slider_banners">Slider Banners</span></h2>
+                <div class="flex gap-2 mb-4">
+                    <input type="url" id="slider-img" placeholder="Paste Slider Image URL Here..." class="w-full p-2 border rounded">
+                    <button id="add-slider-btn" class="bg-pink-500 text-white px-6 py-2 rounded font-bold shadow"><i class="fas fa-plus"></i> <span data-lang="add_btn">Add</span></button>
+                </div>
+                <div id="slider-list" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 text-gray-700 border-b pb-2 flex justify-between items-center">
+                    <span><i class="fas fa-folder-open text-blue-500"></i> <span data-lang="file_management">File & Video Management</span></span>
+                    <div class="flex gap-2">
+                        <button id="cancel-edit-btn" onclick="window.cancelEdit()" class="hidden text-sm bg-gray-500 text-white px-3 py-1 rounded">Cancel Edit</button>
+                        <!-- Recycle Bin Button (Hidden by Default) -->
+                        <button id="open-recycle-btn" onclick="window.openRecycleBin()" class="hidden text-sm bg-red-100 text-red-600 border border-red-200 px-4 py-2 rounded-lg hover:bg-red-600 hover:text-white transition shadow-sm font-bold flex items-center gap-2"><i class="fas fa-trash-alt"></i> Recycle Bin</button>
+                    </div>
+                </h2>
+                <div class="bg-blue-50 p-4 rounded-lg mb-6 shadow-inner">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                        <input type="text" id="file-title" placeholder="Title" class="p-2 border rounded">
+                        <input type="number" id="file-ads" placeholder="Required Ads" class="p-2 border rounded">
+                        <input type="url" id="file-thumb" placeholder="Thumbnail Image URL" class="p-2 border rounded">
+                        <input type="url" id="file-video" placeholder="Video Play URL (Any Link Works) - Optional" class="p-2 border rounded text-sm">
+                        <input type="url" id="file-url" placeholder="Download Link" class="p-2 border rounded md:col-span-2">
+                        <textarea id="file-desc" placeholder="Description" rows="2" class="p-2 border rounded md:col-span-2"></textarea>
+                    </div>
+                    <button id="add-file-btn" class="w-full bg-blue-600 text-white py-2 rounded font-bold shadow hover:bg-blue-700 transition">
+                        <span id="btn-file-icon"><i class="fas fa-cloud-upload-alt"></i></span> <span id="btn-file-text">Upload Content</span>
+                    </button>
+                </div>
+                <div id="file-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Comment Management Modal -->
+    <div id="admin-comment-modal" class="hidden fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center bg-gray-50 rounded-t-xl">
+                <h3 class="font-bold text-lg"><i class="fas fa-comments text-blue-500"></i> Manage Comments</h3>
+                <button onclick="document.getElementById('admin-comment-modal').classList.add('hidden')" class="text-red-500 text-xl hover:text-red-700">&times;</button>
+            </div>
+            <div id="admin-comment-list" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Comments will load here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Recycle Bin Modal -->
+    <div id="recycle-bin-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden border border-gray-200">
+            <div class="p-5 border-b bg-gradient-to-r from-red-600 to-red-800 text-white flex justify-between items-center">
+                <h3 class="font-bold text-xl"><i class="fas fa-trash-restore mr-2"></i> Recycle Bin</h3>
+                <button onclick="document.getElementById('recycle-bin-modal').classList.add('hidden')" class="text-white hover:text-red-200 text-2xl transition">&times;</button>
+            </div>
+            <div id="recycle-bin-list" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50">
+                <!-- Deleted files here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 right-10 z-[100] transform transition-all duration-300 translate-y-20 opacity-0">
+        <div id="toast-box" class="px-6 py-4 rounded-lg shadow-2xl flex items-center gap-3 text-white bg-gray-800 border-l-4 border-green-500">
+            <span id="toast-msg" class="font-medium">Message</span>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc, updateDoc, query, orderBy, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
+          authDomain: "file-downloader-da43f.firebaseapp.com",
+          databaseURL: "https://file-downloader-da43f-default-rtdb.firebaseio.com",
+          projectId: "file-downloader-da43f",
+          storageBucket: "file-downloader-da43f.firebasestorage.app",
+          messagingSenderId: "168637957444",
+          appId: "1:168637957444:web:8bfa0abe5fcb3db45c4311"
+        };
+
+        const masterAdmin = 'rakibsarvar12@gmail.com'; 
+        let authorizedAdmins = [masterAdmin];
+        let currentAdminEmail = null;
+        let editingFileId = null;
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Language System
+        const adminDict = {
+            en: {
+                title: "Admin Dashboard", subtitle: "Manage files, videos, ads, and settings", logout: "Logout",
+                login_title: "Admin Portal", forgot_pass: "Forgot Password?", btn_login: "Login Dashboard",
+                new_admin_text: "New Admin? Enter your approved email and a new password above, then click here:", btn_register: "Create Account (For New Admins)",
+                manage_admins: "Manage Admins", add_email: "Add Email", app_config: "App Configuration",
+                timer_delay: "Timer Delay (Seconds)", announce_text: "Announcement Text", save_config: "Save Config",
+                social_links: "Social Media Links", update_links: "Update Links", ad_placements: "Ad Placements", save_ads: "Save Ads",
+                slider_banners: "Slider Banners", add_btn: "Add", file_management: "File & Video Management", upload_content: "Upload Content", update_content: "Update Content"
+            },
+            bn: {
+                title: "এডমিন ড্যাশবোর্ড", subtitle: "ফাইল, ভিডিও, অ্যাড এবং সেটিং ম্যানেজ করুন", logout: "লগআউট",
+                login_title: "এডমিন পোর্টাল", forgot_pass: "পাসওয়ার্ড ভুলে গেছেন?", btn_login: "লগিন করুন",
+                new_admin_text: "নতুন এডমিন? উপরে অনুমোদিত ইমেইল ও পাসওয়ার্ড দিয়ে এখানে ক্লিক করুন:", btn_register: "একাউন্ট তৈরি করুন",
+                manage_admins: "এডমিন ম্যানেজ", add_email: "ইমেইল যোগ করুন", app_config: "অ্যাপ সেটিং",
+                timer_delay: "টাইমার সময় (সেকেন্ড)", announce_text: "ঘোষণাপত্র লেখা", save_config: "সেভ কনফিগ",
+                social_links: "সোশ্যাল মিডিয়া লিংক", update_links: "লিংক আপডেট", ad_placements: "অ্যাড প্লেসমেন্ট", save_ads: "অ্যাড সেভ",
+                slider_banners: "স্লাইডার ব্যানার", add_btn: "যুক্ত করুন", file_management: "ফাইল এবং ভিডিও ম্যানেজ", upload_content: "আপলোড করুন", update_content: "আপডেট করুন"
+            }
+        };
+
+        window.changeAdminLang = (lang) => {
+            document.querySelectorAll('[data-lang]').forEach(el => {
+                const key = el.getAttribute('data-lang');
+                if(adminDict[lang][key]) el.innerText = adminDict[lang][key];
+            });
+            if(editingFileId) {
+                document.getElementById('btn-file-text').innerText = adminDict[lang]['update_content'];
+            } else {
+                document.getElementById('btn-file-text').innerText = adminDict[lang]['upload_content'];
+            }
+        };
+
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            t.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 3000);
+        }
+
+        async function fetchAdmins() {
+            authorizedAdmins = [masterAdmin];
+            const q = await getDocs(collection(db, "admins"));
+            q.forEach(d => authorizedAdmins.push(d.data().email));
+        }
+
+        // Login
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const err = document.getElementById('login-error');
+            if(!email || !password) return err.classList.remove('hidden');
+
+            try {
+                await fetchAdmins(); 
+                await signInWithEmailAndPassword(auth, email, password);
+                err.classList.add('hidden');
+            } catch (error) {
+                err.textContent = "Login Failed: Wrong email or password.";
+                err.classList.remove('hidden');
+            }
+        });
+
+        // Forgot Password Logic
+        document.getElementById('forgot-pass-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email-input').value.trim();
+            const err = document.getElementById('login-error');
+            if(!email) {
+                err.textContent = "Type your email in the box first to reset password.";
+                return err.classList.remove('hidden');
+            }
+            try {
+                await sendPasswordResetEmail(auth, email);
+                err.classList.add('hidden');
+                toast("Password reset link sent to your email!");
+            } catch(error) {
+                err.textContent = "Failed to send reset link. User may not exist.";
+                err.classList.remove('hidden');
+            }
+        });
+
+        // Register
+        document.getElementById('register-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email-input').value;
+            const password = document.getElementById('password-input').value;
+            const err = document.getElementById('login-error');
+            if(!email || !password) {
+                err.textContent = "Enter email and password to create account.";
+                return err.classList.remove('hidden');
+            }
+
+            try {
+                await fetchAdmins(); 
+                if(!authorizedAdmins.includes(email)) {
+                    err.textContent = "Your email is not approved by Master Admin.";
+                    return err.classList.remove('hidden');
+                }
+                await createUserWithEmailAndPassword(auth, email, password);
+                err.classList.add('hidden');
+                toast("Account created! Logging in...");
+            } catch (error) {
+                err.textContent = "Account creation failed or already exists.";
+                err.classList.remove('hidden');
+            }
+        });
+
+        onAuthStateChanged(auth, async user => {
+            await fetchAdmins();
+            if (user && authorizedAdmins.includes(user.email)) {
+                currentAdminEmail = user.email;
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-content').classList.remove('hidden');
+                document.getElementById('sign-out-btn').classList.remove('hidden');
+                document.getElementById('admin-language-selector').classList.remove('hidden');
+                
+                // Show Recycle Bin button only to Master Admin
+                if(currentAdminEmail === masterAdmin) {
+                    document.getElementById('open-recycle-btn').classList.remove('hidden');
+                } else {
+                    document.getElementById('open-recycle-btn').classList.add('hidden');
+                }
+
+                loadAllData();
+            } else {
+                currentAdminEmail = null;
+                document.getElementById('admin-login').classList.remove('hidden');
+                document.getElementById('admin-content').classList.add('hidden');
+                document.getElementById('sign-out-btn').classList.add('hidden');
+                document.getElementById('admin-language-selector').classList.add('hidden');
+                document.getElementById('open-recycle-btn').classList.add('hidden');
+                if (user) signOut(auth);
+            }
+        });
+
+        document.getElementById('sign-out-btn').onclick = () => signOut(auth);
+
+        async function loadAllData() {
+            const admList = document.getElementById('admin-list-container');
+            const qAdm = await getDocs(collection(db, "admins"));
+            admList.innerHTML = `<div class="p-2 bg-white border rounded font-bold text-blue-600">${masterAdmin} (Master)</div>`;
+            qAdm.forEach(d => {
+                const canDel = currentAdminEmail === masterAdmin ? `<button onclick="window.delAdmin('${d.id}')" class="text-red-500"><i class="fas fa-trash"></i></button>` : '';
+                admList.innerHTML += `<div class="p-2 bg-white border rounded flex justify-between">
+                    ${d.data().email} ${canDel}
+                </div>`;
+            });
+
+            const gen = await getDoc(doc(db, "settings", "general"));
+            if(gen.exists()) {
+                document.getElementById('timer-setting').value = gen.data().timerDuration || 10;
+                document.getElementById('announce-setting').value = gen.data().announcementText || '';
+            }
+            const soc = await getDoc(doc(db, "settings", "socials"));
+            if(soc.exists()) {
+                document.getElementById('social-telegram').value = soc.data().telegram || '';
+                document.getElementById('social-youtube').value = soc.data().youtube || '';
+                document.getElementById('social-tiktok').value = soc.data().tiktok || '';
+                document.getElementById('social-facebook').value = soc.data().facebook || '';
+                document.getElementById('social-instagram').value = soc.data().instagram || '';
+            }
+            const ads = await getDoc(doc(db, "settings", "ads"));
+            if(ads.exists()) {
+                document.getElementById('ad-slot-1').value = ads.data().adSlot1 || '';
+                document.getElementById('ad-slot-2').value = ads.data().adSlot2 || '';
+                document.getElementById('ad-slot-3').value = ads.data().adSlot3 || '';
+            }
+            loadSliders(); loadFiles();
+        }
+
+        document.getElementById('add-admin-btn').onclick = async () => {
+            if(currentAdminEmail !== masterAdmin) return toast("Only Master Admin can add new admins!");
+            const email = document.getElementById('new-admin-email').value.trim();
+            if(!email) return toast('Enter an email address!');
+            await addDoc(collection(db, "admins"), { email: email });
+            document.getElementById('new-admin-email').value = ''; toast('Admin Email Added!'); loadAllData();
+        };
+
+        window.delAdmin = async (id) => { 
+            if(currentAdminEmail !== masterAdmin) return;
+            if(confirm('Remove admin?')) { await deleteDoc(doc(db, "admins", id)); loadAllData(); } 
+        };
+
+        document.getElementById('save-gen-btn').onclick = async () => {
+            await setDoc(doc(db, "settings", "general"), { timerDuration: Number(document.getElementById('timer-setting').value), announcementText: document.getElementById('announce-setting').value }, { merge: true }); toast('Saved!');
+        };
+        document.getElementById('save-social-btn').onclick = async () => {
+            await setDoc(doc(db, "settings", "socials"), { 
+                telegram: document.getElementById('social-telegram').value, 
+                youtube: document.getElementById('social-youtube').value, 
+                tiktok: document.getElementById('social-tiktok').value,
+                facebook: document.getElementById('social-facebook').value,
+                instagram: document.getElementById('social-instagram').value
+            }); toast('Saved!');
+        };
+        document.getElementById('save-ads-btn').onclick = async () => {
+            await setDoc(doc(db, "settings", "ads"), { adSlot1: document.getElementById('ad-slot-1').value, adSlot2: document.getElementById('ad-slot-2').value, adSlot3: document.getElementById('ad-slot-3').value }); toast('Saved!');
+        };
+
+        async function loadSliders() {
+            const q = await getDocs(query(collection(db, "sliders"), orderBy("createdAt", "desc")));
+            const div = document.getElementById('slider-list');
+            div.innerHTML = '';
+            q.forEach(d => { 
+                const isOwnerOrMaster = currentAdminEmail === masterAdmin || d.data().uploadedBy === currentAdminEmail;
+                const delBtn = isOwnerOrMaster ? `<button onclick="window.delSlider('${d.id}')" class="absolute top-0 right-0 bg-red-600 text-white px-2 opacity-0 group-hover:opacity-100">&times;</button>` : '';
+                div.innerHTML += `<div class="relative group border rounded overflow-hidden"><img src="${d.data().imageUrl}" class="h-20 w-full object-cover">${delBtn}</div>`; 
+            });
+        }
+        window.delSlider = async (id) => { await deleteDoc(doc(db, 'sliders', id)); loadSliders(); };
+        
+        document.getElementById('add-slider-btn').onclick = async () => {
+            const url = document.getElementById('slider-img').value.trim(); if(!url) return;
+            await addDoc(collection(db, "sliders"), { imageUrl: url, uploadedBy: currentAdminEmail, createdAt: serverTimestamp() }); 
+            loadSliders(); document.getElementById('slider-img').value = '';
+        };
+
+        async function loadFiles() {
+            const q = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+            const div = document.getElementById('file-list');
+            div.innerHTML = '';
+            q.forEach(d => {
+                const f = d.data();
+                
+                // If it is in Recycle Bin, don't show it here
+                if(f.isDeleted) return;
+
+                const isMaster = currentAdminEmail === masterAdmin;
+                const isOwner = f.uploadedBy === currentAdminEmail;
+                
+                let btns = '';
+                if(isMaster || isOwner) {
+                    btns += `<button onclick="window.editFile('${d.id}')" class="text-xs bg-blue-500 text-white px-2 py-1 mt-1 rounded mr-1 hover:bg-blue-600"><i class="fas fa-edit"></i> Edit</button>`;
+                    btns += `<button onclick="window.softDelFile('${d.id}')" class="text-xs bg-red-500 text-white px-2 py-1 mt-1 rounded mr-1 hover:bg-red-600"><i class="fas fa-trash"></i> Del</button>`;
+                }
+                if(isMaster) {
+                    btns += `<button onclick="window.manageComments('${d.id}')" class="text-xs bg-green-600 text-white px-2 py-1 mt-1 rounded hover:bg-green-700"><i class="fas fa-comments"></i> Cmts</button>`;
+                }
+
+                div.innerHTML += `
+                    <div class="bg-white p-3 border rounded-lg shadow-sm flex gap-3">
+                        <img src="${f.thumbnailUrl}" class="w-16 h-16 object-cover rounded border">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-gray-800 line-clamp-1">${f.title}</h4>
+                            <p class="text-[10px] text-gray-500">By: ${f.uploadedBy || 'Unknown'}</p>
+                            <p class="text-[10px] text-gray-500">V: ${f.views||0} | L: ${f.likeCount||0} | C: ${f.commentCount||0}</p>
+                            <div class="flex flex-wrap gap-1 mt-1">${btns}</div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        // ============ RECYCLE BIN LOGIC ============
+        
+        window.softDelFile = async (id) => { 
+            if(confirm("Move this file to Recycle Bin?")) {
+                // Soft delete flags the file as deleted
+                await updateDoc(doc(db, 'files', id), { isDeleted: true }); 
+                loadFiles(); 
+                toast("Moved to Recycle Bin!");
+            }
+        };
+
+        window.openRecycleBin = () => {
+            if(currentAdminEmail !== masterAdmin) return;
+            document.getElementById('recycle-bin-modal').classList.remove('hidden');
+            window.loadRecycleBin();
+        };
+
+        window.loadRecycleBin = async () => {
+            const list = document.getElementById('recycle-bin-list');
+            list.innerHTML = '<div class="text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-red-500"></i></div>';
+            
+            const q = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+            list.innerHTML = '';
+            let count = 0;
+            
+            q.forEach(d => {
+                const f = d.data();
+                if(f.isDeleted) {
+                    count++;
+                    list.innerHTML += `
+                        <div class="bg-white p-4 border border-red-100 rounded-xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:shadow-md transition">
+                            <div class="flex items-center gap-4">
+                                <img src="${f.thumbnailUrl}" class="w-16 h-16 object-cover rounded-lg border border-gray-200 flex-shrink-0">
+                                <div>
+                                    <h4 class="font-bold text-gray-800 line-clamp-1">${f.title}</h4>
+                                    <p class="text-xs text-gray-500 mt-1">Uploaded By: ${f.uploadedBy || 'Unknown'}</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full md:w-auto">
+                                <button onclick="window.restoreFile('${d.id}')" class="flex-1 md:flex-none bg-green-100 text-green-700 hover:bg-green-600 hover:text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm"><i class="fas fa-undo"></i> Restore</button>
+                                <button onclick="window.permanentDelFile('${d.id}')" class="flex-1 md:flex-none bg-red-100 text-red-700 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg font-bold text-sm transition shadow-sm"><i class="fas fa-minus-circle"></i> Permanent Delete</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+            
+            if(count === 0) {
+                list.innerHTML = '<p class="text-center text-gray-500 py-10 font-medium"><i class="fas fa-check-circle text-4xl mb-3 text-green-400 block"></i> Recycle Bin is empty.</p>';
+            }
+        };
+
+        window.restoreFile = async (id) => {
+            await updateDoc(doc(db, 'files', id), { isDeleted: false });
+            window.loadRecycleBin();
+            loadFiles();
+            toast("File Restored!");
+        };
+
+        window.permanentDelFile = async (id) => {
+            if(confirm("Are you sure? This will delete the file PERMANENTLY and cannot be undone.")) {
+                await deleteDoc(doc(db, 'files', id));
+                window.loadRecycleBin();
+                toast("Deleted Permanently!");
+            }
+        };
+
+        // ===========================================
+
+        window.manageComments = async (fileId) => {
+            const modal = document.getElementById('admin-comment-modal');
+            const list = document.getElementById('admin-comment-list');
+            modal.classList.remove('hidden');
+            list.innerHTML = '<div class="text-center text-gray-500 py-5"><i class="fas fa-spinner fa-spin text-xl"></i> Loading...</div>';
+            
+            const q = await getDocs(query(collection(db, "files", fileId, "comments"), orderBy("timestamp", "desc")));
+            list.innerHTML = '';
+            if(q.empty) {
+                list.innerHTML = '<p class="text-gray-500 text-center">No comments found.</p>';
+            } else {
+                q.forEach(d => {
+                    const c = d.data();
+                    list.innerHTML += `
+                        <div class="bg-white border rounded p-3 flex justify-between items-start gap-4 shadow-sm">
+                            <div>
+                                <h4 class="font-bold text-sm">${c.name} <span class="text-xs font-normal text-gray-500">(${c.uid || 'N/A'})</span></h4>
+                                <p class="text-sm text-gray-700 mt-1">${c.text}</p>
+                            </div>
+                            <button onclick="window.delComment('${fileId}', '${d.id}')" class="bg-red-100 text-red-600 hover:bg-red-500 hover:text-white px-3 py-1 rounded transition text-sm flex-shrink-0"><i class="fas fa-trash"></i></button>
+                        </div>
+                    `;
+                });
+            }
+        };
+
+        window.delComment = async (fileId, commentId) => {
+            if(confirm("Delete this comment permanently?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", commentId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                window.manageComments(fileId);
+                loadFiles();
+                toast("Comment Deleted!");
+            }
+        };
+
+        window.editFile = async (id) => {
+            const d = await getDoc(doc(db, "files", id));
+            if(d.exists()) {
+                const f = d.data();
+                document.getElementById('file-title').value = f.title || '';
+                document.getElementById('file-ads').value = f.requiredAds || 0;
+                document.getElementById('file-thumb').value = f.thumbnailUrl || '';
+                document.getElementById('file-video').value = f.videoUrl || '';
+                document.getElementById('file-url').value = f.downloadUrl || '';
+                document.getElementById('file-desc').value = f.description || '';
+                
+                editingFileId = id;
+                document.getElementById('cancel-edit-btn').classList.remove('hidden');
+                
+                const lang = document.getElementById('admin-language-selector').value || 'en';
+                document.getElementById('btn-file-icon').innerHTML = '<i class="fas fa-edit"></i>';
+                document.getElementById('btn-file-text').innerText = adminDict[lang]['update_content'];
+                document.getElementById('file-title').focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        };
+
+        window.cancelEdit = () => {
+            editingFileId = null;
+            document.getElementById('file-title').value = '';
+            document.getElementById('file-ads').value = '';
+            document.getElementById('file-thumb').value = '';
+            document.getElementById('file-video').value = '';
+            document.getElementById('file-url').value = '';
+            document.getElementById('file-desc').value = '';
+            document.getElementById('cancel-edit-btn').classList.add('hidden');
+            
+            const lang = document.getElementById('admin-language-selector').value || 'en';
+            document.getElementById('btn-file-icon').innerHTML = '<i class="fas fa-cloud-upload-alt"></i>';
+            document.getElementById('btn-file-text').innerText = adminDict[lang]['upload_content'];
+        };
+
+        document.getElementById('add-file-btn').onclick = async () => {
+            const title = document.getElementById('file-title').value;
+            if(!title) return toast("Title is required!");
+
+            const payload = {
+                title: title, 
+                requiredAds: Number(document.getElementById('file-ads').value),
+                thumbnailUrl: document.getElementById('file-thumb').value, 
+                videoUrl: document.getElementById('file-video').value,
+                downloadUrl: document.getElementById('file-url').value, 
+                description: document.getElementById('file-desc').value
+            };
+
+            if(editingFileId) {
+                await updateDoc(doc(db, "files", editingFileId), payload);
+                toast('File Updated Successfully!');
+                window.cancelEdit();
+            } else {
+                payload.likeCount = 0; payload.commentCount = 0; payload.views = 0;
+                payload.createdAt = serverTimestamp();
+                payload.uploadedBy = currentAdminEmail;
+                payload.isDeleted = false; // Add soft delete flag by default
+                await addDoc(collection(db, "files"), payload);
+                toast('File Uploaded!');
+                window.cancelEdit(); 
+            }
+            loadFiles();
+        };
+
     </script>
 </body>
 </html>
