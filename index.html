@@ -20,7 +20,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
-    <script src='//libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
+    <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -1016,6 +1016,11 @@
             try {
                 content.innerText = getTxt('toast_ad_load');
                 showToast('toast_ad_load');
+                
+                if (typeof show_10889205 !== 'function') {
+                    throw new Error("AdBlocked");
+                }
+                
                 await show_10889205();
                 done++;
                 localStorage.setItem(`ad_${id}`, done);
@@ -1029,7 +1034,11 @@
                 }, 1000);
             } catch(err) {
                 btn.disabled = false; content.innerHTML = originalHtml;
-                alert("Failed to load ad.");
+                if (err.message === "AdBlocked") {
+                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nআপনার ফোনে Ad-blocker, Private DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন, অথবা নেটওয়ার্ক কানেকশন চেক করুন।");
+                } else {
+                    alert("Failed to load ad. Please try again.");
+                }
             }
         }
 
