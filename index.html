@@ -87,10 +87,8 @@
         <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
     </aside>
 
-    <!-- NEW: Big Popup Notice Modal -->
     <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-2xl p-6 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
-            <!-- Cross Button -->
             <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
                 <i class="fas fa-times text-lg"></i>
             </button>
@@ -102,7 +100,6 @@
                 <h3 class="text-2xl font-bold text-gray-800 dark:text-white">বিশেষ নোটিশ</h3>
             </div>
             
-            <!-- Message Content -->
             <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
             
             <div class="mt-6 text-center">
@@ -183,7 +180,7 @@
         <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
     </div>
 
-    <!-- Auth Modal (Login, Register, Forgot Password) -->
+    <!-- Auth Modal -->
     <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
             <button onclick="document.getElementById('auth-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
@@ -533,22 +530,28 @@
         window.updateReactDom = (id, emoji, change) => {
             let summary = document.getElementById(`react-summary-${id}`);
             if(!summary) return;
-            let span = document.getElementById(`count-${id}-${emoji}`);
-            let totalSpan = document.getElementById(`total-reacts-${id}`);
+            let btn = document.getElementById(`count-${id}-${emoji}`);
             
-            if(totalSpan && change > 0) totalSpan.remove();
+            let currentReact = localStorage.getItem('react_' + id);
+            let isMyReact = (currentReact === emoji);
             
-            if(span) {
-                let numSpan = span.querySelector('.r-cnt');
+            if(btn) {
+                let numSpan = btn.querySelector('.r-cnt');
                 let newCount = parseInt(numSpan.innerText) + change;
-                if(newCount <= 0) span.remove();
-                else numSpan.innerText = newCount;
+                if(newCount <= 0) {
+                    btn.remove();
+                } else {
+                    numSpan.innerText = newCount;
+                    if(isMyReact) {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
+                    } else {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
+                    }
+                }
             } else if(change > 0) {
-                summary.insertAdjacentHTML('beforeend', `<span id="count-${id}-${emoji}" class="flex items-center gap-1">${emoji} <span class="text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt">1</span></span>`);
-            }
-            
-            if(summary.innerHTML.trim() === '') {
-                summary.innerHTML = `<span id="total-reacts-${id}" class="text-xs text-gray-400">0</span>`;
+                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
             }
         };
 
@@ -692,14 +695,18 @@
                     allEmojis.forEach(e => {
                         let c = f['react_' + e] || 0;
                         if(c > 0) {
-                            reactHtml += `<span id="count-${f.id}-${e}" class="flex items-center gap-1">${e} <span class="text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt">${c}</span></span>`;
+                            let isMyReact = (localReact === e);
+                            let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
+                            let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
+                            reactHtml += `<button onclick="window.handleBadgeClick('${f.id}', '${e}')" id="count-${f.id}-${e}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">${e} <span class="text-xs ${activeTextClass} font-bold r-cnt">${c}</span></button>`;
                             hasAny = true;
                         }
                     });
                     if(!hasAny && f.likeCount > 0) {
-                        reactHtml = `<span id="count-${f.id}-👍" class="flex items-center gap-1">👍 <span class="text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt">${f.likeCount}</span></span>`;
-                    } else if(!hasAny) {
-                        reactHtml = `<span id="total-reacts-${f.id}" class="text-xs text-gray-400">0</span>`;
+                        let isMyReact = (localReact === '👍');
+                        let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
+                        let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
+                        reactHtml = `<button onclick="window.handleBadgeClick('${f.id}', '👍')" id="count-${f.id}-👍" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">👍 <span class="text-xs ${activeTextClass} font-bold r-cnt">${f.likeCount}</span></button>`;
                     }
                     
                     const mediaElement = f.videoUrl 
@@ -718,7 +725,7 @@
                             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1">${f.description}</p>
                             
                             <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
-                                <div class="flex items-center gap-3 flex-wrap flex-1">
+                                <div class="flex items-center gap-2 flex-wrap flex-1">
                                     <div class="relative react-wrapper inline-block shrink-0">
                                         <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl px-3 py-2 flex flex-wrap w-64 sm:w-72 gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
                                             <button onclick="window.setReact('${f.id}', '❤️')" class="hover:scale-125 transition-transform text-xl">❤️</button>
@@ -745,11 +752,11 @@
                                         </button>
                                     </div>
                                     
-                                    <div id="react-summary-${f.id}" class="flex items-center gap-2 text-sm bg-gray-50 dark:bg-gray-800/50 px-2 py-0.5 rounded-lg border dark:border-gray-700 shrink-0 min-h-[28px]">
+                                    <div id="react-summary-${f.id}" class="flex flex-wrap items-center gap-1 text-sm shrink-0 min-h-[28px] ml-1">
                                         ${reactHtml}
                                     </div>
 
-                                    <button onclick="window.openComments('${f.id}')" class="flex items-center gap-1.5 font-medium text-gray-400 hover:text-blue-500 transition ml-1 shrink-0">
+                                    <button onclick="window.openComments('${f.id}')" class="flex items-center gap-1.5 font-medium text-gray-400 hover:text-blue-500 transition ml-2 shrink-0">
                                         <i class="fas fa-comment"></i> <span id="comment-count-${f.id}" class="text-sm">${f.commentCount || 0}</span>
                                     </button>
                                 </div>
@@ -850,29 +857,46 @@
             document.getElementById(`react-menu-${id}`).classList.toggle('hidden');
         };
 
+        window.handleBadgeClick = (id, emoji) => {
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) {
+                window.removeReact(id);
+            } else {
+                window.setReact(id, emoji);
+            }
+        };
+
         window.setReact = async (id, emoji) => {
-            document.getElementById(`react-menu-${id}`).classList.add('hidden'); 
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden'); 
+            
             const currentReact = localStorage.getItem('react_' + id);
             if(currentReact === emoji) return; 
+            
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                window.updateReactDom(id, currentReact, -1);
+            }
             
             localStorage.setItem('react_' + id, emoji);
             const iconSpan = document.getElementById(`react-icon-${id}`);
             iconSpan.innerHTML = emoji;
             iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
             
+            window.updateReactDom(id, emoji, 1);
+            
             let updates = {};
             if(currentReact) {
                 updates[`react_${currentReact}`] = increment(-1);
-                window.updateReactDom(id, currentReact, -1);
             }
             updates[`react_${emoji}`] = increment(1);
-            window.updateReactDom(id, emoji, 1);
-            
             await updateDoc(doc(db, "files", id), updates);
         };
 
         window.removeReact = async (id) => {
-            document.getElementById(`react-menu-${id}`).classList.add('hidden');
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden');
+            
             const currentReact = localStorage.getItem('react_' + id);
             if(currentReact) {
                 localStorage.removeItem('react_' + id);
