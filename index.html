@@ -748,7 +748,7 @@
                                             <button onclick="window.removeReact('${f.id}')" class="hover:bg-red-100 text-gray-400 hover:text-red-500 w-6 h-6 rounded-full flex items-center justify-center transition-colors"><i class="fas fa-times"></i></button>
                                         </div>
                                         <button onclick="window.toggleReactMenu('${f.id}')" class="flex items-center gap-1.5 font-medium transition outline-none ${localReact ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500'}">
-                                            <span id="react-icon-${f.id}" class="text-xl">${localReact || '<i class="fas fa-thumbs-up"></i>'}</span> 
+                                            <span id="react-icon-${f.id}" class="text-xl"><i class="fas fa-thumbs-up"></i></span> 
                                         </button>
                                     </div>
                                     
@@ -880,8 +880,7 @@
             
             localStorage.setItem('react_' + id, emoji);
             const iconSpan = document.getElementById(`react-icon-${id}`);
-            iconSpan.innerHTML = emoji;
-            iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
+            if(iconSpan) iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
             
             window.updateReactDom(id, emoji, 1);
             
@@ -901,8 +900,7 @@
             if(currentReact) {
                 localStorage.removeItem('react_' + id);
                 const iconSpan = document.getElementById(`react-icon-${id}`);
-                iconSpan.innerHTML = '<i class="fas fa-thumbs-up"></i>';
-                iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
+                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
                 
                 window.updateReactDom(id, currentReact, -1);
                 
