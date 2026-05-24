@@ -43,24 +43,27 @@
 
     <!-- NEW: CHANNEL VERIFICATION SCREEN (বাধ্যতামূলক চ্যানেল জয়েন করার স্ক্রিন) -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
-        <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20">B</div>
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to Earn Wallet!</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">Join our official channels<br>to participate in the community and unlock files</p>
+        <!-- Dynamic Logo Container (B এর বদলে ইমেজ বা ডিফল্ট আইকন দেখাবে) -->
+        <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
+            <i class="fas fa-cloud-download-alt text-3xl"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to Downloader Bot!</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">Join our official channels<br>to unlock your requested files</p>
         
         <a id="cv-channel1-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-3 text-left transition hover:scale-[1.02]" href="#" target="_blank">
             <div class="w-11 h-11 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl shrink-0"><i class="fab fa-telegram-plane"></i></div>
             <div class="flex-grow">
-                <strong id="cv-ch1-title" class="block text-gray-800 dark:text-white font-bold">Join Official Chanel</strong>
+                <strong id="cv-ch1-title" class="block text-gray-800 dark:text-white font-bold">Join Official Channel</strong>
                 <span class="text-xs text-gray-500 dark:text-gray-400">Join for latest updates</span>
             </div>
             <i class="fas fa-chevron-right text-gray-300"></i>
         </a>
         
         <a id="cv-channel2-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-5 text-left transition hover:scale-[1.02]" href="#" target="_blank">
-            <div class="w-11 h-11 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center text-xl shrink-0"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="w-11 h-11 rounded-full bg-gradient-to-r from-blue-400 to-indigo-500 text-white flex items-center justify-center text-xl shrink-0"><i class="fas fa-users"></i></div>
             <div class="flex-grow">
-                <strong id="cv-ch2-title" class="block text-gray-800 dark:text-white font-bold">Join Payment Proofs</strong>
-                <span class="text-xs text-gray-500 dark:text-gray-400">Verified daily transactions</span>
+                <strong id="cv-ch2-title" class="block text-gray-800 dark:text-white font-bold">Join Support Group</strong>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Get help & community support</span>
             </div>
             <i class="fas fa-chevron-right text-gray-300"></i>
         </a>
@@ -682,6 +685,16 @@
                                 document.getElementById('popup-notice-content').textContent = data.popupNotice;
                                 document.getElementById('popup-notice-modal').classList.remove('hidden');
                                 sessionStorage.setItem('popupNoticeShown', 'true');
+                            }
+                        }
+
+                        // ডাইনামিক লোগো সেট করার কোড
+                        const logoContainer = document.getElementById('cv-logo-container');
+                        if (logoContainer) {
+                            if (data.logoUrl && data.logoUrl.trim() !== '') {
+                                logoContainer.innerHTML = `<img src="${data.logoUrl}" class="w-full h-full object-cover" alt="Logo">`;
+                            } else {
+                                logoContainer.innerHTML = `<i class="fas fa-cloud-download-alt text-3xl text-white"></i>`;
                             }
                         }
                     }
