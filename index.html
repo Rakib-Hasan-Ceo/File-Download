@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Downloader Pro</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: { 
+                    colors: { primary: '#3B82F6', darkBg: '#0f172a', darkCard: '#1e293b' },
+                    animation: { 'ring': 'ring 2s ease-in-out infinite' },
+                    keyframes: { ring: { '0%, 100%': { transform: 'rotate(-10deg)' }, '50%': { transform: 'rotate(10deg)' } } }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Adsterra SDK -->
+    <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .sidebar-open { transform: translateX(0) !important; }
+        .sidebar-closed { transform: translateX(100%); }
+        body { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        marquee { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; letter-spacing: 0.5px; }
+        
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .dark .custom-scroll::-webkit-scrollbar-thumb { background: #475569; }
+        
+        .react-menu { display: none; }
+        .react-menu-dropdown { position: absolute; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden">
+
+    <!-- NEW: CHANNEL VERIFICATION SCREEN (বাধ্যতামূলক চ্যানেল জয়েন করার স্ক্রিন) -->
+    <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
+        <div class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20">B</div>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to Earn Wallet!</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">Join our official channels<br>to participate in the community and unlock files</p>
+        
+        <a id="cv-channel1-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-3 text-left transition hover:scale-[1.02]" href="#" target="_blank">
+            <div class="w-11 h-11 rounded-full bg-blue-500 text-white flex items-center justify-center text-xl shrink-0"><i class="fab fa-telegram-plane"></i></div>
+            <div class="flex-grow">
+                <strong id="cv-ch1-title" class="block text-gray-800 dark:text-white font-bold">Join Official Chanel</strong>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Join for latest updates</span>
+            </div>
+            <i class="fas fa-chevron-right text-gray-300"></i>
+        </a>
+        
+        <a id="cv-channel2-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-5 text-left transition hover:scale-[1.02]" href="#" target="_blank">
+            <div class="w-11 h-11 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white flex items-center justify-center text-xl shrink-0"><i class="fas fa-hand-holding-heart"></i></div>
+            <div class="flex-grow">
+                <strong id="cv-ch2-title" class="block text-gray-800 dark:text-white font-bold">Join Payment Proofs</strong>
+                <span class="text-xs text-gray-500 dark:text-gray-400">Verified daily transactions</span>
+            </div>
+            <i class="fas fa-chevron-right text-gray-300"></i>
+        </a>
+        <button class="w-full max-w-sm p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-lg hover:shadow-lg transition-all" onclick="window.verifyChannelMembership()">VERIFY MEMBERSHIP</button>
+    </div>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity" onclick="toggleMenu()"></div>
+
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkCard z-50 shadow-2xl sidebar-closed transition-transform duration-300 flex flex-col">
+        <div class="p-5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white flex justify-between items-center shrink-0">
+            <h2 class="text-lg font-bold"><i class="fas fa-bars mr-2"></i> Menu</h2>
+            <button onclick="toggleMenu()" class="text-white hover:text-gray-200 text-xl"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Scrollable Content Area -->
+        <div class="flex-1 overflow-y-auto custom-scroll pb-4">
+            <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
+                <div id="sidebar-unauth" class="text-center">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 font-medium">লগিন করে যুক্ত হোন!</p>
+                    <button onclick="window.toggleAuthModal('login'); toggleMenu()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold shadow-md hover:bg-blue-700 transition">Login / Register</button>
+                </div>
+                <div id="sidebar-auth" class="hidden flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md mb-2 overflow-hidden" id="sidebar-avatar">U</div>
+                    <h3 class="font-bold text-gray-800 dark:text-white" id="sidebar-username">User Name</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3" id="sidebar-email">user@email.com</p>
+                    
+                    <button onclick="window.openProfileModal(); toggleMenu()" class="w-full mb-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 py-2 rounded-lg font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-600"><i class="fas fa-user-edit mr-2"></i> Edit Profile</button>
+                    
+                    <button onclick="window.handleLogout(); toggleMenu()" class="w-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 py-2 rounded-lg font-bold hover:bg-red-200 dark:hover:bg-red-900/50 transition border border-red-200 dark:border-red-800"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
+                </div>
+            </div>
+
+            <div class="p-4 space-y-1">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
+                <div id="sidebar-social-links" class="space-y-1 px-1">
+                    <p class="text-sm text-gray-400 pl-2"><i class="fas fa-spinner fa-spin mr-2"></i>Loading links...</p>
+                </div>
+                <hr class="border-gray-200 dark:border-gray-700 my-4">
+                <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
+                <button onclick="document.getElementById('language-modal').classList.remove('hidden'); toggleMenu()" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <i class="fas fa-language text-green-500 w-6 text-xl"></i> <span class="font-medium">Change Language</span>
+                </button>
+                <button id="sidebar-theme-toggle" class="w-full text-left flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                    <div class="w-6 flex justify-center"><i id="theme-icon" class="fas fa-moon text-purple-500 text-xl"></i></div>
+                    <span id="theme-text" class="font-medium">Dark Mode</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
+    </aside>
+
+    <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-2xl p-6 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
+            <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-5 mt-2">
+                <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
+                    <i class="fas fa-bell text-4xl text-red-500 animate-ring"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष নোটিশ</h3>
+            </div>
+            
+            <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
+            
+            <div class="mt-6 text-center">
+                <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg">আমি বুঝতে পেরেছি</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
+        <div class="container mx-auto px-2 flex items-center">
+            <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">NOTICE</span>
+            <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">Welcome to Web App Rakib!</marquee>
+        </div>
+    </div>
+
+    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b dark:border-gray-700 shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
+            <div class="flex items-center gap-2 cursor-pointer" onclick="window.showAllFiles ? window.showAllFiles() : window.location.href=window.location.pathname">
+                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-cloud-download-alt text-xl"></i>
+                </div>
+                <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/30 backdrop-blur-md" title="Menu">
+                    <span class="absolute inset-0 bg-white/20 group-hover:opacity-0 transition-opacity duration-300"></span>
+                    <i class="fas fa-ellipsis-v text-lg relative z-10 group-hover:rotate-180 transition-transform duration-500"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+        
+        <div id="search-section" class="relative max-w-xl mx-auto mb-8 group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
+            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
+        </div>
+
+        <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+
+        <div id="slider-container" class="relative w-full h-40 sm:h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group">
+            <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-out"></div>
+            <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
+        </div>
+
+        <div id="ad-container-2" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+
+        <section id="main-section">
+            <div id="single-view-header"></div>
+            
+            <div class="flex items-center justify-between mb-6">
+                <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
+                <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
+            </div>
+            
+            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            
+            <div id="single-view-footer" class="mt-8 flex justify-center"></div>
+
+            <div id="no-results" class="hidden text-center py-20">
+                <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3"><i class="fas fa-folder-open text-4xl text-gray-400"></i></div>
+                <p data-key="no_results_text" class="text-gray-500 dark:text-gray-400 text-lg">No files found.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white dark:bg-darkCard border-t dark:border-gray-700 py-10 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div id="ad-container-3" class="mb-8 flex justify-center min-h-[60px]"></div>
+            <div id="footer-socials" class="flex justify-center gap-6 mb-6"></div>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">&copy; 2025 Web Rakib. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
+        <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="document.getElementById('auth-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
+            
+            <div id="auth-login-view">
+                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Welcome Back</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="login-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
+                        <input type="password" id="login-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div class="text-right">
+                        <button onclick="window.switchAuthView('reset')" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</button>
+                    </div>
+                    <button id="btn-login" onclick="window.submitLogin()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Login</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Don't have an account? <button onclick="window.switchAuthView('register')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Sign up</button>
+                </div>
+            </div>
+
+            <div id="auth-register-view" class="hidden">
+                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Create Account</h3>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Full Name</label>
+                        <input type="text" id="reg-name" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="reg-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
+                        <input type="password" id="reg-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <button id="btn-register" onclick="window.submitRegister()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition mt-2 relative">Sign Up</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Already have an account? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
+                </div>
+            </div>
+
+            <div id="auth-reset-view" class="hidden">
+                <h3 class="text-xl font-bold mb-2 text-center dark:text-white text-gray-800">Reset Password</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">Enter your email and we'll send you a link to reset your password.</p>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
+                        <input type="email" id="reset-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                    </div>
+                    <button id="btn-reset" onclick="window.submitResetPassword()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Send Reset Link</button>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+                    Remembered your password? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="profile-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
+            <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
+            <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Edit Profile</h3>
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Full Name</label>
+                    <input type="text" id="profile-name" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Profile Picture URL (Optional)</label>
+                    <input type="url" id="profile-photo" placeholder="https://..." class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <button id="btn-update-profile" onclick="window.submitProfileUpdate()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div id="language-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-100 transition-all">
+            <h3 class="text-xl font-bold mb-4 text-center dark:text-white">Select Language</h3>
+            <div class="space-y-3">
+                <button onclick="setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
+                <button onclick="setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
+                <button onclick="setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
+            </div>
+            <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
+        </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div id="comment-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300">
+        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-0 shadow-2xl flex flex-col h-[75vh] sm:h-[60vh] animate-[fadeIn_0.3s_ease-out]">
+            <div class="flex justify-between items-center p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-darkCard rounded-t-2xl z-10">
+                <h3 class="text-lg font-bold dark:text-white"><i class="fas fa-comments text-blue-500 mr-2"></i> Comments <span id="modal-comment-count" class="text-sm text-gray-500 ml-1"></span></h3>
+                <button onclick="document.getElementById('comment-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
+            
+            <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
+                <div id="comment-logged-out" class="text-center py-2">
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">কমেন্ট করতে আপনাকে অবশ্যই লগিন করতে হবে।</p>
+                    <button onclick="document.getElementById('comment-modal').classList.add('hidden'); window.toggleAuthModal('login');" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition"><i class="fas fa-sign-in-alt mr-2"></i>লগিন করুন</button>
+                </div>
+                <div id="comment-logged-in" class="hidden flex-col gap-3">
+                    <div class="flex gap-2 items-center">
+                        <div id="comment-user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0 overflow-hidden">U</div>
+                        <input type="text" id="comment-text" placeholder="কমেন্ট লিখুন..." class="flex-1 px-4 py-2.5 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm shadow-inner transition">
+                        <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
+          authDomain: "file-downloader-da43f.firebaseapp.com",
+          databaseURL: "https://file-downloader-da43f-default-rtdb.firebaseio.com",
+          projectId: "file-downloader-da43f",
+          storageBucket: "file-downloader-da43f.firebasestorage.app",
+          messagingSenderId: "168637957444",
+          appId: "1:168637957444:web:8bfa0abe5fcb3db45c4311"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app); 
+
+        if(!localStorage.getItem('deviceId')) { localStorage.setItem('deviceId', 'dev_' + Math.random().toString(36).substr(2, 9)); }
+        const userDeviceId = localStorage.getItem('deviceId');
+
+        let currentLang = localStorage.getItem('lang') || 'en';
+        let timerDuration = 10;
+        let currentSlide = 0;
+        let currentFileIdForComment = null;
+        let currentUser = null; 
+        
+        window.forceShowAll = false;
+
+        const translations = {
+            en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
+            hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "ডাউনলোড করুন", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
+            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
+        };
+
+        const getTxt = (k, p={}) => { let t = translations[currentLang][k] || k; for(let key in p) t = t.replace(`{${key}}`, p[key]); return t; };
+
+        const showToast = (msgKey, p={}, raw=false) => {
+            const t = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = raw ? msgKey : getTxt(msgKey, p);
+            t.classList.remove('opacity-0', 'translate-y-10');
+            setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const sidebarUnauth = document.getElementById('sidebar-unauth');
+            const sidebarAuth = document.getElementById('sidebar-auth');
+            const commentLoggedOut = document.getElementById('comment-logged-out');
+            const commentLoggedIn = document.getElementById('comment-logged-in');
+            
+            if (user) {
+                const userName = user.displayName || "User";
+                sidebarUnauth.classList.add('hidden');
+                sidebarAuth.classList.remove('hidden');
+                document.getElementById('sidebar-username').innerText = userName;
+                document.getElementById('sidebar-email').innerText = user.email;
+                
+                const avatarHtml = user.photoURL ? `<img src="${user.photoURL}" class="w-full h-full object-cover">` : userName.charAt(0).toUpperCase();
+                document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
+
+                commentLoggedOut.classList.add('hidden');
+                commentLoggedIn.classList.remove('hidden');
+                commentLoggedIn.classList.add('flex');
+                document.getElementById('comment-user-avatar').innerHTML = avatarHtml;
+            } else {
+                sidebarUnauth.classList.remove('hidden');
+                sidebarAuth.classList.add('hidden');
+
+                commentLoggedOut.classList.remove('hidden');
+                commentLoggedIn.classList.add('hidden');
+                commentLoggedIn.classList.remove('flex');
+            }
+        });
+
+        window.toggleAuthModal = (viewMode = 'login') => {
+            document.getElementById('auth-modal').classList.toggle('hidden');
+            if(viewMode) window.switchAuthView(viewMode);
+        };
+
+        window.switchAuthView = (view) => {
+            document.getElementById('auth-login-view').classList.add('hidden');
+            document.getElementById('auth-register-view').classList.add('hidden');
+            document.getElementById('auth-reset-view').classList.add('hidden');
+            document.getElementById(`auth-${view}-view`).classList.remove('hidden');
+        };
+
+        window.submitLogin = async () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            const btn = document.getElementById('btn-login');
+            
+            if(!email || !pass) return showToast("Please enter email and password", {}, true);
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+            btn.disabled = true;
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+                document.getElementById('auth-modal').classList.add('hidden');
+                showToast("লগিন সফল হয়েছে!", {}, true);
+                document.getElementById('login-password').value = '';
+            } catch (error) {
+                let msg = "Login failed!";
+                if(error.code === 'auth/invalid-credential') msg = "ভুল ইমেইল বা পাসওয়ার্ড!";
+                showToast(msg, {}, true);
+            }
+            btn.innerHTML = 'Login';
+            btn.disabled = false;
+        };
+
+        window.submitRegister = async () => {
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pass = document.getElementById('reg-password').value;
+            const btn = document.getElementById('btn-register');
+
+            if(!name || !email || !pass) return showToast("সব তথ্য দিন", {}, true);
+            if(pass.length < 6) return showToast("Password must be at least 6 characters", {}, true);
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+            btn.disabled = true;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
+                await updateProfile(userCredential.user, { displayName: name });
+                document.getElementById('auth-modal').classList.add('hidden');
+                showToast("একাউন্ট তৈরি সফল হয়েছে!", {}, true);
+            } catch (error) {
+                let msg = "Registration failed!";
+                if(error.code === 'auth/email-already-in-use') msg = "এই ইমেইল দিয়ে আগেই একাউন্ট খোলা হয়েছে!";
+                showToast(msg, {}, true);
+            }
+            btn.innerHTML = 'Sign Up';
+            btn.disabled = false;
+        };
+
+        window.submitResetPassword = async () => {
+            const email = document.getElementById('reset-email').value;
+            const btn = document.getElementById('btn-reset');
+            if(!email) return showToast("আপনার ইমেইল দিন", {}, true);
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showToast("পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে!", {}, true);
+                window.switchAuthView('login');
+            } catch (error) {
+                showToast("Failed to send reset email.", {}, true);
+            }
+            btn.innerHTML = 'Send Reset Link';
+            btn.disabled = false;
+        };
+
+        window.handleLogout = async () => {
+            if(confirm("আপনি কি লগআউট করতে চান?")) {
+                await signOut(auth);
+                showToast("লগআউট সফল হয়েছে!", {}, true);
+            }
+        };
+
+        window.openProfileModal = () => {
+            if(!currentUser) return;
+            document.getElementById('profile-name').value = currentUser.displayName || '';
+            document.getElementById('profile-photo').value = currentUser.photoURL || '';
+            document.getElementById('profile-modal').classList.remove('hidden');
+        };
+
+        window.submitProfileUpdate = async () => {
+            if(!currentUser) return;
+            const name = document.getElementById('profile-name').value.trim();
+            const photo = document.getElementById('profile-photo').value.trim();
+            const btn = document.getElementById('btn-update-profile');
+            
+            if(!name) return showToast("নাম দিতে হবে!", {}, true);
+
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+            btn.disabled = true;
+            try {
+                await updateProfile(currentUser, { 
+                    displayName: name,
+                    photoURL: photo || null
+                });
+                
+                document.getElementById('sidebar-username').innerText = name;
+                const avatarHtml = photo ? `<img src="${photo}" class="w-full h-full object-cover">` : name.charAt(0).toUpperCase();
+                document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
+                document.getElementById('comment-user-avatar').innerHTML = avatarHtml;
+                
+                document.getElementById('profile-modal').classList.add('hidden');
+                showToast("প্রোফাইল আপডেট সফল হয়েছে!", {}, true);
+            } catch (error) {
+                showToast("প্রোফাইল আপডেট ব্যর্থ হয়েছে!", {}, true);
+            }
+            btn.innerHTML = 'Save Changes';
+            btn.disabled = false;
+        };
+
+        const renderAd = (id, code) => {
+            const el = document.getElementById(id);
+            if(el && code) {
+                el.innerHTML = code;
+                Array.from(el.querySelectorAll('script')).forEach(s => {
+                    const ns = document.createElement('script');
+                    Array.from(s.attributes).forEach(a => ns.setAttribute(a.name, a.value));
+                    ns.appendChild(document.createTextNode(s.innerHTML));
+                    s.parentNode.replaceChild(ns, s);
+                });
+            }
+        };
+
+        window.showAllFiles = () => {
+            window.forceShowAll = true;
+            if (window.history.pushState) {
+                const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.pushState({path:newUrl},'',newUrl);
+            }
+            document.getElementById('slider-container').style.display = 'block';
+            document.getElementById('search-section').style.display = 'block';
+            document.getElementById('single-view-header').innerHTML = '';
+            document.getElementById('single-view-footer').innerHTML = '';
+            document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
+            loadData();
+        };
+
+        window.updateReactDom = (id, emoji, change) => {
+            let summary = document.getElementById(`react-summary-${id}`);
+            if(!summary) return;
+            let btn = document.getElementById(`count-${id}-${emoji}`);
+            
+            let currentReact = localStorage.getItem('react_' + id);
+            let isMyReact = (currentReact === emoji);
+            
+            if(btn) {
+                let numSpan = btn.querySelector('.r-cnt');
+                let newCount = parseInt(numSpan.innerText) + change;
+                if(newCount <= 0) {
+                    btn.remove();
+                } else {
+                    numSpan.innerText = newCount;
+                    if(isMyReact) {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
+                    } else {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
+                    }
+                }
+            } else if(change > 0) {
+                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
+            }
+        };
+
+        // গ্লোবাল মেম্বারশিপ চেক ও পেজ ব্লক করার ফিক্সড সিস্টেম
+        let appConfig = {};
+        let tgUser = {};
+
+        const checkRequiredChannelsLive = async () => {
+            if (!appConfig.channel1Url && !appConfig.channel2Url) return true; 
+            const botToken = appConfig.botToken;
+            if (!botToken) return true; 
+
+            const getUsername = (url) => {
+                if (!url) return "";
+                let cleanUrl = url.trim().replace('@', '');
+                const parts = cleanUrl.split('/');
+                const lastPart = parts[parts.length - 1];
+                return lastPart ? '@' + lastPart.split('?')[0] : "";
+            };
+
+            const ch1User = getUsername(appConfig.channel1Url);
+            const ch2User = getUsername(appConfig.channel2Url);
+
+            try {
+                let joined1 = true;
+                let joined2 = true;
+
+                if (ch1User) {
+                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${ch1User}&user_id=${tgUser.id}`);
+                    const data = await res.json();
+                    if (data.ok) {
+                        const status = data.result.status;
+                        joined1 = (status === 'member' || status === 'administrator' || status === 'creator');
+                    } else { joined1 = false; }
+                }
+
+                if (ch2User) {
+                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${ch2User}&user_id=${tgUser.id}`);
+                    const data = await res.json();
+                    if (data.ok) {
+                        const status = data.result.status;
+                        joined2 = (status === 'member' || status === 'administrator' || status === 'creator');
+                    } else { joined2 = false; }
+                }
+
+                return (joined1 && joined2);
+            } catch (e) {
+                console.error("Membership check failed: ", e);
+                return false; 
+            }
+        };
+
+        window.verifyChannelMembership = async () => {
+            const btn = document.querySelector('#channel-verify-screen button');
+            btn.disabled = true;
+            btn.textContent = "যাচাই করা হচ্ছে...";
+
+            const isVerified = await checkRequiredChannelsLive();
+            if (isVerified) {
+                localStorage.setItem(`channelVerified_${tgUser.id}`, 'true');
+                document.getElementById('channel-verify-screen').classList.add('hidden');
+                document.getElementById('channel-verify-screen').classList.remove('flex');
+                showToast("স্বাগতম! চ্যানেল ভেরিফিকেশন সফল হয়েছে।", {}, true);
+            } else {
+                alert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
+            }
+            btn.disabled = false;
+            btn.textContent = "VERIFY MEMBERSHIP";
+        };
+
+        async function loadData() {
+            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়েল টাইম পেজ ব্লকিং
+            const tgApp = window.Telegram.WebApp;
+            tgApp.ready(); tgApp.expand();
+            tgUser = tgApp.initDataUnsafe.user;
+            
+            // টেস্টিং ও সেফ ফলব্যাক
+            if (!tgUser || !tgUser.id) {
+                tgUser = { id: 6579664275 }; 
+            }
+
+            try {
+                let socialLinks = {};
+                
+                const setSnap = await getDocs(query(collection(db, "settings")));
+                
+                setSnap.forEach(d => {
+                    const data = d.data();
+                    const id = d.id;
+                    
+                    if(id === 'general') {
+                        timerDuration = data.timerDuration || 10;
+                        appConfig = data; // গ্লোবাল ব্যবহারের জন্য সেভ করা হলো
+                        
+                        if(data.announcementText) {
+                            document.getElementById('announcement-container').classList.remove('hidden');
+                            document.getElementById('announcement-text').textContent = data.announcementText;
+                        }
+                        
+                        if(data.popupNotice && data.popupNotice.trim() !== '') {
+                            if(!sessionStorage.getItem('popupNoticeShown')) {
+                                document.getElementById('popup-notice-content').textContent = data.popupNotice;
+                                document.getElementById('popup-notice-modal').classList.remove('hidden');
+                                sessionStorage.setItem('popupNoticeShown', 'true');
+                            }
+                        }
+                    }
+                    if(id === 'ads') {
+                        renderAd('ad-container-1', data.adSlot1);
+                        renderAd('ad-container-2', data.adSlot2);
+                        renderAd('ad-container-3', data.adSlot3);
+                    }
+                    
+                    Object.keys(data).forEach(key => {
+                        const k = key.toLowerCase();
+                        const val = data[key];
+                        if(typeof val === 'string' && val.trim() !== '') {
+                            let cleanUrl = val.startsWith('http') ? val : 'https://' + val;
+                            
+                            if(k.includes('facebook')) socialLinks['facebook'] = cleanUrl;
+                            else if(k.includes('telegram')) socialLinks['telegram'] = cleanUrl;
+                            else if(k.includes('youtube')) socialLinks['youtube'] = cleanUrl;
+                            else if(k.includes('whatsapp')) socialLinks['whatsapp'] = cleanUrl;
+                            else if(k.includes('twitter')) socialLinks['twitter'] = cleanUrl;
+                            else if(k.includes('instagram')) socialLinks['instagram'] = cleanUrl;
+                            else if(k.includes('tiktok')) socialLinks['tiktok'] = cleanUrl;
+                        }
+                    });
+                });
+
+                // মেম্বারশিপ যাচাই ও উইন্ডো সচল করার মূল অংশ
+                const isVerifiedLive = await checkRequiredChannelsLive();
+                if (!isVerifiedLive) {
+                    const screen = document.getElementById('channel-verify-screen');
+                    const btn1 = document.getElementById('cv-channel1-btn');
+                    const btn2 = document.getElementById('cv-channel2-btn');
+                    const title1 = document.getElementById('cv-ch1-title');
+                    const title2 = document.getElementById('cv-ch2-title');
+                    
+                    if (appConfig.channel1Url) { btn1.href = appConfig.channel1Url; if (appConfig.channel1Name) title1.textContent = appConfig.channel1Name; } else { btn1.style.display = 'none'; }
+                    if (appConfig.channel2Url) { btn2.href = appConfig.channel2Url; if (appConfig.channel2Name) title2.textContent = appConfig.channel2Name; } else { btn2.style.display = 'none'; }
+                    
+                    screen.classList.remove('hidden');
+                    screen.classList.add('flex');
+                }
+
+                const sideSocials = document.getElementById('sidebar-social-links');
+                const footSocials = document.getElementById('footer-socials');
+                let sideHtml = '';
+                let footHtml = '';
+                
+                const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok' };
+                const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
+
+                let hasLinks = false;
+                for(const [platform, url] of Object.entries(socialLinks)) {
+                    hasLinks = true;
+                    const iconClass = sIcons[platform] || 'fas fa-link';
+                    const colorClass = sColors[platform] || 'text-gray-500';
+                    const name = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    
+                    sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-600"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
+                    footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
+                }
+                
+                if(hasLinks) {
+                    sideSocials.innerHTML = sideHtml;
+                    if(footSocials) footSocials.innerHTML = footHtml;
+                } else {
+                    sideSocials.innerHTML = '<p class="text-sm text-gray-400 pl-2">No social links added yet.</p>';
+                }
+            } catch(e) { console.error(e); }
+
+            let targetVid = null;
+            if(!window.forceShowAll) {
+                targetVid = new URLSearchParams(window.location.search).get('v');
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
+                    targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+                }
+            }
+
+            if(targetVid) {
+                document.getElementById('slider-container').style.display = 'none';
+                document.getElementById('search-section').style.display = 'none';
+                document.getElementById('single-view-header').innerHTML = ''; 
+                
+                document.getElementById('single-view-footer').innerHTML = `
+                    <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
+                        <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
+                        <span>অন্যান্য সব ফাইল দেখুন (Home)</span>
+                    </button>`;
+            } else {
+                try {
+                    const sSnap = await getDocs(query(collection(db, "sliders")));
+                    const wrapper = document.getElementById('slider-wrapper');
+                    const dots = document.getElementById('slider-dots');
+                    wrapper.innerHTML = ''; dots.innerHTML = '';
+                    const slides = [];
+                    sSnap.forEach(d => slides.push(d.data()));
+                    if(slides.length) {
+                        slides.forEach((s, i) => {
+                            const img = document.createElement('img');
+                            img.src = s.imageUrl;
+                            img.className = 'w-full h-full object-fill flex-shrink-0';
+                            wrapper.appendChild(img);
+                            const dot = document.createElement('div');
+                            dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
+                            dots.appendChild(dot);
+                        });
+                        setInterval(() => {
+                            currentSlide = (currentSlide + 1) % slides.length;
+                            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                            Array.from(dots.children).forEach((d, i) => { d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`; });
+                        }, 4000);
+                    } else { document.getElementById('slider-container').style.display = 'none'; }
+                } catch(e) {}
+            }
+
+            try {
+                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                const grid = document.getElementById('files-grid');
+                grid.innerHTML = '';
+                let count = 0;
+                fSnap.forEach(d => {
+                    const f = {id: d.id, ...d.data()};
+                    if(f.isDeleted) return; 
+
+                    if(targetVid && f.id !== targetVid) return; 
+                    count++;
+                    
+                    const localReact = localStorage.getItem('react_' + f.id);
+                    
+                    let reactHtml = '';
+                    const allEmojis = ['❤️','👍','😭','😁','😢','👌','🥰','🫣','🤯','👀','🌹','💯','🕊','🔥','💔','🇧🇩'];
+                    let hasAny = false;
+                    allEmojis.forEach(e => {
+                        let c = f['react_' + e] || 0;
+                        if(c > 0) {
+                            let isMyReact = (localReact === e);
+                            let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
+                            let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
+                            reactHtml += `<button onclick="window.handleBadgeClick('${f.id}', '${e}')" id="count-${f.id}-${e}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">${e} <span class="text-xs ${activeTextClass} font-bold r-cnt">${c}</span></button>`;
+                            hasAny = true;
+                        }
+                    });
+                    if(!hasAny && f.likeCount > 0) {
+                        let isMyReact = (localReact === '👍');
+                        let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
+                        let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
+                        reactHtml = `<button onclick="window.handleBadgeClick('${f.id}', '👍')" id="count-${f.id}-👍" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">👍 <span class="text-xs ${activeTextClass} font-bold r-cnt">${f.likeCount}</span></button>`;
+                    }
+                    
+                    const mediaElement = f.videoUrl 
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+
+                    const card = document.createElement('div');
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
+                    card.innerHTML = `
+                        <div class="relative h-44 overflow-hidden bg-black flex justify-center">
+                            ${mediaElement}
+                            ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1">${f.description}</p>
+                            
+                            <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
+                                <div class="flex items-center gap-2 flex-wrap flex-1">
+                                    <div class="relative react-wrapper inline-block shrink-0">
+                                        <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl px-3 py-2 flex flex-wrap w-64 sm:w-72 gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
+                                            <button onclick="window.setReact('${f.id}', '❤️')" class="hover:scale-125 transition-transform text-xl">❤️</button>
+                                            <button onclick="window.setReact('${f.id}', '👍')" class="hover:scale-125 transition-transform text-xl">👍</button>
+                                            <button onclick="window.setReact('${f.id}', '😭')" class="hover:scale-125 transition-transform text-xl">😭</button>
+                                            <button onclick="window.setReact('${f.id}', '😁')" class="hover:scale-125 transition-transform text-xl">😁</button>
+                                            <button onclick="window.setReact('${f.id}', '😢')" class="hover:scale-125 transition-transform text-xl">😢</button>
+                                            <button onclick="window.setReact('${f.id}', '👌')" class="hover:scale-125 transition-transform text-xl">👌</button>
+                                            <button onclick="window.setReact('${f.id}', '🥰')" class="hover:scale-125 transition-transform text-xl">🥰</button>
+                                            <button onclick="window.setReact('${f.id}', '🫣')" class="hover:scale-125 transition-transform text-xl">🫣</button>
+                                            <button onclick="window.setReact('${f.id}', '🤯')" class="hover:scale-125 transition-transform text-xl">🤯</button>
+                                            <button onclick="window.setReact('${f.id}', '👀')" class="hover:scale-125 transition-transform text-xl">👀</button>
+                                            <button onclick="window.setReact('${f.id}', '🌹')" class="hover:scale-125 transition-transform text-xl">🌹</button>
+                                            <button onclick="window.setReact('${f.id}', '💯')" class="hover:scale-125 transition-transform text-xl">💯</button>
+                                            <button onclick="window.setReact('${f.id}', '🕊')" class="hover:scale-125 transition-transform text-xl">🕊</button>
+                                            <button onclick="window.setReact('${f.id}', '🔥')" class="hover:scale-125 transition-transform text-xl">🔥</button>
+                                            <button onclick="window.setReact('${f.id}', '💔')" class="hover:scale-125 transition-transform text-xl">💔</button>
+                                            <button onclick="window.setReact('${f.id}', '🇧🇩')" class="hover:scale-125 transition-transform text-xl">🇧🇩</button>
+                                            <div class="w-px h-6 bg-gray-300 dark:bg-gray-600 my-auto mx-1"></div>
+                                            <button onclick="window.removeReact('${f.id}')" class="hover:bg-red-100 text-gray-400 hover:text-red-500 w-6 h-6 rounded-full flex items-center justify-center transition-colors"><i class="fas fa-times"></i></button>
+                                        </div>
+                                        <button onclick="window.toggleReactMenu('${f.id}')" class="flex items-center gap-1.5 font-medium transition outline-none ${localReact ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500'}">
+                                            <span id="react-icon-${f.id}" class="text-xl"><i class="fas fa-thumbs-up"></i></span> 
+                                        </button>
+                                    </div>
+                                    
+                                    <div id="react-summary-${f.id}" class="flex flex-wrap items-center gap-1 text-sm shrink-0 min-h-[28px] ml-1">
+                                        ${reactHtml}
+                                    </div>
+
+                                    <button onclick="window.openComments('${f.id}')" class="flex items-center gap-1.5 font-medium text-gray-400 hover:text-blue-500 transition ml-2 shrink-0">
+                                        <i class="fas fa-comment"></i> <span id="comment-count-${f.id}" class="text-sm">${f.commentCount || 0}</span>
+                                    </button>
+                                </div>
+                                <div class="flex items-center gap-3 text-gray-400 text-sm font-medium shrink-0 ml-2">
+                                    <div title="Views"><i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span></div>
+                                    
+                                    <div class="relative share-wrapper inline-block ml-1">
+                                        <div id="share-menu-${f.id}" class="share-menu-dropdown hidden absolute bottom-full right-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-lg px-3 py-2 flex flex-col gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20 w-36">
+                                            <button onclick="window.copyToClip('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-500 transition w-full text-left"><i class="fas fa-copy w-4"></i> Copy Link</button>
+                                            <button onclick="window.shareToSocial('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-500 transition w-full text-left"><i class="fas fa-share-square w-4"></i> Share Now</button>
+                                        </div>
+                                        <button onclick="window.toggleShareMenu('${f.id}')" class="hover:text-green-500 transition text-lg" title="Share Options"><i class="fas fa-share-alt"></i></button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                    <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <button data-id="${f.id}" data-req="${f.requiredAds}" data-url="${f.downloadUrl}" class="dl-btn w-full py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
+                                <span class="relative z-10 btn-content"></span>
+                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-opacity btn-bg"></div>
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                    updateBtn(card.querySelector('.dl-btn'));
+                });
+                document.getElementById('file-count').innerText = `${count} Items`;
+            } catch(e) { console.error(e); }
+        }
+
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('.react-wrapper')) {
+                document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
+            if(!e.target.closest('.share-wrapper')) {
+                document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
+        });
+
+        window.getShareUrl = (id) => {
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                return "https://t.me/DownloaderxRbot?startapp=" + id;
+            }
+            return window.location.origin + window.location.pathname + "?v=" + id;
+        };
+
+        window.toggleShareMenu = (id) => {
+            document.querySelectorAll('.share-menu-dropdown').forEach(m => {
+                if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
+            });
+            document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
+        };
+
+        window.copyToClip = (id) => {
+            const url = window.getShareUrl(id);
+            navigator.clipboard.writeText(url).then(() => {
+                showToast("Link copied to clipboard!", {}, true);
+                document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            }).catch(err => {
+                alert("Failed to copy link: " + url);
+            });
+        };
+
+        window.shareToSocial = (id) => {
+            const url = window.getShareUrl(id);
+            document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check this out!',
+                    text: 'View and download this amazing file:',
+                    url: url
+                }).catch(err => console.log('Share canceled'));
+            } else {
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
+            }
+        };
+
+        window.trackView = async (id) => {
+            if(!localStorage.getItem('viewed_' + id)) {
+                localStorage.setItem('viewed_' + id, 'true');
+                const vSpan = document.getElementById(`view-count-${id}`);
+                if(vSpan) vSpan.innerText = parseInt(vSpan.innerText) + 1;
+                await updateDoc(doc(db, "files", id), { views: increment(1) });
+            }
+        };
+
+        window.toggleReactMenu = (id) => {
+            document.querySelectorAll('.react-menu-dropdown').forEach(m => {
+                if(m.id !== `react-menu-${id}`) m.classList.add('hidden');
+            });
+            document.getElementById(`react-menu-${id}`).classList.toggle('hidden');
+        };
+
+        window.handleBadgeClick = (id, emoji) => {
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) {
+                window.removeReact(id);
+            } else {
+                window.setReact(id, emoji);
+            }
+        };
+
+        window.setReact = async (id, emoji) => {
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden'); 
+            
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) return; 
+            
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                window.updateReactDom(id, currentReact, -1);
+            }
+            
+            localStorage.setItem('react_' + id, emoji);
+            const iconSpan = document.getElementById(`react-icon-${id}`);
+            if(iconSpan) iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
+            
+            window.updateReactDom(id, emoji, 1);
+            
+            let updates = {};
+            if(currentReact) {
+                updates[`react_${currentReact}`] = increment(-1);
+            }
+            updates[`react_${emoji}`] = increment(1);
+            await updateDoc(doc(db, "files", id), updates);
+        };
+
+        window.removeReact = async (id) => {
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden');
+            
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                const iconSpan = document.getElementById(`react-icon-${id}`);
+                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
+                
+                window.updateReactDom(id, currentReact, -1);
+                
+                await updateDoc(doc(db, "files", id), { 
+                    [`react_${currentReact}`]: increment(-1)
+                });
+            }
+        };
+
+        let unsubscribeComments = null;
+        window.openComments = (id) => {
+            currentFileIdForComment = id;
+            document.getElementById('comment-modal').classList.remove('hidden');
+            const list = document.getElementById('comment-list');
+            const cCount = document.getElementById(`comment-count-${id}`);
+            document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
+            list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
+            if(unsubscribeComments) unsubscribeComments();
+            
+            const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
+            unsubscribeComments = onSnapshot(q, (snap) => {
+                list.innerHTML = '';
+                if(snap.empty) list.innerHTML = '<div class="text-center text-gray-400 mt-10">No comments yet. Be the first!</div>';
+                snap.forEach(d => {
+                    const c = d.data();
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    let timeStr = "Just now";
+                    if(c.timestamp) {
+                        const date = c.timestamp.toDate();
+                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+                    const isMyComment = (currentUser && c.uid === currentUser.uid) || (c.deviceId === userDeviceId);
+                    const deleteBtnHtml = isMyComment ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete"><i class="fas fa-trash-alt text-xs"></i></button>` : '';
+                    
+                    list.innerHTML += `<div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div><div class="flex-1"><div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none"><div class="flex justify-between items-baseline mb-1"><h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${c.name}</h4><div class="flex items-center"><span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>${deleteBtnHtml}</div></div><p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p></div></div></div>`;
+                });
+            });
+        };
+
+        window.deleteComment = async (fileId, commentId) => {
+            if(confirm("Are you sure you want to delete your comment?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", commentId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                window.openComments(fileId);
+                loadFiles();
+                showToast("Comment deleted successfully!", {}, true);
+            }
+        };
+
+        document.getElementById('send-comment-btn').onclick = async () => {
+            if(!currentUser) {
+                return showToast("কমেন্ট করতে আপনাকে অবশ্যই লগিন করতে হবে।", {}, true);
+            }
+            
+            const textInput = document.getElementById('comment-text');
+            const text = textInput.value.trim();
+            if(!text) return;
+            
+            textInput.value = '';
+            const userName = currentUser.displayName || "User";
+            const uid = currentUser.uid;
+
+            showToast("Comment posted successfully!", {}, true); 
+            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
+                name: userName, 
+                text: text, 
+                timestamp: new Date(), 
+                deviceId: userDeviceId, 
+                uid: uid
+            });
+            await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
+            const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
+            if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
+        };
+
+        function updateBtn(btn) {
+            const id = btn.dataset.id;
+            const req = parseInt(btn.dataset.req);
+            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            const isUnlocked = done >= req;
+            const card = btn.closest('.file-card');
+            const progBar = card.querySelector('.prog-bar');
+            const progTxt = card.querySelector('.prog-txt');
+            const pct = Math.min((done / req) * 100, 100);
+            progBar.style.width = `${pct}%`;
+            progTxt.innerText = `${Math.floor(pct)}%`;
+            const content = btn.querySelector('.btn-content');
+            const bg = btn.querySelector('.btn-bg');
+            btn.disabled = false;
+            if(isUnlocked) {
+                content.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
+                bg.className = "absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600";
+            } else {
+                content.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
+                bg.className = "absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:opacity-90";
+            }
+        }
+
+        async function handleUnlock(e) {
+            const btn = e.target.closest('.dl-btn');
+            if(!btn || btn.disabled) return;
+            
+            const id = btn.dataset.id;
+            window.trackView(id);
+
+            const req = parseInt(btn.dataset.req);
+            const url = btn.dataset.url;
+            let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            if(done >= req) { window.open(url, '_blank'); return; }
+            btn.disabled = true;
+            const content = btn.querySelector('.btn-content');
+            const originalHtml = content.innerHTML;
+            try {
+                content.innerText = getTxt('toast_ad_load');
+                showToast('toast_ad_load');
+                
+                if (typeof show_10889205 !== 'function') {
+                    throw new Error("AdBlocked");
+                }
+                
+                await show_10889205();
+                done++;
+                localStorage.setItem(`ad_${id}`, done);
+                if(done >= req) { showToast('toast_unlocked'); updateBtn(btn); return; }
+                showToast('toast_progress', {done, req});
+                let t = timerDuration;
+                const int = setInterval(() => {
+                    content.innerText = getTxt('toast_wait', {t});
+                    t--;
+                    if(t < 0) { clearInterval(int); updateBtn(btn); }
+                }, 1000);
+            } catch(err) {
+                btn.disabled = false; content.innerHTML = originalHtml;
+                if (err.message === "AdBlocked") {
+                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nআপনার ফোনে Ad-blocker, Private DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন, অথবা নেটওয়ার্ক কানেকশন চেক করুন।");
+                } else {
+                    alert("Failed to load ad. Please try again.");
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme === 'dark') setTheme('dark'); else setTheme('light');
+            if(!localStorage.getItem('lang')) document.getElementById('language-modal').classList.remove('hidden');
+            else updateTexts();
+            loadData();
+        });
+
+        window.toggleMenu = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sidebar.classList.contains('sidebar-closed')) {
+                sidebar.classList.remove('sidebar-closed'); sidebar.classList.add('sidebar-open'); overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('sidebar-closed'); sidebar.classList.remove('sidebar-open'); overlay.classList.add('hidden');
+            }
+        };
+
+        window.setLang = (l) => {
+            currentLang = l; localStorage.setItem('lang', l);
+            document.getElementById('language-modal').classList.add('hidden');
+            updateTexts(); loadData();
+        };
+
+        function updateTexts() {
+            document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
+            document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
+        }
+
+        document.getElementById('files-grid').addEventListener('click', handleUnlock);
+        
+        function setTheme(mode) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
+                if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
+                if(text) text.textContent = 'Light Mode';
+            } else {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
+                if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
+                if(text) text.textContent = 'Dark Mode';
+            }
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            let visible = 0;
+            document.querySelectorAll('.file-card').forEach(c => {
+                const match = c.innerText.toLowerCase().includes(term);
+                c.style.display = match ? 'flex' : 'none';
+                if(match) visible++;
+            });
+            const noRes = document.getElementById('no-results');
+            if(visible === 0) noRes.classList.remove('hidden'); else noRes.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
