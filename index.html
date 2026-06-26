@@ -34,9 +34,6 @@
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scroll::-webkit-scrollbar-thumb { background: #475569; }
-        
-        .react-menu { display: none; }
-        .react-menu-dropdown { position: absolute; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
@@ -89,7 +86,6 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400" id="sidebar-tg-id">ID: 000000000</p>
             </div>
 
-            <!-- PREMIUM MENU OPTION DESIGNED BEAUTIFULLY -->
             <div class="p-4 space-y-2">
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
                 <div id="sidebar-social-links" class="space-y-1.5 px-1">
@@ -113,7 +109,6 @@
         <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
     </aside>
 
-    <!-- LARGER POPUP NOTICE MODAL FOR READABILITY -->
     <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkCard w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
             <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
@@ -261,7 +256,6 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
-                    <!-- Subtitle updated to আলোর হাওয়া -->
                     <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
@@ -281,18 +275,12 @@
                 </div>
             </div>
 
-            <!-- PREMIUM DETAILED VIEW REACTIONS BAR inside details page -->
-            <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col gap-3">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">রিঅ্যাকশন দিন</h4>
-                <div class="flex flex-wrap gap-2.5" id="details-reactions-picker"></div>
-            </div>
-
             <div id="details-screenshots-sec" class="hidden">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">স্ক্রিনশট</h4>
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-750 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-150 dark:border-gray-750 shadow-sm">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">এই ফাইল সম্পর্কে</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -461,34 +449,6 @@
             document.getElementById('single-view-footer').innerHTML = '';
             document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
             loadData();
-        };
-
-        window.updateReactDom = (id, emoji, change) => {
-            let summary = document.getElementById(`react-summary-${id}`);
-            if(!summary) return;
-            let btn = document.getElementById(`count-${id}-${emoji}`);
-            
-            let currentReact = localStorage.getItem('react_' + id);
-            let isMyReact = (currentReact === emoji);
-            
-            if(btn) {
-                let numSpan = btn.querySelector('.r-cnt');
-                let newCount = parseInt(numSpan.innerText) + change;
-                if(newCount <= 0) {
-                    btn.remove();
-                } else {
-                    numSpan.innerText = newCount;
-                    if(isMyReact) {
-                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
-                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
-                    } else {
-                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
-                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
-                    }
-                }
-            } else if(change > 0) {
-                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
-            }
         };
 
         let appConfig = {};
@@ -695,9 +655,10 @@
         };
 
         // NEW: STABLE LONG PRESS TO TRIGGER REACTION LIST MODAL WITH NO SHAKING
+        let likePressTimer = null;
         window.startLikePress = (fileId) => {
             window.endLikePress();
-            likePressTimeout = setTimeout(async () => {
+            likePressTimer = setTimeout(async () => {
                 const modal = document.createElement('div');
                 modal.id = 'reactions-popup-modal';
                 modal.className = "fixed inset-0 bg-black/75 backdrop-blur-sm z-[105] flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]";
@@ -746,7 +707,7 @@
         };
 
         window.endLikePress = () => {
-            if(likePressTimeout) clearTimeout(likePressTimeout);
+            if(likePressTimer) clearTimeout(likePressTimer);
         };
 
         function renderDetailsReactions(fileObj) {
@@ -1318,214 +1279,6 @@
                 document.getElementById('file-count').innerText = `${count} Items`;
             } catch(e) { console.error(e); }
         }
-
-        document.addEventListener('click', (e) => {
-            if(!e.target.closest('.react-wrapper')) {
-                document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
-            }
-            if(!e.target.closest('.share-wrapper')) {
-                document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
-            }
-        });
-
-        window.getShareUrl = (id) => {
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-                return "https://t.me/DownloaderxRbot?startapp=" + id;
-            }
-            return window.location.origin + window.location.pathname + "?v=" + id;
-        };
-
-        window.toggleShareMenu = (id) => {
-            document.querySelectorAll('.share-menu-dropdown').forEach(m => {
-                if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
-            });
-            document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
-        };
-
-        window.copyToClip = (id) => {
-            const url = window.getShareUrl(id);
-            navigator.clipboard.writeText(url).then(() => {
-                showToast("Link copied to clipboard!", {}, true);
-                document.getElementById(`share-menu-${id}`).classList.add('hidden');
-            }).catch(err => {
-                alert("Failed to copy link: " + url);
-            });
-        };
-
-        window.shareToSocial = (id) => {
-            const url = window.getShareUrl(id);
-            document.getElementById(`share-menu-${id}`).classList.add('hidden');
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Check this out!',
-                    text: 'View and download this amazing file:',
-                    url: url
-                }).catch(err => console.log('Share canceled'));
-            } else {
-                window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
-            }
-        };
-
-        window.trackView = async (id) => {
-            if(!localStorage.getItem('viewed_' + id)) {
-                localStorage.setItem('viewed_' + id, 'true');
-                const vSpan = document.getElementById(`view-count-${id}`);
-                if(vSpan) vSpan.innerText = parseInt(vSpan.innerText) + 1;
-                await updateDoc(doc(db, "files", id), { views: increment(1) });
-            }
-        };
-
-        window.toggleReactMenu = (id) => {
-            document.querySelectorAll('.react-menu-dropdown').forEach(m => {
-                if(m.id !== `react-menu-${id}`) m.classList.add('hidden');
-            });
-            document.getElementById(`react-menu-${id}`).classList.toggle('hidden');
-        };
-
-        window.handleBadgeClick = (id, emoji) => {
-            const currentReact = localStorage.getItem('react_' + id);
-            if(currentReact === emoji) {
-                window.removeReact(id);
-            } else {
-                window.setReact(id, emoji);
-            }
-        };
-
-        window.setReact = async (id, emoji) => {
-            const menu = document.getElementById(`react-menu-${id}`);
-            if(menu) menu.classList.add('hidden'); 
-            
-            const currentReact = localStorage.getItem('react_' + id);
-            if(currentReact === emoji) return; 
-            
-            if(currentReact) {
-                localStorage.removeItem('react_' + id);
-                window.updateReactDom(id, currentReact, -1);
-            }
-            
-            localStorage.setItem('react_' + id, emoji);
-            const iconSpan = document.getElementById('react-icon-' + id);
-            if(iconSpan) iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
-            
-            window.updateReactDom(id, emoji, 1);
-            
-            let updates = {};
-            if(currentReact) {
-                updates[`react_${currentReact}`] = increment(-1);
-            }
-            updates[`react_${emoji}`] = increment(1);
-            await updateDoc(doc(db, "files", id), updates);
-        };
-
-        window.removeReact = async (id) => {
-            const menu = document.getElementById(`react-menu-${id}`);
-            if(menu) menu.classList.add('hidden');
-            
-            const currentReact = localStorage.getItem('react_' + id);
-            if(currentReact) {
-                localStorage.removeItem('react_' + id);
-                const iconSpan = document.getElementById('react-icon-' + id);
-                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
-                
-                window.updateReactDom(id, currentReact, -1);
-                
-                await updateDoc(doc(db, "files", id), { 
-                    [`react_${currentReact}`]: increment(-1)
-                });
-            }
-        };
-
-        let unsubscribeComments = null;
-        window.openComments = (id) => {
-            currentFileIdForComment = id;
-            document.getElementById('comment-modal').classList.remove('hidden');
-            const list = document.getElementById('comment-list');
-            const cCount = document.getElementById(`comment-count-${id}`);
-            document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
-            list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
-            if(unsubscribeComments) unsubscribeComments();
-            
-            const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
-            unsubscribeComments = onSnapshot(q, (snap) => {
-                list.innerHTML = '';
-                if(snap.empty) list.innerHTML = '<div class="text-center text-gray-400 mt-10">No comments yet. Be the first!</div>';
-                snap.forEach(d => {
-                    const c = d.data();
-                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
-                    let timeStr = "Just now";
-                    if(c.timestamp) {
-                        const date = c.timestamp.toDate();
-                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    }
-                    const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
-                    const deleteBtnHtml = isMyComment ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete"><i class="fas fa-trash-alt text-xs"></i></button>` : '';
-                    
-                    const avatarContent = c.avatar 
-                        ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
-                        : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
-
-                    list.innerHTML += `
-                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]">
-                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">${avatarContent}</div>
-                            <div class="flex-1 min-w-0">
-                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
-                                    <div class="flex justify-between items-baseline mb-1">
-                                        <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
-                                        <div class="flex items-center">
-                                            <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
-                                            ${deleteBtnHtml}
-                                        </div>
-                                    </div>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-            });
-        };
-
-        window.deleteComment = async (fileId, commentId) => {
-            if(confirm("Are you sure you want to delete your comment?")) {
-                await deleteDoc(doc(db, "files", fileId, "comments", commentId));
-                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
-                window.openComments(fileId);
-                showToast("Comment deleted successfully!", {}, true);
-            }
-        };
-
-        document.getElementById('send-comment-btn').onclick = async () => {
-            const textInput = document.getElementById('comment-text');
-            const text = textInput.value.trim();
-            if(!text) return;
-            
-            textInput.value = '';
-            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
-            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
-            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
-
-            showToast("Comment posted successfully!", {}, true); 
-            await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
-                name: userName, 
-                text: text, 
-                stars: 5,
-                timestamp: new Date(), 
-                deviceId: userDeviceId, 
-                uid: userId,
-                avatar: userAvatar
-            });
-            await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
-            const cSpan = document.getElementById('comment-count-' + currentFileIdForComment);
-            if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
-        };
-
-        window.addEventListener('load', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if(savedTheme === 'dark') setTheme('dark'); else setTheme('light');
-            if(!localStorage.getItem('lang')) document.getElementById('language-modal').classList.remove('hidden');
-            else updateTexts();
-            loadData();
-        });
 
         // FIXED SIDEBAR BLURRY OVERFLOW TYPO
         window.toggleMenu = () => {
