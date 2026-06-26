@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
     <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
     <!-- Telegram Web App SDK -->
@@ -126,7 +126,7 @@
                 <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
                     <i class="fas fa-bell text-4xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष नोটিশ</h3>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष नोठिश</h3>
             </div>
             
             <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
@@ -161,7 +161,7 @@
         </div>
     </nav>
 
-    <!-- NEW: TELEGRAM USER PROFILE WIDGET -->
+    <!-- TELEGRAM USER PROFILE WIDGET -->
     <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-4 px-4">
         <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -208,7 +208,8 @@
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
             
-            <div id="files-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            <!-- Force exactly 2 columns grid design on mobile matching reference -->
+            <div id="files-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
             
             <div id="single-view-footer" class="mt-8 flex justify-center"></div>
 
@@ -219,7 +220,7 @@
         </section>
     </main>
 
-    <!-- NEW: HISTORY TAB CONTENT (ইতিহাস) -->
+    <!-- HISTORY TAB CONTENT -->
     <main id="history-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen hidden">
         <div class="max-w-xl mx-auto bg-white dark:bg-darkCard p-6 rounded-3xl border border-gray-150 dark:border-gray-700 shadow-md text-center mb-8">
             <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg shadow-blue-500/20">
@@ -229,7 +230,7 @@
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">আপনার আনলক করা ফাইলগুলি</p>
         </div>
 
-        <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        <div id="history-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
 
         <div id="history-empty" class="text-center py-20">
             <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400 text-3xl mx-auto mb-4">
@@ -240,9 +241,8 @@
         </div>
     </main>
 
-    <!-- NEW: DYNAMIC DETAILED SINGLE VIEW PAGE OVERLAY -->
+    <!-- DYNAMIC DETAILED SINGLE VIEW PAGE OVERLAY -->
     <div id="details-overlay" class="hidden fixed inset-0 bg-white dark:bg-darkBg z-[80] overflow-y-auto pb-24 animate-[fadeIn_0.3s_ease-out]">
-        <!-- Top bar sticky -->
         <div class="sticky top-0 bg-white/95 dark:bg-darkBg/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 py-4 px-6 flex justify-between items-center z-10">
             <button onclick="window.closeDetailsOverlay()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 flex items-center justify-center text-lg hover:bg-gray-200 transition-colors">
                 <i class="fas fa-arrow-left"></i>
@@ -252,22 +252,20 @@
         </div>
 
         <div class="max-w-xl mx-auto p-4 space-y-6">
-            <!-- App Card info -->
             <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <div class="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-gray-100 border dark:border-gray-600">
                     <img id="details-thumb" src="" class="w-full h-full object-cover">
-                    <!-- Green check verified badge -->
                     <div class="absolute bottom-1.5 right-1.5 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white dark:border-darkCard">
                         <i class="fas fa-check"></i>
                     </div>
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
-                    <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">ইসলামের পথে চলো</p>
+                    <!-- Updated subtitle to আলোর হাওয়া -->
+                    <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
 
-            <!-- 3 Status cards -->
             <div class="grid grid-cols-3 gap-3">
                 <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
                     <div class="text-sm font-black text-gray-800 dark:text-white flex items-center justify-center gap-0.5"><span id="details-rating-avg">0.0</span> <i class="fas fa-star text-yellow-400 text-xs"></i></div>
@@ -283,21 +281,16 @@
                 </div>
             </div>
 
-            <!-- Screenshot list slider -->
             <div id="details-screenshots-sec" class="hidden">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">স্ক্রিনশট</h4>
-                <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory">
-                    <!-- Populated dynamically -->
-                </div>
+                <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <!-- Description -->
             <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">এই ফাইল সম্পর্কে</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
 
-            <!-- Rating system review form -->
             <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-4">
                 <h4 class="text-base font-black text-gray-800 dark:text-white pb-2 border-b dark:border-gray-800">রেটিং এবং পর্যালোচনা</h4>
                 
@@ -316,13 +309,10 @@
                     <button id="btn-submit-file-review" onclick="window.submitFileReview()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-blue-700 transition">পর্যালোচনা জমা দিন</button>
                 </div>
 
-                <div id="details-comments-section" class="pt-4 border-t dark:border-gray-800 space-y-4">
-                    <!-- Loaded dynamically -->
-                </div>
+                <div id="details-comments-section" class="pt-4 border-t dark:border-gray-800 space-y-4"></div>
             </div>
         </div>
 
-        <!-- Sticky bottom footer download button overlay -->
         <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-t dark:border-gray-800 z-30 flex justify-center shadow-lg">
             <button id="details-sticky-unlock-btn" class="w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3">
                 <i class="fas fa-lock"></i> আনলক করতে বিজ্ঞাপন দেখুন (০/৪০)
@@ -330,7 +320,7 @@
         </div>
     </div>
 
-    <!-- NEW: INTERACTIVE LIGHTBOX IMAGE MODAL -->
+    <!-- INTERACTIVE LIGHTBOX IMAGE MODAL -->
     <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4" onclick="document.getElementById('lightbox-modal').classList.add('hidden')">
         <button class="absolute top-6 right-6 text-white text-3xl hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
         <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
@@ -517,9 +507,9 @@
         window.forceShowAll = false;
 
         const translations = {
-            en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "Unlock File", download_now_button: "Download Now", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
-            hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "अनलॉक करें", download_now_button: "ডাউনলোড করুন", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
-            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "আনলক করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
+            en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
+            hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
+            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
         };
 
         const getTxt = (k, p={}) => { let t = translations[currentLang][k] || k; for(let key in p) t = t.replace(`{${key}}`, p[key]); return t; };
@@ -739,7 +729,6 @@
             }
         };
 
-        // গ্লোবাল মেম্বারশিপ চেক ও পেজ ব্লক করার ফিক্সড সিস্টেম
         let appConfig = {};
         let tgUser = {};
 
@@ -827,7 +816,7 @@
             }
         };
 
-        // RENDER HISTORICAL UNLOCKED LIST
+        // RENDER HISTORICAL UNLOCKED LIST WITH TWO COLUMN GRID
         function renderHistoryTab() {
             const grid = document.getElementById('history-grid');
             const emptyState = document.getElementById('history-empty');
@@ -840,27 +829,33 @@
                 if (done >= req && req > 0) {
                     unlockedCount++;
                     const card = document.createElement('div');
-                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer";
                     
+                    card.onclick = (e) => {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.react-menu-dropdown') || e.target.closest('.share-menu-dropdown')) {
+                            return;
+                        }
+                        window.openDetailsOverlay(f.id);
+                    };
+
                     const mediaElement = f.videoUrl 
-                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
-                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">`;
 
                     card.innerHTML = `
-                        <div class="relative h-44 overflow-hidden bg-black flex justify-center">
+                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
-                            <!-- Download count overlay badge left -->
-                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
                             </div>
-                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-check-circle"></i> Unlocked</div>
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-check-circle"></i> Unlocked</div>
                         </div>
-                        <div class="p-4 flex flex-col flex-1">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1">${f.description}</p>
+                        <div class="p-3 sm:p-4 flex flex-col flex-1">
+                            <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <div class="mt-4">
-                                <button onclick="window.openDetailsOverlay('${f.id}')" class="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-bold text-white shadow-lg transition flex items-center justify-center gap-2">
+                            <div class="mt-3">
+                                <button class="w-full py-2 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-bold text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-1">
                                     <i class="fas fa-download"></i> ${getTxt('download_now_button')}
                                 </button>
                             </div>
@@ -1078,7 +1073,6 @@
         async function handleStickyBtnClick(id, req, downloadUrl) {
             let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
             if(done >= req) { 
-                // Increments download count in firebase on successful unlock opening link
                 await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
                 window.open(downloadUrl, '_blank'); 
                 return; 
@@ -1100,7 +1094,7 @@
                 
                 const fileObj = globalFiles.find(f => f.id === id);
                 updateDetailsStickyBtn(fileObj);
-                loadData(); // updates main cards
+                loadData(); 
 
                 if(done >= req) { 
                     showToast('toast_unlocked'); 
@@ -1119,18 +1113,15 @@
         }
 
         async function loadData() {
-            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়াল টাইম পেজ ব্লকিং
             const tgApp = window.Telegram.WebApp;
             tgApp.ready(); tgApp.expand();
             tgUser = tgApp.initDataUnsafe.user;
             
-            // টেস্টিং ও সেফ ফলব্যাক
             if (!tgUser || !tgUser.id) {
                 tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
             }
 
             if (tgUser && tgUser.id) {
-                // Show TG User Profile card widget
                 document.getElementById('tg-profile-widget').classList.remove('hidden');
                 document.getElementById('tg-name').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
                 document.getElementById('tg-id-text').textContent = `ID: ${tgUser.id}`;
@@ -1141,7 +1132,6 @@
                     document.getElementById('tg-avatar-placeholder').classList.add('hidden');
                 }
 
-                // Register/update user profile detail inside Firestore users collection
                 try {
                     await setDoc(doc(db, "users", String(tgUser.id)), {
                         id: tgUser.id,
@@ -1156,7 +1146,6 @@
 
             try {
                 let socialLinks = {};
-                
                 const setSnap = await getDocs(query(collection(db, "settings")));
                 
                 setSnap.forEach(d => {
@@ -1165,7 +1154,7 @@
                     
                     if(id === 'general') {
                         timerDuration = data.timerDuration || 10;
-                        appConfig = data; // গ্লোবাল ব্যবহারের জন্য সেভ করা হলো
+                        appConfig = data; 
                         
                         if(data.announcementText) {
                             document.getElementById('announcement-container').classList.remove('hidden');
@@ -1180,7 +1169,6 @@
                             }
                         }
 
-                        // ডাইনামিক লোগো সেট করার কোড
                         const logoContainer = document.getElementById('cv-logo-container');
                         if (logoContainer) {
                             if (data.logoUrl && data.logoUrl.trim() !== '') {
@@ -1213,7 +1201,6 @@
                     });
                 });
 
-                // মেম্বারশিপ যাচাই ও উইন্ডো সচল করার মূল অংশ
                 const isVerifiedLive = await checkRequiredChannelsLive();
                 if (!isVerifiedLive) {
                     const screen = document.getElementById('channel-verify-screen');
@@ -1307,13 +1294,13 @@
                 grid.innerHTML = '';
                 let count = 0;
                 
-                globalFiles = []; // save dynamically inside global scope
+                globalFiles = []; 
 
                 fSnap.forEach(d => {
                     const f = {id: d.id, ...d.data()};
                     if(f.isDeleted) return; 
 
-                    globalFiles.push(f); // Push to list
+                    globalFiles.push(f); 
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -1341,25 +1328,33 @@
                     }
                     
                     const mediaElement = f.videoUrl 
-                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
-                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">`;
 
                     const card = document.createElement('div');
-                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
+                    
+                    // Clicking anywhere on card opens single details page overlay
+                    card.onclick = (e) => {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.react-menu-dropdown') || e.target.closest('.share-menu-dropdown')) {
+                            return;
+                        }
+                        window.openDetailsOverlay(f.id);
+                    };
+
                     card.innerHTML = `
-                        <div class="relative h-44 overflow-hidden bg-black flex justify-center">
+                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
-                            <!-- Live Download indicator badge (Left top) -->
-                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
                             </div>
                             ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
-                        <div class="p-4 flex flex-col flex-1">
-                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1">${f.description}</p>
+                        <div class="p-3 sm:p-4 flex flex-col flex-1">
+                            <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <div class="flex justify-between items-center mt-4 mb-4 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
                                 <div class="flex items-center gap-2 flex-wrap flex-1">
                                     <div class="relative react-wrapper inline-block shrink-0">
                                         <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl px-3 py-2 flex flex-wrap w-64 sm:w-72 gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
@@ -1390,12 +1385,8 @@
                                     <div id="react-summary-${f.id}" class="flex flex-wrap items-center gap-1 text-sm shrink-0 min-h-[28px] ml-1">
                                         ${reactHtml}
                                     </div>
-
-                                    <button onclick="window.openComments('${f.id}')" class="flex items-center gap-1.5 font-medium text-gray-400 hover:text-blue-500 transition ml-2 shrink-0">
-                                        <i class="fas fa-comment"></i> <span id="comment-count-${f.id}" class="text-sm">${f.commentCount || 0}</span>
-                                    </button>
                                 </div>
-                                <div class="flex items-center gap-3 text-gray-400 text-sm font-medium shrink-0 ml-2">
+                                <div class="flex items-center gap-2 text-gray-400 text-xs sm:text-sm font-medium shrink-0 ml-2">
                                     <div title="Views"><i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span></div>
                                     
                                     <div class="relative share-wrapper inline-block ml-1">
@@ -1405,25 +1396,23 @@
                                         </div>
                                         <button onclick="window.toggleShareMenu('${f.id}')" class="hover:text-green-500 transition text-lg" title="Share Options"><i class="fas fa-share-alt"></i></button>
                                     </div>
-
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <div class="flex justify-between text-xs text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
+                                <div class="flex justify-between text-[10px] text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
                                 <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
                                     <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
-                            <!-- Clicking card action opens custom details single view layout overlay directly -->
-                            <button onclick="window.openDetailsOverlay('${f.id}')" class="dl-btn-card w-full py-3 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg flex items-center justify-center gap-2 relative overflow-hidden group">
-                                <span class="relative z-10"><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
+                            <!-- Button changed label to Download Now but actions keep inside modal -->
+                            <button class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
+                                <span><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
                             </button>
                         </div>
                     `;
                     grid.appendChild(card);
                     
-                    // Progress calculations update
                     const progBar = card.querySelector('.prog-bar');
                     const progTxt = card.querySelector('.prog-txt');
                     const doneVal = parseInt(localStorage.getItem(`ad_${f.id}`) || 0);
