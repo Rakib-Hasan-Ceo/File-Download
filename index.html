@@ -43,7 +43,6 @@
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
-        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -81,7 +80,6 @@
         <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto custom-scroll pb-4">
             <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 flex flex-col items-center">
-                <!-- Sidebar displays the connected Telegram details dynamically -->
                 <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-2xl shadow-md mb-2 overflow-hidden" id="sidebar-avatar">
                     <img id="sidebar-tg-img" src="" class="w-full h-full object-cover hidden" alt="User">
                     <span id="sidebar-avatar-placeholder">U</span>
@@ -110,27 +108,6 @@
         <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
     </aside>
 
-    <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-2xl p-6 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
-            <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
-                <i class="fas fa-times text-lg"></i>
-            </button>
-            
-            <div class="text-center mb-5 mt-2">
-                <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
-                    <i class="fas fa-bell text-4xl text-red-500 animate-ring"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष नोठिश</h3>
-            </div>
-            
-            <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
-            
-            <div class="mt-6 text-center">
-                <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg">আমি বুঝতে পেরেছি</button>
-            </div>
-        </div>
-    </div>
-
     <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
         <div class="container mx-auto px-2 flex items-center">
             <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">NOTICE</span>
@@ -138,17 +115,19 @@
         </div>
     </div>
 
-    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b dark:border-gray-700 shadow-sm">
+    <!-- GLASSMORPHIC STICKY NAVBAR -->
+    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800/80 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.showAllFiles ? window.showAllFiles() : window.location.href=window.location.pathname">
-                <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
                     <i class="fas fa-cloud-download-alt text-xl"></i>
                 </div>
-                <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">ওয়েব অ্যাপ শিখুন</span>
+                <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">ওয়েব অ্যাপ শিখুন</span>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.4)] hover:shadow-[0_0_25px_rgba(79,70,229,0.7)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/30 backdrop-blur-md" title="Menu">
-                    <span class="absolute inset-0 bg-white/20 group-hover:opacity-0 transition-opacity duration-300"></span>
+                <!-- Premium Glassmorphic menu button -->
+                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/20 backdrop-blur-md" title="Menu">
+                    <span class="absolute inset-0 bg-white/10 group-hover:opacity-0 transition-opacity duration-300"></span>
                     <i class="fas fa-ellipsis-v text-lg relative z-10 group-hover:rotate-180 transition-transform duration-500"></i>
                 </button>
             </div>
@@ -275,6 +254,14 @@
                 </div>
             </div>
 
+            <!-- PREMIUM DETAILED VIEW REACTIONS BAR inside details page -->
+            <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col gap-3">
+                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">রিঅ্যাকশন দিন</h4>
+                <div class="flex flex-wrap gap-2.5" id="details-reactions-picker">
+                    <!-- Populated dynamically with emojis and counters -->
+                </div>
+            </div>
+
             <div id="details-screenshots-sec" class="hidden">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">স্ক্রিনশট</h4>
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
@@ -368,7 +355,6 @@
             <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
             
             <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
-                <!-- Logged In UI is now Always active with TG profile -->
                 <div id="comment-logged-in" class="flex flex-col gap-3">
                     <div class="flex gap-2 items-center">
                         <div id="comment-user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0 overflow-hidden">
@@ -410,6 +396,7 @@
         let globalFiles = []; 
         let currentActiveReviewStars = 0;
         let detailsActiveFileId = null;
+        let editingReviewDocId = null; // Track if we are editing reviews
         
         window.forceShowAll = false;
 
@@ -453,34 +440,6 @@
             document.getElementById('single-view-footer').innerHTML = '';
             document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
             loadData();
-        };
-
-        window.updateReactDom = (id, emoji, change) => {
-            let summary = document.getElementById(`react-summary-${id}`);
-            if(!summary) return;
-            let btn = document.getElementById(`count-${id}-${emoji}`);
-            
-            let currentReact = localStorage.getItem('react_' + id);
-            let isMyReact = (currentReact === emoji);
-            
-            if(btn) {
-                let numSpan = btn.querySelector('.r-cnt');
-                let newCount = parseInt(numSpan.innerText) + change;
-                if(newCount <= 0) {
-                    btn.remove();
-                } else {
-                    numSpan.innerText = newCount;
-                    if(isMyReact) {
-                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
-                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
-                    } else {
-                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
-                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
-                    }
-                }
-            } else if(change > 0) {
-                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
-            }
         };
 
         let appConfig = {};
@@ -586,9 +545,6 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col cursor-pointer";
                     
                     card.onclick = (e) => {
-                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.react-menu-dropdown') || e.target.closest('.share-menu-dropdown')) {
-                            return;
-                        }
                         window.openDetailsOverlay(f.id);
                     };
 
@@ -597,7 +553,7 @@
                         : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">`;
 
                     card.innerHTML = `
-                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center">
+                        <div class="relative h-28 sm:h-36 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
                             <!-- Download count overlay badge left -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
@@ -627,9 +583,10 @@
             }
         }
 
-        // DETAILED OVERLAY CONTROLLERS
+        // DETAILED OVERLAY CONTROLLERS WITH DYNAMIC REACTION PICKER
         window.openDetailsOverlay = async (id) => {
             detailsActiveFileId = id;
+            editingReviewDocId = null; // reset edit status
             const fileObj = globalFiles.find(f => f.id === id);
             if(!fileObj) return;
 
@@ -641,6 +598,9 @@
             document.getElementById('details-title').textContent = fileObj.title;
             document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
             document.getElementById('details-description').textContent = fileObj.description || "কোনো ডেসক্রিপশন দেওয়া হয়নি।";
+
+            // Populate reactions list & picker
+            renderDetailsReactions(fileObj);
 
             // screenshots
             const ssContainer = document.getElementById('details-screenshots-container');
@@ -678,6 +638,56 @@
             document.getElementById('details-overlay').classList.remove('hidden');
         };
 
+        function renderDetailsReactions(fileObj) {
+            const container = document.getElementById('details-reactions-picker');
+            container.innerHTML = '';
+            const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
+            const localReact = localStorage.getItem('react_' + fileObj.id);
+
+            emojis.forEach(emoji => {
+                const count = fileObj[`react_${emoji}`] || 0;
+                const isSelected = (localReact === emoji);
+                const activeStyle = isSelected 
+                    ? "bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border-blue-300"
+                    : "bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100";
+                
+                container.innerHTML += `
+                    <button onclick="window.submitReaction('${fileObj.id}', '${emoji}')" class="px-3 py-1.5 rounded-xl border text-sm font-bold flex items-center gap-1 transition ${activeStyle}">
+                        <span>${emoji}</span>
+                        <span class="text-xs">${count}</span>
+                    </button>`;
+            });
+        }
+
+        window.submitReaction = async (fileId, emoji) => {
+            const currentReact = localStorage.getItem('react_' + fileId);
+            let updates = {};
+
+            if(currentReact === emoji) {
+                // Remove existing react
+                localStorage.removeItem('react_' + fileId);
+                updates[`react_${emoji}`] = increment(-1);
+            } else {
+                if(currentReact) {
+                    updates[`react_${currentReact}`] = increment(-1);
+                }
+                localStorage.setItem('react_' + fileId, emoji);
+                updates[`react_${emoji}`] = increment(1);
+            }
+
+            await updateDoc(doc(db, "files", fileId), updates);
+            
+            // Reload local configuration internally
+            const updatedDoc = await getDoc(doc(db, "files", fileId));
+            if(updatedDoc.exists()) {
+                const updatedData = {id: updatedDoc.id, ...updatedDoc.data()};
+                const idx = globalFiles.findIndex(f => f.id === fileId);
+                if(idx !== -1) globalFiles[idx] = updatedData;
+                renderDetailsReactions(updatedData);
+                loadData(); // reload home layouts
+            }
+        };
+
         window.closeDetailsOverlay = () => {
             document.getElementById('details-overlay').classList.add('hidden');
             detailsActiveFileId = null;
@@ -709,11 +719,11 @@
                 return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
             }
 
-            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : (currentUser ? currentUser.displayName : "Anonymous User");
-            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : (currentUser ? currentUser.photoURL : "");
-            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : (currentUser ? currentUser.uid : userDeviceId);
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
+            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
 
-            await addDoc(collection(db, "files", detailsActiveFileId, "comments"), {
+            const reviewPayload = {
                 name: userName,
                 text: text || "রেট করেছেন!",
                 stars: currentActiveReviewStars,
@@ -721,7 +731,24 @@
                 deviceId: userDeviceId,
                 uid: userId,
                 avatar: userAvatar
-            });
+            };
+
+            if(editingReviewDocId) {
+                // Update Review
+                await updateDoc(doc(db, "files", detailsActiveFileId, "comments", editingReviewDocId), {
+                    text: text || "রেট করেছেন!",
+                    stars: currentActiveReviewStars,
+                    timestamp: new Date()
+                });
+                editingReviewDocId = null;
+                document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা জমা দিন";
+                showToast("পর্যালোচনা আপডেট করা হয়েছে!");
+            } else {
+                // Create New Review
+                await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
+                await updateDoc(doc(db, "files", detailsActiveFileId), { commentCount: increment(1) });
+                showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
+            }
 
             // Recalculate average rating
             const commentsSnap = await getDocs(collection(db, "files", detailsActiveFileId, "comments"));
@@ -736,13 +763,45 @@
             });
             const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
             await updateDoc(doc(db, "files", detailsActiveFileId), {
-                commentCount: increment(1),
                 avgRating: avg
             });
 
             document.getElementById('review-comment-text').value = '';
             window.setReviewStars(0);
-            showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
+        };
+
+        // EDIT COMMENT
+        window.editReviewInline = (id, stars, text) => {
+            editingReviewDocId = id;
+            window.setReviewStars(stars);
+            document.getElementById('review-comment-text').value = text;
+            document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা আপডেট করুন";
+            document.getElementById('review-stars-container').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // DELETE COMMENT
+        window.deleteReviewInline = async (fileId, docId) => {
+            if(confirm("আপনার পর্যালোচনাটি ডিলিট করতে চান?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", docId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                
+                // Recalculate average rating
+                const commentsSnap = await getDocs(collection(db, "files", fileId, "comments"));
+                let totalStars = 0;
+                let count = 0;
+                commentsSnap.forEach(d => {
+                    const c = d.data();
+                    if(c.stars) {
+                        totalStars += c.stars;
+                        count++;
+                    }
+                });
+                const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
+                await updateDoc(doc(db, "files", fileId), {
+                    avgRating: avg
+                });
+                showToast("পর্যালোচনা মুছে ফেলা হয়েছে!");
+            }
         };
 
         function loadDetailsReviewsLive(fileId) {
@@ -781,6 +840,17 @@
                         ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
                         : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
 
+                    // Check if current user is owner of the comment
+                    const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
+                    let controlsHtml = '';
+                    if(isMyComment) {
+                        controlsHtml = `
+                            <div class="flex gap-2.5 mt-2 justify-end text-xs font-bold text-gray-400">
+                                <button onclick="window.editReviewInline('${d.id}', ${c.stars}, '${c.text.replace(/'/g, "\\'")}')" class="hover:text-blue-500 transition-colors"><i class="fas fa-edit mr-0.5"></i> Edit</button>
+                                <button onclick="window.deleteReviewInline('${fileId}', '${d.id}')" class="hover:text-red-500 transition-colors"><i class="fas fa-trash-alt mr-0.5"></i> Delete</button>
+                            </div>`;
+                    }
+
                     list.innerHTML += `
                         <div class="flex gap-3 text-left">
                             <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
@@ -796,6 +866,7 @@
                                         <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
                                     </div>
                                     <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    ${controlsHtml}
                                 </div>
                             </div>
                         </div>`;
@@ -868,12 +939,10 @@
         }
 
         async function loadData() {
-            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়াল টাইম পেজ ব্লকিং
             const tgApp = window.Telegram.WebApp;
             tgApp.ready(); tgApp.expand();
             tgUser = tgApp.initDataUnsafe.user;
             
-            // টেস্টিং ও সেফ ফলব্যাক
             if (!tgUser || !tgUser.id) {
                 tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
             }
@@ -888,13 +957,11 @@
                     imgEl.classList.remove('hidden');
                     document.getElementById('tg-avatar-placeholder').classList.add('hidden');
 
-                    // Set Sidebar dynamically
                     const sidebarImg = document.getElementById('sidebar-tg-img');
                     sidebarImg.src = tgUser.photo_url;
                     sidebarImg.classList.remove('hidden');
                     document.getElementById('sidebar-avatar-placeholder').classList.add('hidden');
 
-                    // Set Comments modal avatar dynamically
                     const commentImg = document.getElementById('comment-avatar-img');
                     commentImg.src = tgUser.photo_url;
                     commentImg.classList.remove('hidden');
@@ -1044,7 +1111,7 @@
                         slides.forEach((s, i) => {
                             const img = document.createElement('img');
                             img.src = s.imageUrl;
-                            img.className = 'w-full h-full object-fill flex-shrink-0';
+                            img.className = 'w-full h-full object-cover flex-shrink-0'; // custom optimized aspect wrapper
                             wrapper.appendChild(img);
                             const dot = document.createElement('div');
                             dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
@@ -1078,26 +1145,6 @@
                     
                     const localReact = localStorage.getItem('react_' + f.id);
                     
-                    let reactHtml = '';
-                    const allEmojis = ['❤️','👍','😭','😁','😢','👌','🥰','🫣','🤯','👀','🌹','💯','🕊','🔥','💔','🇧🇩'];
-                    let hasAny = false;
-                    allEmojis.forEach(e => {
-                        let c = f['react_' + e] || 0;
-                        if(c > 0) {
-                            let isMyReact = (localReact === e);
-                            let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
-                            let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
-                            reactHtml += `<button onclick="window.handleBadgeClick('${f.id}', '${e}')" id="count-${f.id}-${e}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">${e} <span class="text-xs ${activeTextClass} font-bold r-cnt">${c}</span></button>`;
-                            hasAny = true;
-                        }
-                    });
-                    if(!hasAny && f.likeCount > 0) {
-                        let isMyReact = (localReact === '👍');
-                        let activeBtnClass = isMyReact ? "bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700" : "bg-transparent border-transparent";
-                        let activeTextClass = isMyReact ? "text-blue-600 dark:text-blue-400" : "text-gray-500 dark:text-gray-400";
-                        reactHtml = `<button onclick="window.handleBadgeClick('${f.id}', '👍')" id="count-${f.id}-👍" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border ${activeBtnClass} transition-colors cursor-pointer">👍 <span class="text-xs ${activeTextClass} font-bold r-cnt">${f.likeCount}</span></button>`;
-                    }
-                    
                     const mediaElement = f.videoUrl 
                         ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
                         : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">`;
@@ -1106,11 +1153,16 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
                     
                     card.onclick = (e) => {
-                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.react-menu-dropdown') || e.target.closest('.share-menu-dropdown')) {
-                            return;
-                        }
                         window.openDetailsOverlay(f.id);
                     };
+
+                    // Count total likes/reactions across all emojis
+                    const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
+                    let likesTotal = 0;
+                    emojis.forEach(e => {
+                        likesTotal += (f[`react_${e}`] || 0);
+                    });
+                    if(likesTotal === 0 && f.likeCount > 0) likesTotal = f.likeCount;
 
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
@@ -1124,49 +1176,14 @@
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 relative shrink-0">
-                                <div class="flex items-center gap-2 flex-wrap flex-1 min-w-0">
-                                    <div class="relative react-wrapper inline-block shrink-0">
-                                        <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl px-3 py-2 flex flex-wrap w-64 sm:w-72 gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
-                                            <button onclick="window.setReact('${f.id}', '❤️')" class="hover:scale-125 transition-transform text-xl">❤️</button>
-                                            <button onclick="window.setReact('${f.id}', '👍')" class="hover:scale-125 transition-transform text-xl">👍</button>
-                                            <button onclick="window.setReact('${f.id}', '😭')" class="hover:scale-125 transition-transform text-xl">😭</button>
-                                            <button onclick="window.setReact('${f.id}', '😁')" class="hover:scale-125 transition-transform text-xl">😁</button>
-                                            <button onclick="window.setReact('${f.id}', '😢')" class="hover:scale-125 transition-transform text-xl">😢</button>
-                                            <button onclick="window.setReact('${f.id}', '👌')" class="hover:scale-125 transition-transform text-xl">👌</button>
-                                            <button onclick="window.setReact('${f.id}', '🥰')" class="hover:scale-125 transition-transform text-xl">🥰</button>
-                                            <button onclick="window.setReact('${f.id}', '🫣')" class="hover:scale-125 transition-transform text-xl">🫣</button>
-                                            <button onclick="window.setReact('${f.id}', '🤯')" class="hover:scale-125 transition-transform text-xl">🤯</button>
-                                            <button onclick="window.setReact('${f.id}', '👀')" class="hover:scale-125 transition-transform text-xl">👀</button>
-                                            <button onclick="window.setReact('${f.id}', '🌹')" class="hover:scale-125 transition-transform text-xl">🌹</button>
-                                            <button onclick="window.setReact('${f.id}', '💯')" class="hover:scale-125 transition-transform text-xl">💯</button>
-                                            <button onclick="window.setReact('${f.id}', '🕊')" class="hover:scale-125 transition-transform text-xl">🕊</button>
-                                            <button onclick="window.setReact('${f.id}', '🔥')" class="hover:scale-125 transition-transform text-xl">🔥</button>
-                                            <button onclick="window.setReact('${f.id}', '💔')" class="hover:scale-125 transition-transform text-xl">💔</button>
-                                            <button onclick="window.setReact('${f.id}', '🇧🇩')" class="hover:scale-125 transition-transform text-xl">🇧🇩</button>
-                                            <div class="w-px h-6 bg-gray-300 dark:bg-gray-600 my-auto mx-1"></div>
-                                            <button onclick="window.removeReact('${f.id}')" class="hover:bg-red-100 text-gray-400 hover:text-red-500 w-6 h-6 rounded-full flex items-center justify-center transition-colors"><i class="fas fa-times"></i></button>
-                                        </div>
-                                        <button onclick="window.toggleReactMenu('${f.id}')" class="flex items-center gap-1.5 font-medium transition outline-none ${localReact ? 'text-blue-500' : 'text-gray-400 hover:text-blue-500'}">
-                                            <span id="react-icon-${f.id}" class="text-xl"><i class="fas fa-thumbs-up"></i></span> 
-                                        </button>
-                                    </div>
-                                    
-                                    <div id="react-summary-${f.id}" class="flex flex-wrap items-center gap-1 text-sm shrink-0 min-h-[28px] ml-1">
-                                        ${reactHtml}
-                                    </div>
+                            <!-- Static Counter Badges Row -->
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-[11px] sm:text-xs text-gray-400 font-bold shrink-0">
+                                <div class="flex items-center gap-2">
+                                    <span title="Views" class="flex items-center gap-0.5"><i class="fas fa-eye text-blue-400"></i> ${f.views || 0}</span>
+                                    <span title="Likes" class="flex items-center gap-0.5"><i class="fas fa-thumbs-up text-pink-400"></i> ${likesTotal}</span>
+                                    <span title="Comments" class="flex items-center gap-0.5"><i class="fas fa-comment text-indigo-400"></i> ${f.commentCount || 0}</span>
                                 </div>
-                                <div class="flex items-center gap-2 text-gray-400 text-xs sm:text-sm font-medium shrink-0 ml-2">
-                                    <div title="Views"><i class="fas fa-eye"></i> <span id="view-count-${f.id}">${f.views || 0}</span></div>
-                                    
-                                    <div class="relative share-wrapper inline-block ml-1">
-                                        <div id="share-menu-${f.id}" class="share-menu-dropdown hidden absolute bottom-full right-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-lg px-3 py-2 flex flex-col gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20 w-36">
-                                            <button onclick="window.copyToClip('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-blue-500 transition w-full text-left"><i class="fas fa-copy w-4"></i> Copy Link</button>
-                                            <button onclick="window.shareToSocial('${f.id}')" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-500 transition w-full text-left"><i class="fas fa-share-square w-4"></i> Share Now</button>
-                                        </div>
-                                        <button onclick="window.toggleShareMenu('${f.id}')" class="hover:text-green-500 transition text-lg" title="Share Options"><i class="fas fa-share-alt"></i></button>
-                                    </div>
-                                </div>
+                                <span class="hover:text-green-500 transition-colors cursor-pointer text-sm" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
                             </div>
 
                             <div class="mb-3 shrink-0">
