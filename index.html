@@ -39,11 +39,11 @@
         .react-menu-dropdown { position: absolute; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden">
+<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-24">
 
-    <!-- NEW: CHANNEL VERIFICATION SCREEN (বাধ্যতামূলক চ্যানেল জয়েন করার স্ক্রিন) -->
+    <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
-        <!-- Dynamic Logo Container (B এর বদলে ইমেজ বা ডিফল্ট আইকন দেখাবে) -->
+        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -126,7 +126,7 @@
                 <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
                     <i class="fas fa-bell text-4xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष নোটিশ</h3>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष नोটিশ</h3>
             </div>
             
             <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
@@ -161,7 +161,30 @@
         </div>
     </nav>
 
-    <main class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+    <!-- NEW: TELEGRAM USER PROFILE WIDGET -->
+    <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-4 px-4">
+        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full border-2 border-blue-500 overflow-hidden shrink-0 bg-gray-100">
+                    <img id="tg-photo" src="" class="w-full h-full object-cover hidden" alt="Avatar">
+                    <div id="tg-avatar-placeholder" class="w-full h-full flex items-center justify-center text-blue-600 font-black text-lg">U</div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1">
+                        <span id="tg-name" class="font-extrabold text-gray-800 dark:text-white text-base">Telegram User</span>
+                        <i class="fas fa-check-circle text-emerald-500 text-sm"></i>
+                    </div>
+                    <span id="tg-id-text" class="text-xs text-gray-500 dark:text-gray-400 font-semibold block">ID: 000000000</span>
+                </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ACTIVE
+            </span>
+        </div>
+    </div>
+
+    <!-- MAIN HOME TAB CONTENT -->
+    <main id="home-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
         
         <div id="search-section" class="relative max-w-xl mx-auto mb-8 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
@@ -196,6 +219,123 @@
         </section>
     </main>
 
+    <!-- NEW: HISTORY TAB CONTENT (ইতিহাস) -->
+    <main id="history-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen hidden">
+        <div class="max-w-xl mx-auto bg-white dark:bg-darkCard p-6 rounded-3xl border border-gray-150 dark:border-gray-700 shadow-md text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg shadow-blue-500/20">
+                <i class="fas fa-history"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gray-800 dark:text-white">ডাউনলোডস</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">আপনার আনলক করা ফাইলগুলি</p>
+        </div>
+
+        <div id="history-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+        <div id="history-empty" class="text-center py-20">
+            <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400 text-3xl mx-auto mb-4">
+                <i class="fas fa-box-open"></i>
+            </div>
+            <h3 class="text-lg font-bold text-gray-800 dark:text-white">এখনও কোনো ফাইল আনলক করা হয়নি।</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Start exploring and downloading files!</p>
+        </div>
+    </main>
+
+    <!-- NEW: DYNAMIC DETAILED SINGLE VIEW PAGE OVERLAY -->
+    <div id="details-overlay" class="hidden fixed inset-0 bg-white dark:bg-darkBg z-[80] overflow-y-auto pb-24 animate-[fadeIn_0.3s_ease-out]">
+        <!-- Top bar sticky -->
+        <div class="sticky top-0 bg-white/95 dark:bg-darkBg/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 py-4 px-6 flex justify-between items-center z-10">
+            <button onclick="window.closeDetailsOverlay()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 flex items-center justify-center text-lg hover:bg-gray-200 transition-colors">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <h2 id="details-title-top" class="text-base font-black text-gray-800 dark:text-white truncate max-w-[180px]">টেলিগ্রাম বট</h2>
+            <div class="w-10"></div>
+        </div>
+
+        <div class="max-w-xl mx-auto p-4 space-y-6">
+            <!-- App Card info -->
+            <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                <div class="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-gray-100 border dark:border-gray-600">
+                    <img id="details-thumb" src="" class="w-full h-full object-cover">
+                    <!-- Green check verified badge -->
+                    <div class="absolute bottom-1.5 right-1.5 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white dark:border-darkCard">
+                        <i class="fas fa-check"></i>
+                    </div>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
+                    <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">ইসলামের পথে চলো</p>
+                </div>
+            </div>
+
+            <!-- 3 Status cards -->
+            <div class="grid grid-cols-3 gap-3">
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
+                    <div class="text-sm font-black text-gray-800 dark:text-white flex items-center justify-center gap-0.5"><span id="details-rating-avg">0.0</span> <i class="fas fa-star text-yellow-400 text-xs"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">RATING</span>
+                </div>
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
+                    <span id="details-downloads-badge" class="text-sm font-black text-gray-800 dark:text-white">📥 0</span>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">DOWNLOAD</span>
+                </div>
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center flex flex-col justify-center items-center">
+                    <i class="fas fa-shield-alt text-emerald-500 text-lg"></i>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">SAFE</span>
+                </div>
+            </div>
+
+            <!-- Screenshot list slider -->
+            <div id="details-screenshots-sec" class="hidden">
+                <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">স্ক্রিনশট</h4>
+                <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory">
+                    <!-- Populated dynamically -->
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+                <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">এই ফাইল সম্পর্কে</h4>
+                <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
+            </div>
+
+            <!-- Rating system review form -->
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-4">
+                <h4 class="text-base font-black text-gray-800 dark:text-white pb-2 border-b dark:border-gray-800">রেটিং এবং পর্যালোচনা</h4>
+                
+                <div class="space-y-4">
+                    <p class="text-sm font-bold text-gray-700 dark:text-gray-200">এই ফাইলটি রেট করুন</p>
+                    <div class="flex gap-2 text-3xl text-gray-300" id="review-stars-container">
+                        <button onclick="window.setReviewStars(1)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
+                        <button onclick="window.setReviewStars(2)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
+                        <button onclick="window.setReviewStars(3)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
+                        <button onclick="window.setReviewStars(4)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
+                        <button onclick="window.setReviewStars(5)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
+                    </div>
+
+                    <textarea id="review-comment-text" rows="3" placeholder="Describe your experience (optional)..." class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border dark:border-gray-700 focus:outline-none focus:border-blue-500 text-sm shadow-inner transition"></textarea>
+                    
+                    <button id="btn-submit-file-review" onclick="window.submitFileReview()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-blue-700 transition">পর্যালোচনা জমা দিন</button>
+                </div>
+
+                <div id="details-comments-section" class="pt-4 border-t dark:border-gray-800 space-y-4">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticky bottom footer download button overlay -->
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-t dark:border-gray-800 z-30 flex justify-center shadow-lg">
+            <button id="details-sticky-unlock-btn" class="w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3">
+                <i class="fas fa-lock"></i> আনলক করতে বিজ্ঞাপন দেখুন (০/৪০)
+            </button>
+        </div>
+    </div>
+
+    <!-- NEW: INTERACTIVE LIGHTBOX IMAGE MODAL -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4" onclick="document.getElementById('lightbox-modal').classList.add('hidden')">
+        <button class="absolute top-6 right-6 text-white text-3xl hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
+        <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
+    </div>
+
     <footer class="bg-white dark:bg-darkCard border-t dark:border-gray-700 py-10 mt-12">
         <div class="container mx-auto px-4 text-center">
             <div id="ad-container-3" class="mb-8 flex justify-center min-h-[60px]"></div>
@@ -204,8 +344,20 @@
         </div>
     </footer>
 
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-darkCard/95 border-t border-gray-200 dark:border-gray-800 shadow-xl z-40 flex justify-around py-2.5 backdrop-blur-md">
+        <button id="nav-home" onclick="window.switchTab('home')" class="flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105">
+            <i class="fas fa-home text-lg"></i>
+            <span>হোম</span>
+        </button>
+        <button id="nav-history" onclick="window.switchTab('history')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs">
+            <i class="fas fa-history text-lg"></i>
+            <span>ইতিহাস</span>
+        </button>
+    </nav>
+
     <!-- Toast -->
-    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
+    <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
         <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
     </div>
 
@@ -333,7 +485,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, getDocs, doc, getDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc, setDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
@@ -358,6 +510,9 @@
         let currentSlide = 0;
         let currentFileIdForComment = null;
         let currentUser = null; 
+        let globalFiles = []; 
+        let currentActiveReviewStars = 0;
+        let detailsActiveFileId = null;
         
         window.forceShowAll = false;
 
@@ -651,15 +806,352 @@
             btn.textContent = "VERIFY MEMBERSHIP";
         };
 
+        // TAB SWITCHER
+        window.switchTab = (tab) => {
+            const homeTabBtn = document.getElementById('nav-home');
+            const histTabBtn = document.getElementById('nav-history');
+            const homeContent = document.getElementById('home-tab-content');
+            const histContent = document.getElementById('history-tab-content');
+
+            if(tab === 'home') {
+                homeContent.classList.remove('hidden');
+                histContent.classList.add('hidden');
+                homeTabBtn.className = "flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105";
+                histTabBtn.className = "flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs";
+            } else {
+                homeContent.classList.add('hidden');
+                histContent.classList.remove('hidden');
+                histTabBtn.className = "flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105";
+                homeTabBtn.className = "flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs";
+                renderHistoryTab();
+            }
+        };
+
+        // RENDER HISTORICAL UNLOCKED LIST
+        function renderHistoryTab() {
+            const grid = document.getElementById('history-grid');
+            const emptyState = document.getElementById('history-empty');
+            grid.innerHTML = '';
+            let unlockedCount = 0;
+
+            globalFiles.forEach(f => {
+                const req = parseInt(f.requiredAds || 0);
+                const done = parseInt(localStorage.getItem(`ad_${f.id}`) || 0);
+                if (done >= req && req > 0) {
+                    unlockedCount++;
+                    const card = document.createElement('div');
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col";
+                    
+                    const mediaElement = f.videoUrl 
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" onplay="window.trackView('${f.id}')" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" onclick="window.trackView('${f.id}')" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110 cursor-pointer">`;
+
+                    card.innerHTML = `
+                        <div class="relative h-44 overflow-hidden bg-black flex justify-center">
+                            ${mediaElement}
+                            <!-- Download count overlay badge left -->
+                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
+                            </div>
+                            <div class="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-extrabold px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-check-circle"></i> Unlocked</div>
+                        </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1">${f.description}</p>
+                            
+                            <div class="mt-4">
+                                <button onclick="window.openDetailsOverlay('${f.id}')" class="w-full py-3 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl font-bold text-white shadow-lg transition flex items-center justify-center gap-2">
+                                    <i class="fas fa-download"></i> ${getTxt('download_now_button')}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                }
+            });
+
+            if (unlockedCount > 0) {
+                emptyState.classList.add('hidden');
+            } else {
+                emptyState.classList.remove('hidden');
+            }
+        }
+
+        // DETAILED OVERLAY CONTROLLERS
+        window.openDetailsOverlay = async (id) => {
+            detailsActiveFileId = id;
+            const fileObj = globalFiles.find(f => f.id === id);
+            if(!fileObj) return;
+
+            window.trackView(id);
+
+            // Populate static UI elements
+            document.getElementById('details-title-top').textContent = fileObj.title;
+            document.getElementById('details-thumb').src = fileObj.thumbnailUrl;
+            document.getElementById('details-title').textContent = fileObj.title;
+            document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
+            document.getElementById('details-description').textContent = fileObj.description || "কোনো ডেসক্রিপশন দেওয়া হয়নি।";
+
+            // screenshots
+            const ssContainer = document.getElementById('details-screenshots-container');
+            const ssSec = document.getElementById('details-screenshots-sec');
+            ssContainer.innerHTML = '';
+            
+            const screenshots = [];
+            if(fileObj.screenshot1) screenshots.push(fileObj.screenshot1);
+            if(fileObj.screenshot2) screenshots.push(fileObj.screenshot2);
+            if(fileObj.screenshot3) screenshots.push(fileObj.screenshot3);
+
+            if(screenshots.length > 0) {
+                ssSec.classList.remove('hidden');
+                screenshots.forEach(url => {
+                    ssContainer.innerHTML += `
+                        <div class="w-48 h-80 shrink-0 rounded-2xl overflow-hidden border dark:border-gray-700 bg-gray-100 dark:bg-gray-800 snap-center shadow-sm cursor-pointer" onclick="window.openLightbox('${url}')">
+                            <img src="${url}" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+                        </div>`;
+                });
+            } else {
+                ssSec.classList.add('hidden');
+            }
+
+            // star system reset
+            window.setReviewStars(0);
+            document.getElementById('review-comment-text').value = '';
+
+            // Update sticky unlock btn status
+            updateDetailsStickyBtn(fileObj);
+
+            // Load reviews & comments live from subcollection
+            loadDetailsReviewsLive(id);
+
+            // Open overlay page
+            document.getElementById('details-overlay').classList.remove('hidden');
+        };
+
+        window.closeDetailsOverlay = () => {
+            document.getElementById('details-overlay').classList.add('hidden');
+            detailsActiveFileId = null;
+        };
+
+        window.openLightbox = (url) => {
+            const modal = document.getElementById('lightbox-modal');
+            const img = document.getElementById('lightbox-img');
+            img.src = url;
+            modal.classList.remove('hidden');
+        };
+
+        window.setReviewStars = (stars) => {
+            currentActiveReviewStars = stars;
+            const starBtns = document.querySelectorAll('#review-stars-container .star-btn');
+            starBtns.forEach((btn, i) => {
+                if(i < stars) {
+                    btn.className = "star-btn text-yellow-400 transition-transform hover:scale-110";
+                } else {
+                    btn.className = "star-btn text-gray-300 transition-transform hover:scale-110";
+                }
+            });
+        };
+
+        window.submitFileReview = async () => {
+            if(!detailsActiveFileId) return;
+            const text = document.getElementById('review-comment-text').value.trim();
+            if(currentActiveReviewStars === 0) {
+                return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
+            }
+
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : (currentUser ? currentUser.displayName : "Anonymous User");
+            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : (currentUser ? currentUser.photoURL : "");
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : (currentUser ? currentUser.uid : userDeviceId);
+
+            await addDoc(collection(db, "files", detailsActiveFileId, "comments"), {
+                name: userName,
+                text: text || "রেট করেছেন!",
+                stars: currentActiveReviewStars,
+                timestamp: new Date(),
+                deviceId: userDeviceId,
+                uid: userId,
+                avatar: userAvatar
+            });
+
+            // Recalculate average rating
+            const commentsSnap = await getDocs(collection(db, "files", detailsActiveFileId, "comments"));
+            let totalStars = 0;
+            let count = 0;
+            commentsSnap.forEach(d => {
+                const c = d.data();
+                if(c.stars) {
+                    totalStars += c.stars;
+                    count++;
+                }
+            });
+            const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
+            await updateDoc(doc(db, "files", detailsActiveFileId), {
+                commentCount: increment(1),
+                avgRating: avg
+            });
+
+            document.getElementById('review-comment-text').value = '';
+            window.setReviewStars(0);
+            showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
+        };
+
+        function loadDetailsReviewsLive(fileId) {
+            const list = document.getElementById('details-comments-section');
+            const q = query(collection(db, "files", fileId, "comments"), orderBy("timestamp", "desc"));
+            onSnapshot(q, (snap) => {
+                list.innerHTML = '';
+                let totalStars = 0;
+                let starCount = 0;
+
+                if(snap.empty) {
+                    list.innerHTML = '<div class="text-center text-gray-400 py-4">এখনও কোন পর্যালোচনা নেই। প্রথম হন!</div>';
+                    document.getElementById('details-rating-avg').textContent = '0.0';
+                    return;
+                }
+
+                snap.forEach(d => {
+                    const c = d.data();
+                    let timeStr = "Just now";
+                    if(c.timestamp) {
+                        const date = c.timestamp.toDate();
+                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+
+                    let starsHtml = '';
+                    if(c.stars) {
+                        totalStars += c.stars;
+                        starCount++;
+                        for(let i=1; i<=5; i++) {
+                            starsHtml += `<i class="fas fa-star text-[11px] ${i <= c.stars ? 'text-yellow-400' : 'text-gray-300'}"></i>`;
+                        }
+                    }
+
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    const avatarContent = c.avatar 
+                        ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
+                        : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
+
+                    list.innerHTML += `
+                        <div class="flex gap-3 text-left">
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
+                                ${avatarContent}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                            <div class="flex items-center gap-1 mt-0.5">${starsHtml}</div>
+                                        </div>
+                                        <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                if(starCount > 0) {
+                    document.getElementById('details-rating-avg').textContent = (totalStars / starCount).toFixed(1);
+                }
+            });
+        }
+
+        function updateDetailsStickyBtn(fileObj) {
+            const btn = document.getElementById('details-sticky-unlock-btn');
+            const id = fileObj.id;
+            const req = parseInt(fileObj.requiredAds || 0);
+            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            const isUnlocked = done >= req;
+
+            btn.onclick = () => handleStickyBtnClick(id, req, fileObj.downloadUrl);
+
+            if(isUnlocked) {
+                btn.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+            } else {
+                btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+            }
+        }
+
+        async function handleStickyBtnClick(id, req, downloadUrl) {
+            let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            if(done >= req) { 
+                // Increments download count in firebase on successful unlock opening link
+                await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
+                window.open(downloadUrl, '_blank'); 
+                return; 
+            }
+
+            const btn = document.getElementById('details-sticky-unlock-btn');
+            btn.disabled = true;
+            try {
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
+                showToast('toast_ad_load');
+                
+                if (typeof show_10889205 !== 'function') {
+                    throw new Error("AdBlocked");
+                }
+                
+                await show_10889205();
+                done++;
+                localStorage.setItem(`ad_${id}`, done);
+                
+                const fileObj = globalFiles.find(f => f.id === id);
+                updateDetailsStickyBtn(fileObj);
+                loadData(); // updates main cards
+
+                if(done >= req) { 
+                    showToast('toast_unlocked'); 
+                    return; 
+                }
+                showToast('toast_progress', {done, req});
+            } catch(err) {
+                const fileObj = globalFiles.find(f => f.id === id);
+                updateDetailsStickyBtn(fileObj);
+                if (err.message === "AdBlocked") {
+                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
+                } else {
+                    alert("Failed to load ad. Please try again.");
+                }
+            }
+        }
+
         async function loadData() {
-            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়েল টাইম পেজ ব্লকিং
+            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়াল টাইম পেজ ব্লকিং
             const tgApp = window.Telegram.WebApp;
             tgApp.ready(); tgApp.expand();
             tgUser = tgApp.initDataUnsafe.user;
             
             // টেস্টিং ও সেফ ফলব্যাক
             if (!tgUser || !tgUser.id) {
-                tgUser = { id: 6579664275 }; 
+                tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
+            }
+
+            if (tgUser && tgUser.id) {
+                // Show TG User Profile card widget
+                document.getElementById('tg-profile-widget').classList.remove('hidden');
+                document.getElementById('tg-name').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+                document.getElementById('tg-id-text').textContent = `ID: ${tgUser.id}`;
+                if (tgUser.photo_url) {
+                    const imgEl = document.getElementById('tg-photo');
+                    imgEl.src = tgUser.photo_url;
+                    imgEl.classList.remove('hidden');
+                    document.getElementById('tg-avatar-placeholder').classList.add('hidden');
+                }
+
+                // Register/update user profile detail inside Firestore users collection
+                try {
+                    await setDoc(doc(db, "users", String(tgUser.id)), {
+                        id: tgUser.id,
+                        name: (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim(),
+                        photo: tgUser.photo_url || "",
+                        username: tgUser.username || "",
+                        lastActive: new Date(),
+                        status: "ACTIVE"
+                    }, { merge: true });
+                } catch(e) { console.error("Error writing user: ", e); }
             }
 
             try {
@@ -814,9 +1306,14 @@
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
                 let count = 0;
+                
+                globalFiles = []; // save dynamically inside global scope
+
                 fSnap.forEach(d => {
                     const f = {id: d.id, ...d.data()};
                     if(f.isDeleted) return; 
+
+                    globalFiles.push(f); // Push to list
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -852,6 +1349,10 @@
                     card.innerHTML = `
                         <div class="relative h-44 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
+                            <!-- Live Download indicator badge (Left top) -->
+                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[11px] font-extrabold px-2.5 py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
+                            </div>
                             ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
                         <div class="p-4 flex flex-col flex-1">
@@ -914,14 +1415,22 @@
                                     <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
-                            <button data-id="${f.id}" data-req="${f.requiredAds}" data-url="${f.downloadUrl}" class="dl-btn w-full py-3 rounded-xl font-bold text-white shadow-lg transition-all flex items-center justify-center gap-2 relative overflow-hidden group">
-                                <span class="relative z-10 btn-content"></span>
-                                <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 transition-opacity btn-bg"></div>
+                            <!-- Clicking card action opens custom details single view layout overlay directly -->
+                            <button onclick="window.openDetailsOverlay('${f.id}')" class="dl-btn-card w-full py-3 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg flex items-center justify-center gap-2 relative overflow-hidden group">
+                                <span class="relative z-10"><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
                             </button>
                         </div>
                     `;
                     grid.appendChild(card);
-                    updateBtn(card.querySelector('.dl-btn'));
+                    
+                    // Progress calculations update
+                    const progBar = card.querySelector('.prog-bar');
+                    const progTxt = card.querySelector('.prog-txt');
+                    const doneVal = parseInt(localStorage.getItem(`ad_${f.id}`) || 0);
+                    const reqVal = parseInt(f.requiredAds || 0);
+                    const pctVal = reqVal > 0 ? Math.min((doneVal / reqVal) * 100, 100) : 100;
+                    progBar.style.width = `${pctVal}%`;
+                    progTxt.innerText = `${Math.floor(pctVal)}%`;
                 });
                 document.getElementById('file-count').innerText = `${count} Items`;
             } catch(e) { console.error(e); }
@@ -1079,7 +1588,6 @@
                 await deleteDoc(doc(db, "files", fileId, "comments", commentId));
                 await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
                 window.openComments(fileId);
-                loadFiles();
                 showToast("Comment deleted successfully!", {}, true);
             }
         };
@@ -1101,6 +1609,7 @@
             await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
                 name: userName, 
                 text: text, 
+                stars: 5,
                 timestamp: new Date(), 
                 deviceId: userDeviceId, 
                 uid: uid
@@ -1109,72 +1618,6 @@
             const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
             if(cSpan) cSpan.innerText = parseInt(cSpan.innerText) + 1;
         };
-
-        function updateBtn(btn) {
-            const id = btn.dataset.id;
-            const req = parseInt(btn.dataset.req);
-            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
-            const isUnlocked = done >= req;
-            const card = btn.closest('.file-card');
-            const progBar = card.querySelector('.prog-bar');
-            const progTxt = card.querySelector('.prog-txt');
-            const pct = Math.min((done / req) * 100, 100);
-            progBar.style.width = `${pct}%`;
-            progTxt.innerText = `${Math.floor(pct)}%`;
-            const content = btn.querySelector('.btn-content');
-            const bg = btn.querySelector('.btn-bg');
-            btn.disabled = false;
-            if(isUnlocked) {
-                content.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
-                bg.className = "absolute inset-0 bg-gradient-to-r from-green-500 to-emerald-600";
-            } else {
-                content.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                bg.className = "absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:opacity-90";
-            }
-        }
-
-        async function handleUnlock(e) {
-            const btn = e.target.closest('.dl-btn');
-            if(!btn || btn.disabled) return;
-            
-            const id = btn.dataset.id;
-            window.trackView(id);
-
-            const req = parseInt(btn.dataset.req);
-            const url = btn.dataset.url;
-            let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
-            if(done >= req) { window.open(url, '_blank'); return; }
-            btn.disabled = true;
-            const content = btn.querySelector('.btn-content');
-            const originalHtml = content.innerHTML;
-            try {
-                content.innerText = getTxt('toast_ad_load');
-                showToast('toast_ad_load');
-                
-                if (typeof show_10889205 !== 'function') {
-                    throw new Error("AdBlocked");
-                }
-                
-                await show_10889205();
-                done++;
-                localStorage.setItem(`ad_${id}`, done);
-                if(done >= req) { showToast('toast_unlocked'); updateBtn(btn); return; }
-                showToast('toast_progress', {done, req});
-                let t = timerDuration;
-                const int = setInterval(() => {
-                    content.innerText = getTxt('toast_wait', {t});
-                    t--;
-                    if(t < 0) { clearInterval(int); updateBtn(btn); }
-                }, 1000);
-            } catch(err) {
-                btn.disabled = false; content.innerHTML = originalHtml;
-                if (err.message === "AdBlocked") {
-                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nআপনার ফোনে Ad-blocker, Private DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন, অথবা নেটওয়ার্ক কানেকশন চেক করুন।");
-                } else {
-                    alert("Failed to load ad. Please try again.");
-                }
-            }
-        }
 
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
@@ -1204,8 +1647,6 @@
             document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
             document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
         }
-
-        document.getElementById('files-grid').addEventListener('click', handleUnlock);
         
         function setTheme(mode) {
             const icon = document.getElementById('theme-icon');
