@@ -43,6 +43,7 @@
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
+        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -91,7 +92,11 @@
             <div class="p-4 space-y-1">
                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
                 <div id="sidebar-social-links" class="space-y-1 px-1">
-                    <p class="text-sm text-gray-400 pl-2"><i class="fas fa-spinner fa-spin mr-2"></i>Loading links...</p>
+                    <!-- Default fallback premium links so it never shows "Loading links..." -->
+                    <a href="https://t.me/DownloaderxRbot" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent">
+                        <i class="fab fa-telegram text-blue-500 w-6 text-center text-xl"></i>
+                        <span class="font-medium text-gray-700 dark:text-gray-200">Telegram Bot</span>
+                    </a>
                 </div>
                 <hr class="border-gray-200 dark:border-gray-700 my-4">
                 <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
@@ -107,6 +112,27 @@
 
         <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
     </aside>
+
+    <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-2xl p-6 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
+            <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            
+            <div class="text-center mb-5 mt-2">
+                <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
+                    <i class="fas fa-bell text-4xl text-red-500 animate-ring"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-white">विशेष नोठिश</h3>
+            </div>
+            
+            <div class="max-h-[50vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-300 text-base leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
+            
+            <div class="mt-6 text-center">
+                <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg">আমি বুঝতে পেরেছি</button>
+            </div>
+        </div>
+    </div>
 
     <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
         <div class="container mx-auto px-2 flex items-center">
@@ -125,8 +151,8 @@
                 <span class="text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">ওয়েব অ্যাপ শিখুন</span>
             </div>
             <div class="flex items-center gap-3">
-                <!-- Premium Glassmorphic menu button -->
-                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.3)] hover:shadow-[0_0_25px_rgba(79,70,229,0.5)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/20 backdrop-blur-md" title="Menu">
+                <!-- Glowing glassmorphic Menu Trigger -->
+                <button onclick="toggleMenu()" class="relative w-11 h-11 flex items-center justify-center rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-600 text-white shadow-[0_0_15px_rgba(79,70,229,0.35)] hover:shadow-[0_0_25px_rgba(79,70,229,0.6)] transition-all duration-300 hover:scale-105 active:scale-95 group overflow-hidden border border-white/20 backdrop-blur-md" title="Menu">
                     <span class="absolute inset-0 bg-white/10 group-hover:opacity-0 transition-opacity duration-300"></span>
                     <i class="fas fa-ellipsis-v text-lg relative z-10 group-hover:rotate-180 transition-transform duration-500"></i>
                 </button>
@@ -166,8 +192,9 @@
 
         <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
 
-        <div id="slider-container" class="relative w-full h-40 sm:h-64 md:h-80 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group">
-            <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-out"></div>
+        <!-- Stable Slider Image Container to avoid flickering/jumping -->
+        <div id="slider-container" class="relative w-full h-40 sm:h-64 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group shrink-0">
+            <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out"></div>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
 
@@ -234,7 +261,6 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
-                    <!-- Subtitle updated to আলোর হাওয়া -->
                     <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
@@ -257,9 +283,7 @@
             <!-- PREMIUM DETAILED VIEW REACTIONS BAR inside details page -->
             <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col gap-3">
                 <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">রিঅ্যাকশন দিন</h4>
-                <div class="flex flex-wrap gap-2.5" id="details-reactions-picker">
-                    <!-- Populated dynamically with emojis and counters -->
-                </div>
+                <div class="flex flex-wrap gap-2.5" id="details-reactions-picker"></div>
             </div>
 
             <div id="details-screenshots-sec" class="hidden">
@@ -276,7 +300,7 @@
                 <h4 class="text-base font-black text-gray-800 dark:text-white pb-2 border-b dark:border-gray-800">রেটিং এবং পর্যালোচনা</h4>
                 
                 <div class="space-y-4">
-                    <p class="text-sm font-bold text-gray-700 dark:text-gray-200">এই ফাইলটি রেট করুন</p>
+                    <p class="text-sm font-bold text-gray-700 dark:text-gray-200" id="details-review-box-anchor">এই ফাইলটি রেট করুন</p>
                     <div class="flex gap-2 text-3xl text-gray-300" id="review-stars-container">
                         <button onclick="window.setReviewStars(1)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
                         <button onclick="window.setReviewStars(2)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
@@ -298,6 +322,17 @@
             <button id="details-sticky-unlock-btn" class="w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3">
                 <i class="fas fa-lock"></i> আনলক করতে বিজ্ঞাপন দেখুন (০/৪০)
             </button>
+        </div>
+    </div>
+
+    <!-- NEW: PREMIUM LONG-PRESS POPUP DIALOG FOR LIKERS -->
+    <div id="likers-popup-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4" onclick="document.getElementById('likers-popup-modal').classList.add('hidden')">
+        <div class="bg-white dark:bg-darkCard w-full max-w-xs rounded-3xl p-5 shadow-2xl border border-gray-100 dark:border-gray-800 animate-[fadeIn_0.2s_ease-out]" onclick="event.stopPropagation()">
+            <h3 class="text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-1.5"><i class="fas fa-thumbs-up text-pink-500"></i> রিঅ্যাকশন দেওয়া ইউজাররা</h3>
+            <div id="likers-list-container" class="max-h-60 overflow-y-auto custom-scroll space-y-3">
+                <!-- Loaded dynamically -->
+            </div>
+            <button onclick="document.getElementById('likers-popup-modal').classList.add('hidden')" class="w-full mt-4 py-2 text-sm font-black text-red-500 bg-red-50 dark:bg-red-950/20 rounded-xl transition hover:bg-red-100">বন্ধ করুন</button>
         </div>
     </div>
 
@@ -396,8 +431,9 @@
         let globalFiles = []; 
         let currentActiveReviewStars = 0;
         let detailsActiveFileId = null;
-        let editingReviewDocId = null; // Track if we are editing reviews
-        
+        let editingReviewDocId = null; 
+        let likePressTimer = null; // Long press logic handlers
+
         window.forceShowAll = false;
 
         const translations = {
@@ -440,6 +476,34 @@
             document.getElementById('single-view-footer').innerHTML = '';
             document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
             loadData();
+        };
+
+        window.updateReactDom = (id, emoji, change) => {
+            let summary = document.getElementById(`react-summary-${id}`);
+            if(!summary) return;
+            let btn = document.getElementById(`count-${id}-${emoji}`);
+            
+            let currentReact = localStorage.getItem('react_' + id);
+            let isMyReact = (currentReact === emoji);
+            
+            if(btn) {
+                let numSpan = btn.querySelector('.r-cnt');
+                let newCount = parseInt(numSpan.innerText) + change;
+                if(newCount <= 0) {
+                    btn.remove();
+                } else {
+                    numSpan.innerText = newCount;
+                    if(isMyReact) {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
+                    } else {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
+                    }
+                }
+            } else if(change > 0) {
+                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
+            }
         };
 
         let appConfig = {};
@@ -584,9 +648,9 @@
         }
 
         // DETAILED OVERLAY CONTROLLERS WITH DYNAMIC REACTION PICKER
-        window.openDetailsOverlay = async (id) => {
+        window.openDetailsOverlay = async (id, focusCommentBox = false) => {
             detailsActiveFileId = id;
-            editingReviewDocId = null; // reset edit status
+            editingReviewDocId = null; 
             const fileObj = globalFiles.find(f => f.id === id);
             if(!fileObj) return;
 
@@ -636,6 +700,64 @@
 
             // Open overlay page
             document.getElementById('details-overlay').classList.remove('hidden');
+
+            // NEW: COMMENT ICON CLICK ACTIONS
+            if(focusCommentBox) {
+                setTimeout(() => {
+                    document.getElementById('details-review-box-anchor').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('review-comment-text').focus();
+                }, 400);
+            }
+        };
+
+        // NEW: LONG PRESS TO TRIGGER REACTION LIST MODAL
+        window.startLikePress = (fileId) => {
+            window.endLikePress();
+            likePressTimer = setTimeout(() => {
+                window.showLikersListPopup(fileId);
+            }, 800); // 800ms touchhold hold trigger
+        };
+
+        window.endLikePress = () => {
+            if(likePressTimer) clearTimeout(likePressTimer);
+        };
+
+        window.showLikersListPopup = async (fileId) => {
+            const popup = document.getElementById('likers-popup-modal');
+            const container = document.getElementById('likers-list-container');
+            container.innerHTML = '<div class="text-center py-4 text-xs text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading users...</div>';
+            popup.classList.remove('hidden');
+
+            try {
+                // Fetch reviewers details as dynamic likers list
+                const snap = await getDocs(collection(db, "files", fileId, "comments"));
+                container.innerHTML = '';
+                
+                if (snap.empty) {
+                    container.innerHTML = '<div class="text-center py-4 text-xs text-gray-500 font-bold">কেউ এখনও রিঅ্যাকশন বা রেটিং দেয়নি।</div>';
+                    return;
+                }
+
+                snap.forEach(d => {
+                    const c = d.data();
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    const avatar = c.avatar 
+                        ? `<img src="${c.avatar}" class="w-8 h-8 rounded-full object-cover shrink-0">`
+                        : `<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-[10px] shrink-0">${initial}</div>`;
+                    
+                    container.innerHTML += `
+                        <div class="flex items-center gap-2 border-b dark:border-gray-800 pb-2">
+                            ${avatar}
+                            <div class="min-w-0 flex-1">
+                                <span class="text-xs font-bold text-gray-800 dark:text-gray-200 block truncate">${c.name}</span>
+                                <span class="text-[9px] text-gray-400 font-bold block">রেটিং: ${c.stars || 5} ⭐</span>
+                            </div>
+                        </div>`;
+                });
+
+            } catch (e) {
+                container.innerHTML = '<div class="text-center py-4 text-xs text-red-500 font-bold">লোডিং ব্যর্থ হয়েছে।</div>';
+            }
         };
 
         function renderDetailsReactions(fileObj) {
@@ -664,7 +786,6 @@
             let updates = {};
 
             if(currentReact === emoji) {
-                // Remove existing react
                 localStorage.removeItem('react_' + fileId);
                 updates[`react_${emoji}`] = increment(-1);
             } else {
@@ -677,14 +798,13 @@
 
             await updateDoc(doc(db, "files", fileId), updates);
             
-            // Reload local configuration internally
             const updatedDoc = await getDoc(doc(db, "files", fileId));
             if(updatedDoc.exists()) {
                 const updatedData = {id: updatedDoc.id, ...updatedDoc.data()};
                 const idx = globalFiles.findIndex(f => f.id === fileId);
                 if(idx !== -1) globalFiles[idx] = updatedData;
                 renderDetailsReactions(updatedData);
-                loadData(); // reload home layouts
+                loadData(); 
             }
         };
 
@@ -734,7 +854,6 @@
             };
 
             if(editingReviewDocId) {
-                // Update Review
                 await updateDoc(doc(db, "files", detailsActiveFileId, "comments", editingReviewDocId), {
                     text: text || "রেট করেছেন!",
                     stars: currentActiveReviewStars,
@@ -744,13 +863,11 @@
                 document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা জমা দিন";
                 showToast("পর্যালোচনা আপডেট করা হয়েছে!");
             } else {
-                // Create New Review
                 await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
                 await updateDoc(doc(db, "files", detailsActiveFileId), { commentCount: increment(1) });
                 showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
             }
 
-            // Recalculate average rating
             const commentsSnap = await getDocs(collection(db, "files", detailsActiveFileId, "comments"));
             let totalStars = 0;
             let count = 0;
@@ -770,7 +887,6 @@
             window.setReviewStars(0);
         };
 
-        // EDIT COMMENT
         window.editReviewInline = (id, stars, text) => {
             editingReviewDocId = id;
             window.setReviewStars(stars);
@@ -779,13 +895,11 @@
             document.getElementById('review-stars-container').scrollIntoView({ behavior: 'smooth' });
         };
 
-        // DELETE COMMENT
         window.deleteReviewInline = async (fileId, docId) => {
             if(confirm("আপনার পর্যালোচনাটি ডিলিট করতে চান?")) {
                 await deleteDoc(doc(db, "files", fileId, "comments", docId));
                 await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
                 
-                // Recalculate average rating
                 const commentsSnap = await getDocs(collection(db, "files", fileId, "comments"));
                 let totalStars = 0;
                 let count = 0;
@@ -840,7 +954,6 @@
                         ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
                         : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
 
-                    // Check if current user is owner of the comment
                     const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
                     let controlsHtml = '';
                     if(isMyComment) {
@@ -1069,15 +1182,13 @@
                     const colorClass = sColors[platform] || 'text-gray-500';
                     const name = platform.charAt(0).toUpperCase() + platform.slice(1);
                     
-                    sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent hover:border-gray-200 dark:hover:border-gray-600"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
+                    sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
                     footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
                 }
                 
                 if(hasLinks) {
                     sideSocials.innerHTML = sideHtml;
                     if(footSocials) footSocials.innerHTML = footHtml;
-                } else {
-                    sideSocials.innerHTML = '<p class="text-sm text-gray-400 pl-2">No social links added yet.</p>';
                 }
             } catch(e) { console.error(e); }
 
@@ -1111,7 +1222,7 @@
                         slides.forEach((s, i) => {
                             const img = document.createElement('img');
                             img.src = s.imageUrl;
-                            img.className = 'w-full h-full object-cover flex-shrink-0'; // custom optimized aspect wrapper
+                            img.className = 'w-full h-full object-cover flex-shrink-0'; 
                             wrapper.appendChild(img);
                             const dot = document.createElement('div');
                             dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
@@ -1153,10 +1264,12 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
                     
                     card.onclick = (e) => {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger')) {
+                            return;
+                        }
                         window.openDetailsOverlay(f.id);
                     };
 
-                    // Count total likes/reactions across all emojis
                     const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
                     let likesTotal = 0;
                     emojis.forEach(e => {
@@ -1176,14 +1289,631 @@
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <!-- Static Counter Badges Row -->
-                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-[11px] sm:text-xs text-gray-400 font-bold shrink-0">
-                                <div class="flex items-center gap-2">
-                                    <span title="Views" class="flex items-center gap-0.5"><i class="fas fa-eye text-blue-400"></i> ${f.views || 0}</span>
-                                    <span title="Likes" class="flex items-center gap-0.5"><i class="fas fa-thumbs-up text-pink-400"></i> ${likesTotal}</span>
-                                    <span title="Comments" class="flex items-center gap-0.5"><i class="fas fa-comment text-indigo-400"></i> ${f.commentCount || 0}</span>
+                            <!-- Stat badges block enlarged & perfectly aligned inside home card -->
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-[12px] sm:text-sm text-gray-500 dark:text-gray-400 font-black shrink-0">
+                                <div class="flex items-center gap-3">
+                                    <span title="Views" class="flex items-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm"></i> ${f.views || 0}</span>
+                                    
+                                    <!-- Long Press enabled like button -->
+                                    <span oncontextmenu="event.preventDefault();" onmousedown="window.startLikePress('${f.id}')" onmouseup="window.endLikePress()" ontouchstart="window.startLikePress('${f.id}')" ontouchend="window.endLikePress()" title="Hold to see who liked" class="flex items-center gap-0.5 text-pink-500 hover:scale-110 active:scale-95 transition-transform select-none">
+                                        <i class="fas fa-thumbs-up text-sm"></i> ${likesTotal}
+                                    </span>
+                                    
+                                    <!-- Dynamic comment link clicking directly moves to comment box -->
+                                    <span onclick="event.stopPropagation(); window.openDetailsOverlay('${f.id}', true)" title="Comments" class="comment-btn-trigger flex items-center gap-0.5 hover:text-blue-500 transition-colors"><i class="fas fa-comment text-indigo-500 text-sm"></i> ${f.commentCount || 0}</span>
                                 </div>
-                                <span class="hover:text-green-500 transition-colors cursor-pointer text-sm" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
+                                <span class="hover:text-green-500 transition-colors cursor-pointer text-base shrink-0" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
+                            </div>
+
+                            <div class="mb-3 shrink-0">
+                                <div class="flex justify-between text-[10px] text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
+                                <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                    <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <button class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 mt-auto shrink-0">
+                                <span><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
+                            </button>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                    
+                    const progBar = card.querySelector('.prog-bar');
+                    const progTxt = card.querySelector('.prog-txt');
+                    const doneVal = parseInt(localStorage.getItem(`ad_${f.id}`) || 0);
+                    const reqVal = parseInt(f.requiredAds || 0);
+                    const pctVal = reqVal > 0 ? Math.min((doneVal / reqVal) * 100, 100) : 100;
+                    progBar.style.width = `${pctVal}%`;
+                    progTxt.innerText = `${Math.floor(pctVal)}%`;
+                });
+                document.getElementById('file-count').innerText = `${count} Items`;
+            } catch(e) { console.error(e); }
+        }
+
+        // DYNAMIC LONG PRESS REACTION POPUP MODAL GENERATOR
+        let pressTimer = null;
+        window.startLikePress = (fileId) => {
+            window.endLikePress(); 
+            pressTimer = setTimeout(async () => {
+                const modal = document.createElement('div');
+                modal.id = "likers-popup-modal";
+                modal.className = "fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]";
+                modal.onclick = () => document.getElementById('lightbox-modal') ? modal.remove() : modal.remove();
+                
+                modal.innerHTML = `
+                    <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-5 shadow-2xl relative" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center border-b pb-3 mb-4 dark:border-gray-800">
+                            <h3 class="font-extrabold text-base text-gray-800 dark:text-white"><i class="fas fa-heart text-red-500 mr-1.5 animate-pulse"></i> কারা লাইক দিয়েছেন</h3>
+                            <button onclick="document.getElementById('lightbox-modal').click(); document.getElementById('likers-modal-parent').remove();" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-lg"></i></button>
+                        </div>
+                        <div id="likers-list" class="space-y-3.5 max-h-60 overflow-y-auto custom-scroll text-left">
+                            <div class="text-center text-gray-500 py-4"><i class="fas fa-spinner fa-spin mr-1"></i> Loading lists...</div>
+                        </div>
+                    </div>`;
+                modal.id = 'likers-popup-modal';
+                document.body.appendChild(modal);
+
+                try {
+                    const snap = await getDocs(collection(db, "files", fileId, "comments"));
+                    const listDiv = document.getElementById('sidebar-unauth'); // fallback container inside modal or load dynamic list
+                    const uListContainer = document.getElementById('admin-comment-list') || document.getElementById('likers-list') || document.getElementById('admin-comment-list');
+                    const targetDiv = document.getElementById('admin-comment-list') || document.getElementById('admin-comment-modal');
+
+                    let likersHtml = '';
+                    let hasAnyReviews = false;
+                    snap.forEach(docDoc => {
+                        const r = docDoc.data();
+                        if(r.stars >= 4) { // Simulate rating stars as liking the application
+                            hasAny = true;
+                            const initial = r.name ? r.name.charAt(0).toUpperCase() : 'U';
+                            const avatar = r.avatar 
+                                ? `<img src="${r.avatar}" class="w-8 h-8 rounded-full object-cover">`
+                                : `<div class="w-8 h-8 rounded-full bg-indigo-500 text-white flex items-center justify-center font-bold text-xs">${initial}</div>`;
+                            
+                            likesTotal = (likesTotal || 0) + 1;
+                            
+                            htmlContentCheck = true;
+                            
+                            document.getElementById('admin-comment-list').innerHTML += `
+                                <div class="flex items-center gap-3">
+                                    ${avatar}
+                                    <span class="text-sm font-bold text-gray-800 dark:text-gray-200">${r.name}</span>
+                                </div>
+                            `;
+                        }
+                    });
+                } catch(e) {}
+            }, 800);
+        };
+
+        window.endLikePress = () => {
+            clearTimeout(window.pressTimer);
+        };
+
+        window.startLikePress = (fileId) => {
+            window.likePressTimeout = setTimeout(async () => {
+                // Show long press reactions popup layout
+                const modal = document.createElement('div');
+                modal.id = 'reactions-popup-modal';
+                modal.className = "fixed inset-0 bg-black/75 backdrop-blur-sm z-[105] flex items-center justify-center p-4";
+                modal.onclick = () => modal.remove();
+
+                modal.innerHTML = `
+                    <div class="bg-white dark:bg-darkCard w-full max-w-xs rounded-3xl p-5 shadow-2xl relative" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center pb-2 border-b dark:border-gray-800 mb-4">
+                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
+                            <button onclick="document.getElementById('reactions-popup-modal').remove()" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div id="likers-real-list" class="max-h-60 overflow-y-auto custom-scroll space-y-3.5">
+                            <div class="text-center py-4 text-xs text-gray-400"><i class="fas fa-spinner fa-spin"></i> Loading...</div>
+                        </div>
+                    </div>`;
+                document.body.appendChild(modal);
+
+                try {
+                    const snap = await getDocs(collection(db, "files", fileId, "comments"));
+                    const uContainer = document.getElementById('likers-real-list');
+                    uContainer.innerHTML = '';
+                    let count = 0;
+                    snap.forEach(d => {
+                        const c = d.data();
+                        count++;
+                        const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                        const avatar = c.avatar 
+                            ? `<img src="${c.avatar}" class="w-8 h-8 rounded-full object-cover shrink-0">`
+                            : `<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs shrink-0">${initial}</div>`;
+                        
+                        uContainer.innerHTML += `
+                            <div class="flex items-center gap-2">
+                                ${avatar}
+                                <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">${c.name}</span>
+                            </div>`;
+                    });
+                    if(count === 0) {
+                        uContainer.innerHTML = '<div class="text-center py-4 text-xs text-gray-500">কেউ এখনও রিঅ্যাকশন বা রেটিং দেয়নি।</div>';
+                    }
+                } catch(e) {
+                    document.getElementById('likers-real-list').innerHTML = '<div class="text-center py-4 text-xs text-red-500">লোডিং ব্যর্থ হয়েছে।</div>';
+                }
+
+            }, 800);
+        };
+
+        window.endLikePress = () => {
+            clearTimeout(window.likePressTimeout);
+        };
+
+        window.submitFileReview = async () => {
+            if(!detailsActiveFileId) return;
+            const text = document.getElementById('review-comment-text').value.trim();
+            if(currentActiveReviewStars === 0) {
+                return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
+            }
+
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
+            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
+
+            const reviewPayload = {
+                name: userName,
+                text: text || "রেট করেছেন!",
+                stars: currentActiveReviewStars,
+                timestamp: new Date(),
+                deviceId: userDeviceId,
+                uid: userId,
+                avatar: userAvatar
+            };
+
+            if(editingReviewDocId) {
+                await updateDoc(doc(db, "files", detailsActiveFileId, "comments", editingReviewDocId), {
+                    text: text || "রেট করেছেন!",
+                    stars: currentActiveReviewStars,
+                    timestamp: new Date()
+                });
+                editingReviewDocId = null;
+                document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা জমা দিন";
+                showToast("পর্যালোচনা আপডেট করা হয়েছে!");
+            } else {
+                await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
+                await updateDoc(doc(db, "files", detailsActiveFileId), { commentCount: increment(1) });
+                showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
+            }
+
+            const commentsSnap = await getDocs(collection(db, "files", detailsActiveFileId, "comments"));
+            let totalStars = 0;
+            let count = 0;
+            commentsSnap.forEach(d => {
+                const c = d.data();
+                if(c.stars) {
+                    totalStars += c.stars;
+                    count++;
+                }
+            });
+            const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
+            await updateDoc(doc(db, "files", detailsActiveFileId), {
+                avgRating: avg
+            });
+
+            document.getElementById('review-comment-text').value = '';
+            window.setReviewStars(0);
+        };
+
+        window.editReviewInline = (id, stars, text) => {
+            editingReviewDocId = id;
+            window.setReviewStars(stars);
+            document.getElementById('review-comment-text').value = text;
+            document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা আপডেট করুন";
+            document.getElementById('review-stars-container').scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.deleteReviewInline = async (fileId, docId) => {
+            if(confirm("আপনার পর্যালোচনাটি ডিলিট করতে চান?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", docId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                
+                const commentsSnap = await getDocs(collection(db, "files", fileId, "comments"));
+                let totalStars = 0;
+                let count = 0;
+                commentsSnap.forEach(d => {
+                    const c = d.data();
+                    if(c.stars) {
+                        totalStars += c.stars;
+                        count++;
+                    }
+                });
+                const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
+                await updateDoc(doc(db, "files", fileId), {
+                    avgRating: avg
+                });
+                showToast("পর্যালোচনা মুছে ফেলা হয়েছে!");
+            }
+        };
+
+        function loadDetailsReviewsLive(fileId) {
+            const list = document.getElementById('details-comments-section');
+            const q = query(collection(db, "files", fileId, "comments"), orderBy("timestamp", "desc"));
+            onSnapshot(q, (snap) => {
+                list.innerHTML = '';
+                let totalStars = 0;
+                let starCount = 0;
+
+                if(snap.empty) {
+                    list.innerHTML = '<div class="text-center text-gray-400 py-4">এখনও কোন পর্যালোচনা নেই। প্রথম হন!</div>';
+                    document.getElementById('details-rating-avg').textContent = '0.0';
+                    return;
+                }
+
+                snap.forEach(d => {
+                    const c = d.data();
+                    let timeStr = "Just now";
+                    if(c.timestamp) {
+                        const date = c.timestamp.toDate();
+                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+
+                    let starsHtml = '';
+                    if(c.stars) {
+                        totalStars += c.stars;
+                        starCount++;
+                        for(let i=1; i<=5; i++) {
+                            starsHtml += `<i class="fas fa-star text-[11px] ${i <= c.stars ? 'text-yellow-400' : 'text-gray-300'}"></i>`;
+                        }
+                    }
+
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    const avatarContent = c.avatar 
+                        ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
+                        : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
+
+                    const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
+                    let controlsHtml = '';
+                    if(isMyComment) {
+                        controlsHtml = `
+                            <div class="flex gap-2.5 mt-2 justify-end text-xs font-bold text-gray-400">
+                                <button onclick="window.editReviewInline('${d.id}', ${c.stars}, '${c.text.replace(/'/g, "\\'")}')" class="hover:text-blue-500 transition-colors"><i class="fas fa-edit mr-0.5"></i> Edit</button>
+                                <button onclick="window.deleteReviewInline('${fileId}', '${d.id}')" class="hover:text-red-500 transition-colors"><i class="fas fa-trash-alt mr-0.5"></i> Delete</button>
+                            </div>`;
+                    }
+
+                    list.innerHTML += `
+                        <div class="flex gap-3 text-left">
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
+                                ${avatarContent}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                            <div class="flex items-center gap-1 mt-0.5">${starsHtml}</div>
+                                        </div>
+                                        <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    ${controlsHtml}
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                if(starCount > 0) {
+                    document.getElementById('details-rating-avg').textContent = (totalStars / starCount).toFixed(1);
+                }
+            });
+        }
+
+        function updateDetailsStickyBtn(fileObj) {
+            const btn = document.getElementById('details-sticky-unlock-btn');
+            const id = fileObj.id;
+            const req = parseInt(fileObj.requiredAds || 0);
+            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            const isUnlocked = done >= req;
+
+            btn.onclick = () => handleStickyBtnClick(id, req, fileObj.downloadUrl);
+
+            if(isUnlocked) {
+                btn.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+            } else {
+                btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+            }
+        }
+
+        async function handleStickyBtnClick(id, req, downloadUrl) {
+            let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
+            if(done >= req) { 
+                await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
+                window.open(downloadUrl, '_blank'); 
+                return; 
+            }
+
+            const btn = document.getElementById('details-sticky-unlock-btn');
+            btn.disabled = true;
+            try {
+                btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
+                showToast('toast_ad_load');
+                
+                if (typeof show_10889205 !== 'function') {
+                    throw new Error("AdBlocked");
+                }
+                
+                await show_10889205();
+                done++;
+                localStorage.setItem(`ad_${id}`, done);
+                
+                const fileObj = globalFiles.find(f => f.id === id);
+                updateDetailsStickyBtn(fileObj);
+                loadData(); 
+
+                if(done >= req) { 
+                    showToast('toast_unlocked'); 
+                    return; 
+                }
+                showToast('toast_progress', {done, req});
+            } catch(err) {
+                const fileObj = globalFiles.find(f => f.id === id);
+                updateDetailsStickyBtn(fileObj);
+                if (err.message === "AdBlocked") {
+                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
+                } else {
+                    alert("Failed to load ad. Please try again.");
+                }
+            }
+        }
+
+        async function loadData() {
+            const tgApp = window.Telegram.WebApp;
+            tgApp.ready(); tgApp.expand();
+            tgUser = tgApp.initDataUnsafe.user;
+            
+            if (!tgUser || !tgUser.id) {
+                tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
+            }
+
+            if (tgUser && tgUser.id) {
+                document.getElementById('tg-profile-widget').classList.remove('hidden');
+                document.getElementById('tg-name').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+                document.getElementById('tg-id-text').textContent = `ID: ${tgUser.id}`;
+                if (tgUser.photo_url) {
+                    const imgEl = document.getElementById('tg-photo');
+                    imgEl.src = tgUser.photo_url;
+                    imgEl.classList.remove('hidden');
+                    document.getElementById('tg-avatar-placeholder').classList.add('hidden');
+
+                    const sidebarImg = document.getElementById('sidebar-tg-img');
+                    sidebarImg.src = tgUser.photo_url;
+                    sidebarImg.classList.remove('hidden');
+                    document.getElementById('sidebar-avatar-placeholder').classList.add('hidden');
+
+                    const commentImg = document.getElementById('comment-avatar-img');
+                    commentImg.src = tgUser.photo_url;
+                    commentImg.classList.remove('hidden');
+                    document.getElementById('comment-avatar-placeholder').classList.add('hidden');
+                }
+                document.getElementById('sidebar-username').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+                document.getElementById('sidebar-tg-id').textContent = `ID: ${tgUser.id}`;
+
+                try {
+                    await setDoc(doc(db, "users", String(tgUser.id)), {
+                        id: tgUser.id,
+                        name: (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim(),
+                        photo: tgUser.photo_url || "",
+                        username: tgUser.username || "",
+                        lastActive: new Date(),
+                        status: "ACTIVE"
+                    }, { merge: true });
+                } catch(e) { console.error("Error writing user: ", e); }
+            }
+
+            try {
+                let socialLinks = {};
+                const setSnap = await getDocs(query(collection(db, "settings")));
+                
+                setSnap.forEach(d => {
+                    const data = d.data();
+                    const id = d.id;
+                    
+                    if(id === 'general') {
+                        timerDuration = data.timerDuration || 10;
+                        appConfig = data; 
+                        
+                        if(data.announcementText) {
+                            document.getElementById('announcement-container').classList.remove('hidden');
+                            document.getElementById('announcement-text').textContent = data.announcementText;
+                        }
+                        
+                        if(data.popupNotice && data.popupNotice.trim() !== '') {
+                            if(!sessionStorage.getItem('popupNoticeShown')) {
+                                document.getElementById('popup-notice-content').textContent = data.popupNotice;
+                                document.getElementById('popup-notice-modal').classList.remove('hidden');
+                                sessionStorage.setItem('popupNoticeShown', 'true');
+                            }
+                        }
+
+                        const logoContainer = document.getElementById('cv-logo-container');
+                        if (logoContainer) {
+                            if (data.logoUrl && data.logoUrl.trim() !== '') {
+                                logoContainer.innerHTML = `<img src="${data.logoUrl}" class="w-full h-full object-cover" alt="Logo">`;
+                            } else {
+                                logoContainer.innerHTML = `<i class="fas fa-cloud-download-alt text-3xl text-white"></i>`;
+                            }
+                        }
+                    }
+                    if(id === 'ads') {
+                        renderAd('ad-container-1', data.adSlot1);
+                        renderAd('ad-container-2', data.adSlot2);
+                        renderAd('ad-container-3', data.adSlot3);
+                    }
+                    
+                    Object.keys(data).forEach(key => {
+                        const k = key.toLowerCase();
+                        const val = data[key];
+                        if(typeof val === 'string' && val.trim() !== '') {
+                            let cleanUrl = val.startsWith('http') ? val : 'https://' + val;
+                            
+                            if(k.includes('facebook')) socialLinks['facebook'] = cleanUrl;
+                            else if(k.includes('telegram')) socialLinks['telegram'] = cleanUrl;
+                            else if(k.includes('youtube')) socialLinks['youtube'] = cleanUrl;
+                            else if(k.includes('whatsapp')) socialLinks['whatsapp'] = cleanUrl;
+                            else if(k.includes('twitter')) socialLinks['twitter'] = cleanUrl;
+                            else if(k.includes('instagram')) socialLinks['instagram'] = cleanUrl;
+                            else if(k.includes('tiktok')) socialLinks['tiktok'] = cleanUrl;
+                        }
+                    });
+                });
+
+                const isVerifiedLive = await checkRequiredChannelsLive();
+                if (!isVerifiedLive) {
+                    const screen = document.getElementById('channel-verify-screen');
+                    const btn1 = document.getElementById('cv-channel1-btn');
+                    const btn2 = document.getElementById('cv-channel2-btn');
+                    const title1 = document.getElementById('cv-ch1-title');
+                    const title2 = document.getElementById('cv-ch2-title');
+                    
+                    if (appConfig.channel1Url) { btn1.href = appConfig.channel1Url; if (appConfig.channel1Name) title1.textContent = appConfig.channel1Name; } else { btn1.style.display = 'none'; }
+                    if (appConfig.channel2Url) { btn2.href = appConfig.channel2Url; if (appConfig.channel2Name) title2.textContent = appConfig.channel2Name; } else { btn2.style.display = 'none'; }
+                    
+                    screen.classList.remove('hidden');
+                    screen.classList.add('flex');
+                }
+
+                const sideSocials = document.getElementById('sidebar-social-links');
+                const footSocials = document.getElementById('footer-socials');
+                let sideHtml = '';
+                let footHtml = '';
+                
+                const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-instagram', tiktok: 'fab fa-tiktok' };
+                const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
+
+                let hasLinks = false;
+                for(const [platform, url] of Object.entries(socialLinks)) {
+                    hasLinks = true;
+                    const iconClass = sIcons[platform] || 'fas fa-link';
+                    const colorClass = sColors[platform] || 'text-gray-500';
+                    const name = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    
+                    sideHtml += `<a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition shadow-sm border border-transparent"><i class="${iconClass} ${colorClass} w-6 text-center text-xl"></i> <span class="font-medium text-gray-700 dark:text-gray-200">${name}</span></a>`;
+                    footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
+                }
+                
+                if(hasLinks) {
+                    sideSocials.innerHTML = sideHtml;
+                    if(footSocials) footSocials.innerHTML = footHtml;
+                }
+            } catch(e) { console.error(e); }
+
+            let targetVid = null;
+            if(!window.forceShowAll) {
+                targetVid = new URLSearchParams(window.location.search).get('v');
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
+                    targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+                }
+            }
+
+            if(targetVid) {
+                document.getElementById('slider-container').style.display = 'none';
+                document.getElementById('search-section').style.display = 'none';
+                document.getElementById('single-view-header').innerHTML = ''; 
+                
+                document.getElementById('single-view-footer').innerHTML = `
+                    <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
+                        <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
+                        <span>অন্যান্য সব ফাইল দেখুন (Home)</span>
+                    </button>`;
+            } else {
+                try {
+                    const sSnap = await getDocs(query(collection(db, "sliders")));
+                    const wrapper = document.getElementById('slider-wrapper');
+                    const dots = document.getElementById('slider-dots');
+                    wrapper.innerHTML = ''; dots.innerHTML = '';
+                    const slides = [];
+                    sSnap.forEach(d => slides.push(d.data()));
+                    if(slides.length) {
+                        slides.forEach((s, i) => {
+                            const img = document.createElement('img');
+                            img.src = s.imageUrl;
+                            img.className = 'w-full h-full object-cover flex-shrink-0'; 
+                            wrapper.appendChild(img);
+                            const dot = document.createElement('div');
+                            dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
+                            dots.appendChild(dot);
+                        });
+                        setInterval(() => {
+                            currentSlide = (currentSlide + 1) % slides.length;
+                            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+                            Array.from(dots.children).forEach((d, i) => { d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`; });
+                        }, 4000);
+                    } else { document.getElementById('slider-container').style.display = 'none'; }
+                } catch(e) {}
+            }
+
+            try {
+                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                const grid = document.getElementById('files-grid');
+                grid.innerHTML = '';
+                let count = 0;
+                
+                globalFiles = []; 
+
+                fSnap.forEach(d => {
+                    const f = {id: d.id, ...d.data()};
+                    if(f.isDeleted) return; 
+
+                    globalFiles.push(f); 
+
+                    if(targetVid && f.id !== targetVid) return; 
+                    count++;
+                    
+                    const localReact = localStorage.getItem('react_' + f.id);
+                    
+                    const mediaElement = f.videoUrl 
+                        ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
+                        : `<img src="${f.thumbnailUrl}" class="w-full h-full object-fill transition-transform duration-500 hover:scale-110">`;
+
+                    const card = document.createElement('div');
+                    card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
+                    
+                    card.onclick = (e) => {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger')) {
+                            return;
+                        }
+                        window.openDetailsOverlay(f.id);
+                    };
+
+                    const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
+                    let likesTotal = 0;
+                    emojis.forEach(e => {
+                        likesTotal += (f[`react_${e}`] || 0);
+                    });
+                    if(likesTotal === 0 && f.likeCount > 0) likesTotal = f.likeCount;
+
+                    card.innerHTML = `
+                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
+                            ${mediaElement}
+                            <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
+                                <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
+                            </div>
+                            ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
+                        </div>
+                        <div class="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
+                            <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
+                            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
+                            
+                            <!-- Stat badges block enlarged & perfectly aligned inside home card -->
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-[12px] sm:text-sm text-gray-500 dark:text-gray-400 font-black shrink-0">
+                                <div class="flex items-center gap-3">
+                                    <span title="Views" class="flex items-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm"></i> ${f.views || 0}</span>
+                                    
+                                    <!-- Long Press enabled like button -->
+                                    <span oncontextmenu="event.preventDefault();" onmousedown="window.startLikePress('${f.id}')" onmouseup="window.endLikePress()" ontouchstart="window.startLikePress('${f.id}')" ontouchend="window.endLikePress()" title="Hold to see who liked" class="likers-btn-trigger flex items-center gap-0.5 text-pink-500 hover:scale-110 active:scale-95 transition-transform select-none">
+                                        <i class="fas fa-thumbs-up text-sm"></i> ${likesTotal}
+                                    </span>
+                                    
+                                    <!-- Dynamic comment link clicking directly moves to comment box -->
+                                    <span onclick="event.stopPropagation(); window.openDetailsOverlay('${f.id}', true)" title="Comments" class="comment-btn-trigger flex items-center gap-0.5 hover:text-blue-500 transition-colors"><i class="fas fa-comment text-indigo-500 text-sm"></i> ${f.commentCount || 0}</span>
+                                </div>
+                                <span class="hover:text-green-500 transition-colors cursor-pointer text-base shrink-0" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
                             </div>
 
                             <div class="mb-3 shrink-0">
