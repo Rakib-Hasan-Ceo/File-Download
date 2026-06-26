@@ -114,23 +114,23 @@
     </aside>
 
     <!-- LARGER POPUP NOTICE MODAL FOR READABILITY -->
-    <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-darkCard w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
-            <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
-                <i class="fas fa-times text-xl"></i>
+    <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-3xl p-6 shadow-2xl relative animate-[fadeIn_0.4s_ease-out] flex flex-col">
+            <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+                <i class="fas fa-times text-lg"></i>
             </button>
             
-            <div class="text-center mb-6 mt-2">
-                <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
-                    <i class="fas fa-bell text-5xl text-red-500 animate-ring"></i>
+            <div class="text-center mb-4 mt-2">
+                <div class="inline-block p-3 rounded-full bg-red-100 dark:bg-red-900/40 mb-2 shadow-inner">
+                    <i class="fas fa-bell text-3xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-3xl font-black text-gray-800 dark:text-white">विशेष নোঠিশ</h3>
+                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष নোটিশ</h3>
             </div>
             
-            <div class="max-h-[50vh] overflow-y-auto custom-scroll p-6 bg-gray-50 dark:bg-gray-855 rounded-2xl border dark:border-gray-800 text-gray-700 dark:text-gray-300 text-lg leading-relaxed whitespace-pre-wrap font-medium shadow-inner" id="popup-notice-content"></div>
+            <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
             
-            <div class="mt-6 text-center">
-                <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-3.5 rounded-full font-black shadow-lg hover:shadow-xl hover:scale-105 transition-all text-lg">আমি বুঝতে পেরেছি</button>
+            <div class="mt-5 text-center">
+                <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">আমি বুঝতে পেরেছি</button>
             </div>
         </div>
     </div>
@@ -185,25 +185,25 @@
     <!-- MAIN HOME TAB CONTENT -->
     <main id="home-tab-content" class="container mx-auto px-4 py-2 max-w-7xl min-h-screen">
         
-        <div id="search-section" class="relative max-w-xl mx-auto mb-3 group">
+        <div id="search-section" class="relative max-w-xl mx-auto mb-2 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
-            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-3.5 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
+            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-3 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
         </div>
 
-        <div id="ad-container-1" class="mb-3 flex justify-center rounded-lg overflow-hidden"></div>
+        <div id="ad-container-1" class="mb-2 flex justify-center rounded-lg overflow-hidden"></div>
 
         <!-- Stable Slider Image Container to avoid flickering/jumping -->
-        <div id="slider-container" class="relative w-full h-40 sm:h-64 rounded-2xl overflow-hidden shadow-xl mb-3 bg-gray-200 dark:bg-gray-700 group shrink-0">
+        <div id="slider-container" class="relative w-full h-32 sm:h-52 rounded-2xl overflow-hidden shadow-xl mb-2 bg-gray-200 dark:bg-gray-700 group shrink-0">
             <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out text-center"></div>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
 
-        <div id="ad-container-2" class="mb-3 flex justify-center rounded-lg overflow-hidden"></div>
+        <div id="ad-container-2" class="mb-2 flex justify-center rounded-lg overflow-hidden"></div>
 
         <section id="main-section">
             <div id="single-view-header"></div>
             
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-3">
                 <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
@@ -252,7 +252,7 @@
         </div>
 
         <div class="max-w-xl mx-auto p-4 space-y-6">
-            <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-sm">
+            <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
                 <div class="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-gray-100 border dark:border-gray-600">
                     <img id="details-thumb" src="" class="w-full h-full object-cover">
                     <div class="absolute bottom-1.5 right-1.5 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white dark:border-darkCard">
@@ -267,15 +267,15 @@
             </div>
 
             <div class="grid grid-cols-3 gap-3">
-                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-150 dark:border-gray-700 text-center">
                     <div class="text-sm font-black text-gray-800 dark:text-white flex items-center justify-center gap-0.5"><span id="details-rating-avg">0.0</span> <i class="fas fa-star text-yellow-400 text-xs"></i></div>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">RATING</span>
                 </div>
-                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center">
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-150 dark:border-gray-700 text-center">
                     <span id="details-downloads-badge" class="text-sm font-black text-gray-800 dark:text-white">📥 0</span>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">DOWNLOAD</span>
                 </div>
-                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-100 dark:border-gray-700 text-center flex flex-col justify-center items-center">
+                <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-150 dark:border-gray-700 text-center flex flex-col justify-center items-center">
                     <i class="fas fa-shield-alt text-emerald-500 text-lg"></i>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">SAFE</span>
                 </div>
@@ -468,7 +468,7 @@
             
             if(btn) {
                 let numSpan = btn.querySelector('.r-cnt');
-                let newCount = parseInt(numSpan.innerText) + change;
+                let newCount = Math.max(0, parseInt(numSpan.innerText) + change);
                 if(newCount <= 0) {
                     btn.remove();
                 } else {
@@ -1227,14 +1227,14 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
                     
                     card.onclick = (e) => {
-                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger') || e.target.closest('button')) {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger')) {
                             return;
                         }
                         window.openDetailsOverlay(f.id);
                     };
 
                     const emojis = ['❤️'];
-                    let likesTotal = f[`react_❤️`] || f.likeCount || 0;
+                    let likesTotal = Math.max(0, f[`react_❤️`] || f.likeCount || 0);
 
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
@@ -1260,12 +1260,12 @@
                             </div>
 
                             <!-- LOWER ROW: Copy and Share buttons -->
-                            <div class="grid grid-cols-2 gap-1.5 mt-2.5 mb-3 shrink-0">
-                                <button onclick="event.stopPropagation(); window.copyToClip('${f.id}')" class="flex items-center justify-center gap-1 py-1.5 px-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-[11px] sm:text-xs font-black transition-all">
-                                    <i class="fas fa-copy"></i> <span>কপি লিংক</span>
+                            <div class="grid grid-cols-2 gap-1 mt-2 mb-2 shrink-0">
+                                <button onclick="event.stopPropagation(); window.copyToClip('${f.id}')" class="flex items-center justify-center gap-1 py-1 px-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-[10px] sm:text-[11px] font-bold transition-all">
+                                    <i class="fas fa-copy text-[9px] sm:text-xs"></i> <span>কপি লিংক</span>
                                 </button>
-                                <button onclick="event.stopPropagation(); window.shareToSocial('${f.id}')" class="flex items-center justify-center gap-1 py-1.5 px-2 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl text-[11px] sm:text-xs font-black transition-all">
-                                    <i class="fas fa-share-alt"></i> <span>শেয়ার</span>
+                                <button onclick="event.stopPropagation(); window.shareToSocial('${f.id}')" class="flex items-center justify-center gap-1 py-1 px-1.5 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] sm:text-[11px] font-bold transition-all">
+                                    <i class="fas fa-share-alt text-[9px] sm:text-xs"></i> <span>শেয়ার</span>
                                 </button>
                             </div>
 
@@ -1275,7 +1275,7 @@
                                     <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
-                            <button class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 mt-auto shrink-0">
+                            <button onclick="event.stopPropagation(); window.openDetailsOverlay('${f.id}')" class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 mt-auto shrink-0">
                                 <span><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
                             </button>
                         </div>
@@ -1314,7 +1314,7 @@
                 
                 const countEl = document.getElementById(`like-count-${fileId}`);
                 if(countEl) {
-                    const likesTotal = updatedData[`react_❤️`] || 0;
+                    const likesTotal = Math.max(0, updatedData[`react_❤️`] || 0);
                     countEl.innerHTML = `<i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>`;
                     if(currentReact === '❤️') {
                         countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-gray-400";
