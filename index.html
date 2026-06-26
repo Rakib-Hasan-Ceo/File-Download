@@ -40,6 +40,7 @@
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
+        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -114,7 +115,7 @@
                 <i class="fas fa-times text-xl"></i>
             </button>
             
-            <div class="text-center mb-6 mt-2">
+            <div class="text-center mb-5 mt-2">
                 <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
                     <i class="fas fa-bell text-5xl text-red-500 animate-ring"></i>
                 </div>
@@ -178,6 +179,7 @@
 
     <!-- MAIN HOME TAB CONTENT -->
     <main id="home-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+        
         <div id="search-section" class="relative max-w-xl mx-auto mb-8 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
             <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
@@ -185,6 +187,7 @@
 
         <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
 
+        <!-- Stable Slider Image Container to avoid flickering/jumping -->
         <div id="slider-container" class="relative w-full h-40 sm:h-64 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group shrink-0">
             <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out text-center"></div>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
@@ -200,6 +203,7 @@
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
             
+            <!-- Force exactly 2 columns grid design on mobile matching reference perfectly -->
             <div id="files-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
             
             <div id="single-view-footer" class="mt-8 flex justify-center"></div>
@@ -282,7 +286,7 @@
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-150 dark:border-gray-750 shadow-sm">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">এই ফাইল সম্পর্কে</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -347,9 +351,9 @@
         <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-100 transition-all">
             <h3 class="text-xl font-bold mb-4 text-center dark:text-white">Select Language</h3>
             <div class="space-y-3">
-                <button onclick="setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
-                <button onclick="setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
-                <button onclick="setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
+                <button onclick="window.setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
+                <button onclick="window.setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
+                <button onclick="window.setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
             </div>
             <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
         </div>
@@ -451,6 +455,34 @@
             document.getElementById('single-view-footer').innerHTML = '';
             document.getElementById('files-grid').innerHTML = '<div class="col-span-full text-center py-10"><i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i></div>';
             loadData();
+        };
+
+        window.updateReactDom = (id, emoji, change) => {
+            let summary = document.getElementById(`react-summary-${id}`);
+            if(!summary) return;
+            let btn = document.getElementById(`count-${id}-${emoji}`);
+            
+            let currentReact = localStorage.getItem('react_' + id);
+            let isMyReact = (currentReact === emoji);
+            
+            if(btn) {
+                let numSpan = btn.querySelector('.r-cnt');
+                let newCount = parseInt(numSpan.innerText) + change;
+                if(newCount <= 0) {
+                    btn.remove();
+                } else {
+                    numSpan.innerText = newCount;
+                    if(isMyReact) {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt";
+                    } else {
+                        btn.className = "flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border border-transparent bg-transparent transition-colors cursor-pointer";
+                        numSpan.className = "text-xs text-gray-500 dark:text-gray-400 font-bold r-cnt";
+                    }
+                }
+            } else if(change > 0) {
+                summary.insertAdjacentHTML('beforeend', `<button onclick="window.handleBadgeClick('${id}', '${emoji}')" id="count-${id}-${emoji}" class="flex items-center gap-1 hover:bg-gray-200 dark:hover:bg-gray-700 px-1.5 py-0.5 rounded-lg border bg-blue-100 dark:bg-blue-900/40 border-blue-200 dark:border-blue-700 transition-colors cursor-pointer">${emoji} <span class="text-xs text-blue-600 dark:text-blue-400 font-bold r-cnt">1</span></button>`);
+            }
         };
 
         let appConfig = {};
@@ -644,9 +676,6 @@
 
             // Load reviews & comments live from subcollection
             loadDetailsReviewsLive(id);
-
-            // Open overlay page
-            document.getElementById('details-overlay').classList.remove('hidden');
 
             if(focusCommentBox) {
                 setTimeout(() => {
@@ -1190,7 +1219,15 @@
             }
 
             try {
-                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                let fSnap;
+                try {
+                    // Safe Fallback in case of missing index inside firestore database queries
+                    fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                } catch (idxError) {
+                    console.warn("Index query failed, falling back to simple collection fetch:", idxError);
+                    fSnap = await getDocs(collection(db, "files"));
+                }
+
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
                 let count = 0;
@@ -1321,6 +1358,12 @@
                 if(text) text.textContent = 'Dark Mode';
             }
         }
+
+        // BIND SIDEBAR ACTIONS & EVENT LISTENERS
+        document.getElementById('sidebar-theme-toggle').addEventListener('click', () => {
+            const currentTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
+            setTheme(currentTheme);
+        });
 
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
