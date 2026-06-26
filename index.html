@@ -93,7 +93,7 @@
             <div class="p-4 space-y-2">
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
                 <div id="sidebar-social-links" class="space-y-1.5 px-1">
-                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-gray-50 dark:bg-gray-850 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition shadow-sm border border-gray-100 dark:border-gray-800">
+                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-gray-50 dark:bg-gray-855 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition shadow-sm border border-gray-100 dark:border-gray-800">
                         <i class="fab fa-telegram text-blue-500 w-6 text-center text-xl"></i>
                         <span class="font-bold text-xs text-gray-700 dark:text-gray-200">Telegram Channel</span>
                     </a>
@@ -161,7 +161,7 @@
     </nav>
 
     <!-- PREMIUM TELEGRAM USER PROFILE WIDGET -->
-    <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-4 px-4">
+    <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-2 px-4">
         <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-full border-2 border-blue-500 overflow-hidden shrink-0 bg-gray-100">
@@ -183,27 +183,27 @@
     </div>
 
     <!-- MAIN HOME TAB CONTENT -->
-    <main id="home-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+    <main id="home-tab-content" class="container mx-auto px-4 py-2 max-w-7xl min-h-screen">
         
-        <div id="search-section" class="relative max-w-xl mx-auto mb-8 group">
+        <div id="search-section" class="relative max-w-xl mx-auto mb-3 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
-            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
+            <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-3.5 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
         </div>
 
-        <div id="ad-container-1" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+        <div id="ad-container-1" class="mb-3 flex justify-center rounded-lg overflow-hidden"></div>
 
         <!-- Stable Slider Image Container to avoid flickering/jumping -->
-        <div id="slider-container" class="relative w-full h-40 sm:h-64 rounded-2xl overflow-hidden shadow-xl mb-10 bg-gray-200 dark:bg-gray-700 group shrink-0">
+        <div id="slider-container" class="relative w-full h-40 sm:h-64 rounded-2xl overflow-hidden shadow-xl mb-3 bg-gray-200 dark:bg-gray-700 group shrink-0">
             <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out text-center"></div>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
 
-        <div id="ad-container-2" class="mb-8 flex justify-center min-h-[60px] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800/50"></div>
+        <div id="ad-container-2" class="mb-3 flex justify-center rounded-lg overflow-hidden"></div>
 
         <section id="main-section">
             <div id="single-view-header"></div>
             
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center justify-between mb-4">
                 <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
@@ -252,7 +252,7 @@
         </div>
 
         <div class="max-w-xl mx-auto p-4 space-y-6">
-            <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="flex gap-4 items-center bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-sm">
                 <div class="relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-gray-100 border dark:border-gray-600">
                     <img id="details-thumb" src="" class="w-full h-full object-cover">
                     <div class="absolute bottom-1.5 right-1.5 w-5 h-5 bg-emerald-500 text-white rounded-full flex items-center justify-center text-[9px] border-2 border-white dark:border-darkCard">
@@ -279,12 +279,6 @@
                     <i class="fas fa-shield-alt text-emerald-500 text-lg"></i>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">SAFE</span>
                 </div>
-            </div>
-
-            <!-- PREMIUM DETAILED VIEW REACTIONS BAR inside details page -->
-            <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col gap-3">
-                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">রিঅ্যাকশন দিন</h4>
-                <div class="flex flex-wrap gap-2.5" id="details-reactions-picker"></div>
             </div>
 
             <div id="details-screenshots-sec" class="hidden">
@@ -633,7 +627,7 @@
             }
         }
 
-        // DETAILED OVERLAY CONTROLLERS WITH DYNAMIC REACTION PICKER
+        // DETAILED OVERLAY CONTROLLERS
         window.openDetailsOverlay = async (id, focusCommentBox = false) => {
             detailsActiveFileId = id;
             editingReviewDocId = null; 
@@ -648,9 +642,6 @@
             document.getElementById('details-title').textContent = fileObj.title;
             document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
             document.getElementById('details-description').textContent = fileObj.description || "কোনো ডেসক্রিপশন দেওয়া হয়নি।";
-
-            // Populate reactions list & picker
-            renderDetailsReactions(fileObj);
 
             // screenshots
             const ssContainer = document.getElementById('details-screenshots-container');
@@ -751,24 +742,7 @@
         };
 
         function renderDetailsReactions(fileObj) {
-            const container = document.getElementById('details-reactions-picker');
-            container.innerHTML = '';
-            const emojis = ['❤️'];
-            const localReact = localStorage.getItem('react_' + fileObj.id);
-
-            emojis.forEach(emoji => {
-                const count = fileObj[`react_${emoji}`] || 0;
-                const isSelected = (localReact === emoji);
-                const activeStyle = isSelected 
-                    ? "bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 border-blue-300"
-                    : "bg-gray-50 dark:bg-gray-800 border-transparent text-gray-500 dark:text-gray-400 hover:bg-gray-100";
-                
-                container.innerHTML += `
-                    <button onclick="window.submitReaction('${fileObj.id}', '${emoji}')" class="px-3 py-1.5 rounded-xl border text-sm font-bold flex items-center gap-1 transition ${activeStyle}">
-                        <span>${emoji}</span>
-                        <span class="text-xs">${count}</span>
-                    </button>`;
-            });
+            // Emptied to prevent errors as it is no longer shown inside details overlay
         }
 
         window.submitReaction = async (fileId, emoji) => {
@@ -793,7 +767,6 @@
                 const updatedData = {id: updatedDoc.id, ...updatedDoc.data()};
                 const idx = globalFiles.findIndex(f => f.id === fileId);
                 if(idx !== -1) globalFiles[idx] = updatedData;
-                renderDetailsReactions(updatedData);
                 loadData(); 
             }
         };
@@ -1254,7 +1227,7 @@
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
                     
                     card.onclick = (e) => {
-                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger')) {
+                        if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger') || e.target.closest('button')) {
                             return;
                         }
                         window.openDetailsOverlay(f.id);
@@ -1275,20 +1248,25 @@
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <!-- Stat badges block enlarged & perfectly aligned inside home card -->
-                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-sm sm:text-base text-gray-600 dark:text-gray-300 font-bold shrink-0">
-                                <div class="flex items-center gap-4">
-                                    <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
-                                    
-                                    <!-- Direct Like Button on Home -->
-                                    <span id="like-count-${f.id}" onclick="event.stopPropagation(); window.toggleHomeLike('${f.id}')" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
-                                        <i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
-                                    </span>
-                                    
-                                    <!-- Direct Comment Button on Home -->
-                                    <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center gap-1 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-base sm:text-lg"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
-                                </div>
-                                <span class="hover:text-green-500 transition-colors cursor-pointer text-lg shrink-0" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
+                            <!-- UPPER ROW: Stat badges (Views, Likes, Comments) -->
+                            <div class="flex justify-between items-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-sm text-gray-600 dark:text-gray-300 font-black shrink-0">
+                                <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
+                                
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); window.toggleHomeLike('${f.id}')" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                    <i class="fas fa-heart text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
+                                </span>
+                                
+                                <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center gap-1 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-base"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
+                            </div>
+
+                            <!-- LOWER ROW: Copy and Share buttons -->
+                            <div class="grid grid-cols-2 gap-1.5 mt-2.5 mb-3 shrink-0">
+                                <button onclick="event.stopPropagation(); window.copyToClip('${f.id}')" class="flex items-center justify-center gap-1 py-1.5 px-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl text-[11px] sm:text-xs font-black transition-all">
+                                    <i class="fas fa-copy"></i> <span>কপি লিংক</span>
+                                </button>
+                                <button onclick="event.stopPropagation(); window.shareToSocial('${f.id}')" class="flex items-center justify-center gap-1 py-1.5 px-2 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-xl text-[11px] sm:text-xs font-black transition-all">
+                                    <i class="fas fa-share-alt"></i> <span>শেয়ার</span>
+                                </button>
                             </div>
 
                             <div class="mb-3 shrink-0">
@@ -1374,7 +1352,8 @@
             const url = window.getShareUrl(id);
             navigator.clipboard.writeText(url).then(() => {
                 showToast("Link copied to clipboard!", {}, true);
-                document.getElementById(`share-menu-${id}`).classList.add('hidden');
+                const menu = document.getElementById(`share-menu-${id}`);
+                if (menu) menu.classList.add('hidden');
             }).catch(err => {
                 alert("Failed to copy link: " + url);
             });
@@ -1382,7 +1361,8 @@
 
         window.shareToSocial = (id) => {
             const url = window.getShareUrl(id);
-            document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            const menu = document.getElementById(`share-menu-${id}`);
+            if (menu) menu.classList.add('hidden');
             
             if (navigator.share) {
                 navigator.share({
