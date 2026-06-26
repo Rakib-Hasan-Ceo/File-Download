@@ -34,12 +34,16 @@
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scroll::-webkit-scrollbar-thumb { background: #475569; }
+        
+        .react-menu { display: none; }
+        .react-menu-dropdown { position: absolute; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
+        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -85,10 +89,11 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400" id="sidebar-tg-id">ID: 000000000</p>
             </div>
 
+            <!-- PREMIUM MENU OPTION DESIGNED BEAUTIFULLY -->
             <div class="p-4 space-y-2">
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Social Profiles</div>
                 <div id="sidebar-social-links" class="space-y-1.5 px-1">
-                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-gray-50 dark:bg-gray-855 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition shadow-sm border border-gray-100 dark:border-gray-800">
+                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-gray-50 dark:bg-gray-850 hover:bg-blue-50 dark:hover:bg-blue-950/20 transition shadow-sm border border-gray-100 dark:border-gray-800">
                         <i class="fab fa-telegram text-blue-500 w-6 text-center text-xl"></i>
                         <span class="font-bold text-xs text-gray-700 dark:text-gray-200">Telegram Channel</span>
                     </a>
@@ -108,13 +113,14 @@
         <div class="w-full p-4 border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-center text-xs text-gray-400 shrink-0">&copy; 2025 Web Rakib</div>
     </aside>
 
+    <!-- LARGER POPUP NOTICE MODAL FOR READABILITY -->
     <div id="popup-notice-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
         <div class="bg-white dark:bg-darkCard w-full max-w-2xl rounded-3xl p-8 shadow-2xl relative animate-[fadeIn_0.4s_ease-out]">
             <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-5 right-5 w-9 h-9 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
                 <i class="fas fa-times text-xl"></i>
             </button>
             
-            <div class="text-center mb-5 mt-2">
+            <div class="text-center mb-6 mt-2">
                 <div class="inline-block p-4 rounded-full bg-red-100 dark:bg-red-900/40 mb-3 shadow-inner">
                     <i class="fas fa-bell text-5xl text-red-500 animate-ring"></i>
                 </div>
@@ -178,6 +184,7 @@
 
     <!-- MAIN HOME TAB CONTENT -->
     <main id="home-tab-content" class="container mx-auto px-4 py-6 max-w-7xl min-h-screen">
+        
         <div id="search-section" class="relative max-w-xl mx-auto mb-8 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
             <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-4 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
@@ -254,6 +261,7 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
+                    <!-- Subtitle updated to আলোর হাওয়া -->
                     <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
@@ -284,7 +292,7 @@
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-750 shadow-sm">
                 <h4 class="text-base font-black text-gray-800 dark:text-white mb-3">এই ফাইল সম্পর্কে</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -328,7 +336,7 @@
     </div>
 
     <!-- PREMIUM FLOATING BOTTOM NAVIGATION CAPSULE -->
-    <div class="fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-darkCard/95 border border-gray-200 dark:border-gray-855 shadow-2xl z-40 rounded-2xl flex justify-around py-3 backdrop-blur-md">
+    <div class="fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-darkCard/95 border border-gray-200 dark:border-gray-850 shadow-2xl z-40 rounded-2xl flex justify-around py-3 backdrop-blur-md">
         <button id="nav-home" onclick="window.switchTab('home')" class="flex items-center gap-2 px-6 py-2 rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-900/30 transition-all font-black text-sm">
             <i class="fas fa-home text-lg"></i>
             <span>হোম</span>
@@ -349,9 +357,9 @@
         <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-100 transition-all">
             <h3 class="text-xl font-bold mb-4 text-center dark:text-white">Select Language</h3>
             <div class="space-y-3">
-                <button onclick="window.setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
-                <button onclick="window.setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
-                <button onclick="window.setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
+                <button onclick="setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
+                <button onclick="setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
+                <button onclick="setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
             </div>
             <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
         </div>
@@ -362,7 +370,7 @@
         <div class="bg-white dark:bg-darkCard w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-0 shadow-2xl flex flex-col h-[75vh] sm:h-[60vh] animate-[fadeIn_0.3s_ease-out]">
             <div class="flex justify-between items-center p-4 border-b dark:border-gray-700 sticky top-0 bg-white dark:bg-darkCard rounded-t-2xl z-10">
                 <h3 class="text-lg font-bold dark:text-white"><i class="fas fa-comments text-blue-500 mr-2"></i> Comments <span id="modal-comment-count" class="text-sm text-gray-500 ml-1"></span></h3>
-                <button onclick="document.getElementById('comment-modal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+                <button onclick="document.getElementById('comment-modal').classList.add('hidden'); window.resetCommentInput();" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
             </div>
             <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
             
@@ -409,6 +417,7 @@
         let currentActiveReviewStars = 0;
         let detailsActiveFileId = null;
         let editingReviewDocId = null; 
+        let editingCommentDocId = null; 
         let likePressTimeout = null;
 
         window.forceShowAll = false;
@@ -675,6 +684,9 @@
             // Load reviews & comments live from subcollection
             loadDetailsReviewsLive(id);
 
+            // Open overlay page
+            document.getElementById('details-overlay').classList.remove('hidden');
+
             if(focusCommentBox) {
                 setTimeout(() => {
                     document.getElementById('details-review-box-anchor').scrollIntoView({ behavior: 'smooth' });
@@ -735,13 +747,13 @@
         };
 
         window.endLikePress = () => {
-            if(likePressTimer) clearTimeout(likePressTimer);
+            if(likePressTimeout) clearTimeout(likePressTimeout);
         };
 
         function renderDetailsReactions(fileObj) {
             const container = document.getElementById('details-reactions-picker');
             container.innerHTML = '';
-            const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
+            const emojis = ['❤️'];
             const localReact = localStorage.getItem('react_' + fileObj.id);
 
             emojis.forEach(emoji => {
@@ -983,7 +995,7 @@
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
                 btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
 
@@ -1216,15 +1228,7 @@
             }
 
             try {
-                let fSnap;
-                try {
-                    // Safe Fallback in case of missing index inside firestore database queries
-                    fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
-                } catch (idxError) {
-                    console.warn("Index query failed, falling back to simple collection fetch:", idxError);
-                    fSnap = await getDocs(collection(db, "files"));
-                }
-
+                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
                 let count = 0;
@@ -1256,12 +1260,8 @@
                         window.openDetailsOverlay(f.id);
                     };
 
-                    const emojis = ['❤️', '👍', '😭', '😁', '😢', '👌', '🥰', '🫣', '🤯', '👀', '🌹', '💯', '🕊', '🔥', '💔', '🇧🇩'];
-                    let likesTotal = 0;
-                    emojis.forEach(e => {
-                        likesTotal += (f[`react_${e}`] || 0);
-                    });
-                    if(likesTotal === 0 && f.likeCount > 0) likesTotal = f.likeCount;
+                    const emojis = ['❤️'];
+                    let likesTotal = f[`react_❤️`] || f.likeCount || 0;
 
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
@@ -1276,19 +1276,19 @@
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
                             <!-- Stat badges block enlarged & perfectly aligned inside home card -->
-                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-[12px] sm:text-sm text-gray-500 dark:text-gray-400 font-black shrink-0">
-                                <div class="flex items-center gap-3">
-                                    <span title="Views" class="flex items-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm"></i> ${f.views || 0}</span>
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 text-sm sm:text-base text-gray-600 dark:text-gray-300 font-bold shrink-0">
+                                <div class="flex items-center gap-4">
+                                    <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                     
-                                    <!-- Long Press enabled like button -->
-                                    <span oncontextmenu="event.preventDefault();" onmousedown="window.startLikePress('${f.id}')" onmouseup="window.endLikePress()" ontouchstart="window.startLikePress('${f.id}')" ontouchend="window.endLikePress()" title="Hold to see who liked" class="likers-btn-trigger flex items-center gap-0.5 text-pink-500 hover:scale-110 active:scale-95 transition-transform select-none">
-                                        <i class="fas fa-thumbs-up text-sm"></i> <span id="like-count-badge-${f.id}">${likesTotal}</span>
+                                    <!-- Direct Like Button on Home -->
+                                    <span id="like-count-${f.id}" onclick="event.stopPropagation(); window.toggleHomeLike('${f.id}')" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                        <i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                     </span>
                                     
-                                    <!-- Dynamic comment link clicking directly moves to comment box -->
-                                    <span onclick="event.stopPropagation(); window.openDetailsOverlay('${f.id}', true)" title="Comments" class="comment-btn-trigger flex items-center gap-0.5 hover:text-blue-500 transition-colors"><i class="fas fa-comment text-indigo-500 text-sm"></i> ${f.commentCount || 0}</span>
+                                    <!-- Direct Comment Button on Home -->
+                                    <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center gap-1 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-base sm:text-lg"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
                                 </div>
-                                <span class="hover:text-green-500 transition-colors cursor-pointer text-base shrink-0" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
+                                <span class="hover:text-green-500 transition-colors cursor-pointer text-lg shrink-0" onclick="event.stopPropagation(); window.copyToClip('${f.id}')"><i class="fas fa-share-alt"></i></span>
                             </div>
 
                             <div class="mb-3 shrink-0">
@@ -1316,11 +1316,337 @@
             } catch(e) { console.error(e); }
         }
 
-        // BIND SIDEBAR ACTIONS & EVENT LISTENERS
-        document.getElementById('sidebar-theme-toggle').addEventListener('click', () => {
-            const currentTheme = localStorage.getItem('theme') === 'dark' ? 'light' : 'dark';
-            setTheme(currentTheme);
+        window.toggleHomeLike = async (fileId) => {
+            const currentReact = localStorage.getItem('react_' + fileId);
+            let updates = {};
+            if(currentReact === '❤️') {
+                localStorage.removeItem('react_' + fileId);
+                updates[`react_❤️`] = increment(-1);
+            } else {
+                localStorage.setItem('react_' + fileId, '❤️');
+                updates[`react_❤️`] = increment(1);
+            }
+            await updateDoc(doc(db, "files", fileId), updates);
+            
+            const updatedDoc = await getDoc(doc(db, "files", fileId));
+            if(updatedDoc.exists()) {
+                const updatedData = {id: updatedDoc.id, ...updatedDoc.data()};
+                const idx = globalFiles.findIndex(f => f.id === fileId);
+                if(idx !== -1) globalFiles[idx] = updatedData;
+                
+                const countEl = document.getElementById(`like-count-${fileId}`);
+                if(countEl) {
+                    const likesTotal = updatedData[`react_❤️`] || 0;
+                    countEl.innerHTML = `<i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>`;
+                    if(currentReact === '❤️') {
+                        countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-gray-400";
+                    } else {
+                        countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-red-500";
+                    }
+                }
+            }
+        };
+
+        document.addEventListener('click', (e) => {
+            if(!e.target.closest('.react-wrapper')) {
+                document.querySelectorAll('.react-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
+            if(!e.target.closest('.share-wrapper')) {
+                document.querySelectorAll('.share-menu-dropdown').forEach(m => m.classList.add('hidden'));
+            }
         });
+
+        window.getShareUrl = (id) => {
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                return "https://t.me/DownloaderxRbot?startapp=" + id;
+            }
+            return window.location.origin + window.location.pathname + "?v=" + id;
+        };
+
+        window.toggleShareMenu = (id) => {
+            document.querySelectorAll('.share-menu-dropdown').forEach(m => {
+                if(m.id !== `share-menu-${id}`) m.classList.add('hidden');
+            });
+            document.getElementById(`share-menu-${id}`).classList.toggle('hidden');
+        };
+
+        window.copyToClip = (id) => {
+            const url = window.getShareUrl(id);
+            navigator.clipboard.writeText(url).then(() => {
+                showToast("Link copied to clipboard!", {}, true);
+                document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            }).catch(err => {
+                alert("Failed to copy link: " + url);
+            });
+        };
+
+        window.shareToSocial = (id) => {
+            const url = window.getShareUrl(id);
+            document.getElementById(`share-menu-${id}`).classList.add('hidden');
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check this out!',
+                    text: 'View and download this amazing file:',
+                    url: url
+                }).catch(err => console.log('Share canceled'));
+            } else {
+                window.open('https://t.me/share/url?url=' + encodeURIComponent(url), '_blank');
+            }
+        };
+
+        window.trackView = async (id) => {
+            if(!localStorage.getItem('viewed_' + id)) {
+                localStorage.setItem('viewed_' + id, 'true');
+                const vSpan = document.getElementById(`view-count-${id}`);
+                if(vSpan) vSpan.innerText = parseInt(vSpan.innerText) + 1;
+                await updateDoc(doc(db, "files", id), { views: increment(1) });
+            }
+        };
+
+        window.toggleReactMenu = (id) => {
+            document.querySelectorAll('.react-menu-dropdown').forEach(m => {
+                if(m.id !== `react-menu-${id}`) m.classList.add('hidden');
+            });
+            document.getElementById(`react-menu-${id}`).classList.toggle('hidden');
+        };
+
+        window.handleBadgeClick = (id, emoji) => {
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) {
+                window.removeReact(id);
+            } else {
+                window.setReact(id, emoji);
+            }
+        };
+
+        window.setReact = async (id, emoji) => {
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden'); 
+            
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact === emoji) return; 
+            
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                window.updateReactDom(id, currentReact, -1);
+            }
+            
+            localStorage.setItem('react_' + id, emoji);
+            const iconSpan = document.getElementById('react-icon-' + id);
+            if(iconSpan) iconSpan.parentElement.classList.replace('text-gray-400', 'text-blue-500');
+            
+            window.updateReactDom(id, emoji, 1);
+            
+            let updates = {};
+            if(currentReact) {
+                updates[`react_${currentReact}`] = increment(-1);
+            }
+            updates[`react_${emoji}`] = increment(1);
+            await updateDoc(doc(db, "files", id), updates);
+        };
+
+        window.removeReact = async (id) => {
+            const menu = document.getElementById(`react-menu-${id}`);
+            if(menu) menu.classList.add('hidden');
+            
+            const currentReact = localStorage.getItem('react_' + id);
+            if(currentReact) {
+                localStorage.removeItem('react_' + id);
+                const iconSpan = document.getElementById('react-icon-' + id);
+                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
+                
+                window.updateReactDom(id, currentReact, -1);
+                
+                await updateDoc(doc(db, "files", id), { 
+                    [`react_${currentReact}`]: increment(-1)
+                });
+            }
+        };
+
+        let unsubscribeComments = null;
+        window.openComments = (id) => {
+            currentFileIdForComment = id;
+            document.getElementById('comment-modal').classList.remove('hidden');
+            const list = document.getElementById('comment-list');
+            const cCount = document.getElementById(`comment-count-${id}`);
+            document.getElementById('modal-comment-count').innerText = cCount ? `(${cCount.innerText})` : '';
+            list.innerHTML = '<div class="text-center text-gray-500 mt-10"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
+            if(unsubscribeComments) unsubscribeComments();
+            
+            const q = query(collection(db, "files", id, "comments"), orderBy("timestamp", "desc"));
+            unsubscribeComments = onSnapshot(q, (snap) => {
+                list.innerHTML = '';
+                if(snap.empty) list.innerHTML = '<div class="text-center text-gray-400 mt-10">No comments yet. Be the first!</div>';
+                snap.forEach(d => {
+                    const c = d.data();
+                    const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                    let timeStr = "Just now";
+                    if(c.timestamp) {
+                        const date = c.timestamp.toDate();
+                        timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    }
+                    const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
+                    
+                    let controlsHtml = '';
+                    if(isMyComment) {
+                        controlsHtml = `
+                            <div class="flex gap-2.5 mt-1 justify-end text-xs font-bold text-gray-400">
+                                <button onclick="window.editCommentInline('${id}', '${d.id}', '${c.text.replace(/'/g, "\\'")}')" class="hover:text-blue-500 transition-colors"><i class="fas fa-edit mr-0.5"></i> Edit</button>
+                                <button onclick="window.deleteComment('${id}', '${d.id}')" class="hover:text-red-500 transition-colors"><i class="fas fa-trash-alt mr-0.5"></i> Delete</button>
+                            </div>`;
+                    }
+                    
+                    const avatarContent = c.avatar 
+                        ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
+                        : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
+
+                    list.innerHTML += `
+                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]">
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">${avatarContent}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                        <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    ${controlsHtml}
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            });
+        };
+
+        window.resetCommentInput = () => {
+            editingCommentDocId = null;
+            const textInput = document.getElementById('comment-text');
+            if (textInput) textInput.value = '';
+            const sendBtn = document.getElementById('send-comment-btn');
+            if (sendBtn) sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        };
+
+        window.editCommentInline = (fileId, docId, text) => {
+            editingCommentDocId = docId;
+            const textInput = document.getElementById('comment-text');
+            if (textInput) {
+                textInput.value = text;
+                textInput.focus();
+            }
+            const sendBtn = document.getElementById('send-comment-btn');
+            if (sendBtn) {
+                sendBtn.innerHTML = '<i class="fas fa-edit"></i>';
+            }
+        };
+
+        window.deleteComment = async (fileId, commentId) => {
+            if(confirm("Are you sure you want to delete your comment?")) {
+                await deleteDoc(doc(db, "files", fileId, "comments", commentId));
+                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                window.openComments(fileId);
+                showToast("Comment deleted successfully!", {}, true);
+                
+                const cSpan = document.getElementById('comment-count-' + fileId);
+                if(cSpan) {
+                    const snap = await getDoc(doc(db, "files", fileId));
+                    if(snap.exists()) {
+                        cSpan.innerText = snap.data().commentCount || 0;
+                    }
+                }
+            }
+        };
+
+        document.getElementById('send-comment-btn').onclick = async () => {
+            const textInput = document.getElementById('comment-text');
+            const text = textInput.value.trim();
+            if(!text) return;
+            
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
+            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
+
+            if (editingCommentDocId) {
+                await updateDoc(doc(db, "files", currentFileIdForComment, "comments", editingCommentDocId), {
+                    text: text,
+                    timestamp: new Date()
+                });
+                editingCommentDocId = null;
+                document.getElementById('send-comment-btn').innerHTML = '<i class="fas fa-paper-plane"></i>';
+                showToast("Comment updated successfully!", {}, true);
+            } else {
+                await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
+                    name: userName, 
+                    text: text, 
+                    stars: 5,
+                    timestamp: new Date(), 
+                    deviceId: userDeviceId, 
+                    uid: userId,
+                    avatar: userAvatar
+                });
+                await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
+                showToast("Comment posted successfully!", {}, true);
+            }
+            
+            textInput.value = '';
+            window.openComments(currentFileIdForComment);
+            
+            const cSpan = document.getElementById('comment-count-' + currentFileIdForComment);
+            if(cSpan) {
+                const snap = await getDoc(doc(db, "files", currentFileIdForComment));
+                if(snap.exists()) {
+                    cSpan.innerText = snap.data().commentCount || 0;
+                }
+            }
+        };
+
+        window.addEventListener('load', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if(savedTheme === 'dark') setTheme('dark'); else setTheme('light');
+            if(!localStorage.getItem('lang')) document.getElementById('language-modal').classList.remove('hidden');
+            else updateTexts();
+            loadData();
+        });
+
+        // FIXED SIDEBAR BLURRY OVERFLOW TYPO
+        window.toggleMenu = () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sidebar.classList.contains('sidebar-closed')) {
+                sidebar.classList.remove('sidebar-closed'); 
+                sidebar.classList.add('sidebar-open'); 
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('sidebar-closed'); 
+                sidebar.classList.remove('sidebar-open'); 
+                overlay.classList.add('hidden');
+            }
+        };
+
+        window.setLang = (l) => {
+            currentLang = l; localStorage.setItem('lang', l);
+            document.getElementById('language-modal').classList.add('hidden');
+            updateTexts(); loadData();
+        };
+
+        function updateTexts() {
+            document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
+            document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
+        }
+        
+        function setTheme(mode) {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
+                if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
+                if(text) text.textContent = 'Light Mode';
+            } else {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
+                if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
+                if(text) text.textContent = 'Dark Mode';
+            }
+        }
 
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
