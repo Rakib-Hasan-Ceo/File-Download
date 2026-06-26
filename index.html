@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
     <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
     <!-- Telegram Web App SDK -->
@@ -39,7 +39,7 @@
         .react-menu-dropdown { position: absolute; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-24">
+<body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
@@ -80,20 +80,14 @@
         
         <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto custom-scroll pb-4">
-            <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700">
-                <div id="sidebar-unauth" class="text-center">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2 font-medium">লগিন করে যুক্ত হোন!</p>
-                    <button onclick="window.toggleAuthModal('login'); toggleMenu()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold shadow-md hover:bg-blue-700 transition">Login / Register</button>
+            <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 flex flex-col items-center">
+                <!-- Sidebar displays the connected Telegram details dynamically -->
+                <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-2xl shadow-md mb-2 overflow-hidden" id="sidebar-avatar">
+                    <img id="sidebar-tg-img" src="" class="w-full h-full object-cover hidden" alt="User">
+                    <span id="sidebar-avatar-placeholder">U</span>
                 </div>
-                <div id="sidebar-auth" class="hidden flex flex-col items-center">
-                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-xl shadow-md mb-2 overflow-hidden" id="sidebar-avatar">U</div>
-                    <h3 class="font-bold text-gray-800 dark:text-white" id="sidebar-username">User Name</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3" id="sidebar-email">user@email.com</p>
-                    
-                    <button onclick="window.openProfileModal(); toggleMenu()" class="w-full mb-2 bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200 py-2 rounded-lg font-bold hover:bg-gray-200 dark:hover:bg-gray-600 transition border border-gray-200 dark:border-gray-600"><i class="fas fa-user-edit mr-2"></i> Edit Profile</button>
-                    
-                    <button onclick="window.handleLogout(); toggleMenu()" class="w-full bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 py-2 rounded-lg font-bold hover:bg-red-200 dark:hover:bg-red-900/50 transition border border-red-200 dark:border-red-800"><i class="fas fa-sign-out-alt mr-2"></i> Logout</button>
-                </div>
+                <h3 class="font-extrabold text-gray-800 dark:text-white" id="sidebar-username">Guest User</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400" id="sidebar-tg-id">ID: 000000000</p>
             </div>
 
             <div class="p-4 space-y-1">
@@ -161,7 +155,7 @@
         </div>
     </nav>
 
-    <!-- TELEGRAM USER PROFILE WIDGET -->
+    <!-- PREMIUM TELEGRAM USER PROFILE WIDGET -->
     <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-4 px-4">
         <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -208,7 +202,7 @@
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
             
-            <!-- Force exactly 2 columns grid design on mobile matching reference -->
+            <!-- Force exactly 2 columns grid design on mobile matching reference perfectly -->
             <div id="files-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
             
             <div id="single-view-footer" class="mt-8 flex justify-center"></div>
@@ -261,7 +255,7 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
-                    <!-- Updated subtitle to আলোর হাওয়া -->
+                    <!-- Subtitle updated to আলোর হাওয়া -->
                     <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
@@ -334,105 +328,21 @@
         </div>
     </footer>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 dark:bg-darkCard/95 border-t border-gray-200 dark:border-gray-800 shadow-xl z-40 flex justify-around py-2.5 backdrop-blur-md">
-        <button id="nav-home" onclick="window.switchTab('home')" class="flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105">
+    <!-- PREMIUM FLOATING BOTTOM NAVIGATION CAPSULE -->
+    <div class="fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-darkCard/95 border border-gray-200 dark:border-gray-850 shadow-2xl z-40 rounded-2xl flex justify-around py-3 backdrop-blur-md">
+        <button id="nav-home" onclick="window.switchTab('home')" class="flex items-center gap-2 px-6 py-2 rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-900/30 transition-all font-black text-sm">
             <i class="fas fa-home text-lg"></i>
             <span>হোম</span>
         </button>
-        <button id="nav-history" onclick="window.switchTab('history')" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs">
+        <button id="nav-history" onclick="window.switchTab('history')" class="flex items-center gap-2 px-6 py-2 rounded-xl text-gray-400 hover:text-blue-500 transition-all font-black text-sm">
             <i class="fas fa-history text-lg"></i>
             <span>ইতিহাস</span>
         </button>
-    </nav>
+    </div>
 
     <!-- Toast -->
     <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl z-[100] flex items-center gap-3 opacity-0 translate-y-10 transition-all duration-300 pointer-events-none">
         <i class="fas fa-check-circle text-green-400"></i><span id="toast-message" class="text-sm font-medium">Notification</span>
-    </div>
-
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
-            <button onclick="document.getElementById('auth-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
-            
-            <div id="auth-login-view">
-                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Welcome Back</h3>
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
-                        <input type="email" id="login-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
-                        <input type="password" id="login-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <div class="text-right">
-                        <button onclick="window.switchAuthView('reset')" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Forgot Password?</button>
-                    </div>
-                    <button id="btn-login" onclick="window.submitLogin()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Login</button>
-                </div>
-                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                    Don't have an account? <button onclick="window.switchAuthView('register')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Sign up</button>
-                </div>
-            </div>
-
-            <div id="auth-register-view" class="hidden">
-                <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Create Account</h3>
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Full Name</label>
-                        <input type="text" id="reg-name" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
-                        <input type="email" id="reg-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Password</label>
-                        <input type="password" id="reg-password" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <button id="btn-register" onclick="window.submitRegister()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-indigo-700 transition mt-2 relative">Sign Up</button>
-                </div>
-                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                    Already have an account? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
-                </div>
-            </div>
-
-            <div id="auth-reset-view" class="hidden">
-                <h3 class="text-xl font-bold mb-2 text-center dark:text-white text-gray-800">Reset Password</h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400 text-center mb-6">Enter your email and we'll send you a link to reset your password.</p>
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Email</label>
-                        <input type="email" id="reset-email" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                    </div>
-                    <button id="btn-reset" onclick="window.submitResetPassword()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Send Reset Link</button>
-                </div>
-                <div class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
-                    Remembered your password? <button onclick="window.switchAuthView('login')" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">Login</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Profile Edit Modal -->
-    <div id="profile-modal" class="hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl relative">
-            <button onclick="document.getElementById('profile-modal').classList.add('hidden')" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition"><i class="fas fa-times text-xl"></i></button>
-            <h3 class="text-2xl font-bold mb-6 text-center dark:text-white text-gray-800">Edit Profile</h3>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Full Name</label>
-                    <input type="text" id="profile-name" class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase">Profile Picture URL (Optional)</label>
-                    <input type="url" id="profile-photo" placeholder="https://..." class="w-full mt-1 px-4 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border border-gray-200 dark:border-gray-700 focus:outline-none focus:border-blue-500 transition">
-                </div>
-                <button id="btn-update-profile" onclick="window.submitProfileUpdate()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-lg hover:bg-blue-700 transition relative">Save Changes</button>
-            </div>
-        </div>
     </div>
 
     <!-- Language Modal -->
@@ -458,13 +368,13 @@
             <div id="comment-list" class="flex-1 overflow-y-auto p-4 space-y-5 custom-scroll"></div>
             
             <div class="border-t dark:border-gray-700 p-4 bg-gray-50 dark:bg-gray-800 rounded-b-2xl">
-                <div id="comment-logged-out" class="text-center py-2">
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">কমেন্ট করতে আপনাকে অবশ্যই লগিন করতে হবে।</p>
-                    <button onclick="document.getElementById('comment-modal').classList.add('hidden'); window.toggleAuthModal('login');" class="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold shadow-md hover:bg-blue-700 transition"><i class="fas fa-sign-in-alt mr-2"></i>লগিন করুন</button>
-                </div>
-                <div id="comment-logged-in" class="hidden flex-col gap-3">
+                <!-- Logged In UI is now Always active with TG profile -->
+                <div id="comment-logged-in" class="flex flex-col gap-3">
                     <div class="flex gap-2 items-center">
-                        <div id="comment-user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0 overflow-hidden">U</div>
+                        <div id="comment-user-avatar" class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shadow-sm flex-shrink-0 overflow-hidden">
+                            <img id="comment-avatar-img" class="w-full h-full object-cover hidden">
+                            <span id="comment-avatar-placeholder">U</span>
+                        </div>
                         <input type="text" id="comment-text" placeholder="কমেন্ট লিখুন..." class="flex-1 px-4 py-2.5 rounded-full bg-white dark:bg-gray-700 dark:text-white border dark:border-gray-600 focus:outline-none focus:border-blue-500 text-sm shadow-inner transition">
                         <button id="send-comment-btn" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-blue-700 transition shadow-md flex-shrink-0"><i class="fas fa-paper-plane"></i></button>
                     </div>
@@ -476,7 +386,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, getDocs, doc, getDoc, setDoc, query, updateDoc, increment, addDoc, orderBy, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyBFLa7OKNIz9nnRC714Yo53pMZj9vMnhzg",
@@ -490,7 +399,6 @@
         
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth(app); 
 
         if(!localStorage.getItem('deviceId')) { localStorage.setItem('deviceId', 'dev_' + Math.random().toString(36).substr(2, 9)); }
         const userDeviceId = localStorage.getItem('deviceId');
@@ -499,7 +407,6 @@
         let timerDuration = 10;
         let currentSlide = 0;
         let currentFileIdForComment = null;
-        let currentUser = null; 
         let globalFiles = []; 
         let currentActiveReviewStars = 0;
         let detailsActiveFileId = null;
@@ -519,159 +426,6 @@
             document.getElementById('toast-message').textContent = raw ? msgKey : getTxt(msgKey, p);
             t.classList.remove('opacity-0', 'translate-y-10');
             setTimeout(() => t.classList.add('opacity-0', 'translate-y-10'), 3000);
-        };
-
-        onAuthStateChanged(auth, (user) => {
-            currentUser = user;
-            const sidebarUnauth = document.getElementById('sidebar-unauth');
-            const sidebarAuth = document.getElementById('sidebar-auth');
-            const commentLoggedOut = document.getElementById('comment-logged-out');
-            const commentLoggedIn = document.getElementById('comment-logged-in');
-            
-            if (user) {
-                const userName = user.displayName || "User";
-                sidebarUnauth.classList.add('hidden');
-                sidebarAuth.classList.remove('hidden');
-                document.getElementById('sidebar-username').innerText = userName;
-                document.getElementById('sidebar-email').innerText = user.email;
-                
-                const avatarHtml = user.photoURL ? `<img src="${user.photoURL}" class="w-full h-full object-cover">` : userName.charAt(0).toUpperCase();
-                document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
-
-                commentLoggedOut.classList.add('hidden');
-                commentLoggedIn.classList.remove('hidden');
-                commentLoggedIn.classList.add('flex');
-                document.getElementById('comment-user-avatar').innerHTML = avatarHtml;
-            } else {
-                sidebarUnauth.classList.remove('hidden');
-                sidebarAuth.classList.add('hidden');
-
-                commentLoggedOut.classList.remove('hidden');
-                commentLoggedIn.classList.add('hidden');
-                commentLoggedIn.classList.remove('flex');
-            }
-        });
-
-        window.toggleAuthModal = (viewMode = 'login') => {
-            document.getElementById('auth-modal').classList.toggle('hidden');
-            if(viewMode) window.switchAuthView(viewMode);
-        };
-
-        window.switchAuthView = (view) => {
-            document.getElementById('auth-login-view').classList.add('hidden');
-            document.getElementById('auth-register-view').classList.add('hidden');
-            document.getElementById('auth-reset-view').classList.add('hidden');
-            document.getElementById(`auth-${view}-view`).classList.remove('hidden');
-        };
-
-        window.submitLogin = async () => {
-            const email = document.getElementById('login-email').value;
-            const pass = document.getElementById('login-password').value;
-            const btn = document.getElementById('btn-login');
-            
-            if(!email || !pass) return showToast("Please enter email and password", {}, true);
-            
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
-            btn.disabled = true;
-            try {
-                await signInWithEmailAndPassword(auth, email, pass);
-                document.getElementById('auth-modal').classList.add('hidden');
-                showToast("লগিন সফল হয়েছে!", {}, true);
-                document.getElementById('login-password').value = '';
-            } catch (error) {
-                let msg = "Login failed!";
-                if(error.code === 'auth/invalid-credential') msg = "ভুল ইমেইল বা পাসওয়ার্ড!";
-                showToast(msg, {}, true);
-            }
-            btn.innerHTML = 'Login';
-            btn.disabled = false;
-        };
-
-        window.submitRegister = async () => {
-            const name = document.getElementById('reg-name').value;
-            const email = document.getElementById('reg-email').value;
-            const pass = document.getElementById('reg-password').value;
-            const btn = document.getElementById('btn-register');
-
-            if(!name || !email || !pass) return showToast("সব তথ্য দিন", {}, true);
-            if(pass.length < 6) return showToast("Password must be at least 6 characters", {}, true);
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
-            btn.disabled = true;
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, pass);
-                await updateProfile(userCredential.user, { displayName: name });
-                document.getElementById('auth-modal').classList.add('hidden');
-                showToast("একাউন্ট তৈরি সফল হয়েছে!", {}, true);
-            } catch (error) {
-                let msg = "Registration failed!";
-                if(error.code === 'auth/email-already-in-use') msg = "এই ইমেইল দিয়ে আগেই একাউন্ট খোলা হয়েছে!";
-                showToast(msg, {}, true);
-            }
-            btn.innerHTML = 'Sign Up';
-            btn.disabled = false;
-        };
-
-        window.submitResetPassword = async () => {
-            const email = document.getElementById('reset-email').value;
-            const btn = document.getElementById('btn-reset');
-            if(!email) return showToast("আপনার ইমেইল দিন", {}, true);
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            btn.disabled = true;
-            try {
-                await sendPasswordResetEmail(auth, email);
-                showToast("পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে!", {}, true);
-                window.switchAuthView('login');
-            } catch (error) {
-                showToast("Failed to send reset email.", {}, true);
-            }
-            btn.innerHTML = 'Send Reset Link';
-            btn.disabled = false;
-        };
-
-        window.handleLogout = async () => {
-            if(confirm("আপনি কি লগআউট করতে চান?")) {
-                await signOut(auth);
-                showToast("লগআউট সফল হয়েছে!", {}, true);
-            }
-        };
-
-        window.openProfileModal = () => {
-            if(!currentUser) return;
-            document.getElementById('profile-name').value = currentUser.displayName || '';
-            document.getElementById('profile-photo').value = currentUser.photoURL || '';
-            document.getElementById('profile-modal').classList.remove('hidden');
-        };
-
-        window.submitProfileUpdate = async () => {
-            if(!currentUser) return;
-            const name = document.getElementById('profile-name').value.trim();
-            const photo = document.getElementById('profile-photo').value.trim();
-            const btn = document.getElementById('btn-update-profile');
-            
-            if(!name) return showToast("নাম দিতে হবে!", {}, true);
-
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-            btn.disabled = true;
-            try {
-                await updateProfile(currentUser, { 
-                    displayName: name,
-                    photoURL: photo || null
-                });
-                
-                document.getElementById('sidebar-username').innerText = name;
-                const avatarHtml = photo ? `<img src="${photo}" class="w-full h-full object-cover">` : name.charAt(0).toUpperCase();
-                document.getElementById('sidebar-avatar').innerHTML = avatarHtml;
-                document.getElementById('comment-user-avatar').innerHTML = avatarHtml;
-                
-                document.getElementById('profile-modal').classList.add('hidden');
-                showToast("প্রোফাইল আপডেট সফল হয়েছে!", {}, true);
-            } catch (error) {
-                showToast("প্রোফাইল আপডেট ব্যর্থ হয়েছে!", {}, true);
-            }
-            btn.innerHTML = 'Save Changes';
-            btn.disabled = false;
         };
 
         const renderAd = (id, code) => {
@@ -805,18 +559,18 @@
             if(tab === 'home') {
                 homeContent.classList.remove('hidden');
                 histContent.classList.add('hidden');
-                homeTabBtn.className = "flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105";
-                histTabBtn.className = "flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs";
+                homeTabBtn.className = "flex items-center gap-2 px-6 py-2 rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-900/30 transition-all font-black text-sm";
+                histTabBtn.className = "flex items-center gap-2 px-6 py-2 rounded-xl text-gray-400 hover:text-blue-500 transition-all font-black text-sm";
             } else {
                 homeContent.classList.add('hidden');
                 histContent.classList.remove('hidden');
-                histTabBtn.className = "flex flex-col items-center gap-0.5 text-blue-600 transition-all font-bold text-xs scale-105";
-                homeTabBtn.className = "flex flex-col items-center gap-0.5 text-gray-400 hover:text-blue-500 transition-all font-bold text-xs";
+                histTabBtn.className = "flex items-center gap-2 px-6 py-2 rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-900/30 transition-all font-black text-sm";
+                homeTabBtn.className = "flex items-center gap-2 px-6 py-2 rounded-xl text-gray-400 hover:text-blue-500 transition-all font-black text-sm";
                 renderHistoryTab();
             }
         };
 
-        // RENDER HISTORICAL UNLOCKED LIST WITH TWO COLUMN GRID
+        // RENDER HISTORICAL UNLOCKED LIST
         function renderHistoryTab() {
             const grid = document.getElementById('history-grid');
             const emptyState = document.getElementById('history-empty');
@@ -845,6 +599,7 @@
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
+                            <!-- Download count overlay badge left -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
                             </div>
@@ -1113,10 +868,12 @@
         }
 
         async function loadData() {
+            // টেলিগ্রাম বটের মেম্বারশিপ যাচাই ও রিয়াল টাইম পেজ ব্লকিং
             const tgApp = window.Telegram.WebApp;
             tgApp.ready(); tgApp.expand();
             tgUser = tgApp.initDataUnsafe.user;
             
+            // টেস্টিং ও সেফ ফলব্যাক
             if (!tgUser || !tgUser.id) {
                 tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
             }
@@ -1130,7 +887,21 @@
                     imgEl.src = tgUser.photo_url;
                     imgEl.classList.remove('hidden');
                     document.getElementById('tg-avatar-placeholder').classList.add('hidden');
+
+                    // Set Sidebar dynamically
+                    const sidebarImg = document.getElementById('sidebar-tg-img');
+                    sidebarImg.src = tgUser.photo_url;
+                    sidebarImg.classList.remove('hidden');
+                    document.getElementById('sidebar-avatar-placeholder').classList.add('hidden');
+
+                    // Set Comments modal avatar dynamically
+                    const commentImg = document.getElementById('comment-avatar-img');
+                    commentImg.src = tgUser.photo_url;
+                    commentImg.classList.remove('hidden');
+                    document.getElementById('comment-avatar-placeholder').classList.add('hidden');
                 }
+                document.getElementById('sidebar-username').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
+                document.getElementById('sidebar-tg-id').textContent = `ID: ${tgUser.id}`;
 
                 try {
                     await setDoc(doc(db, "users", String(tgUser.id)), {
@@ -1334,7 +1105,6 @@
                     const card = document.createElement('div');
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-150 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
                     
-                    // Clicking anywhere on card opens single details page overlay
                     card.onclick = (e) => {
                         if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.react-menu-dropdown') || e.target.closest('.share-menu-dropdown')) {
                             return;
@@ -1343,19 +1113,19 @@
                     };
 
                     card.innerHTML = `
-                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center">
+                        <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
                             ${mediaElement}
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
                             </div>
-                            ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
+                            ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
-                        <div class="p-3 sm:p-4 flex flex-col flex-1">
+                        <div class="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 relative">
-                                <div class="flex items-center gap-2 flex-wrap flex-1">
+                            <div class="flex justify-between items-center mt-3 mb-3 border-t border-gray-100 dark:border-gray-700 pt-3 relative shrink-0">
+                                <div class="flex items-center gap-2 flex-wrap flex-1 min-w-0">
                                     <div class="relative react-wrapper inline-block shrink-0">
                                         <div id="react-menu-${f.id}" class="react-menu-dropdown hidden absolute bottom-full left-0 mb-2 bg-white dark:bg-gray-800 shadow-xl rounded-2xl px-3 py-2 flex flex-wrap w-64 sm:w-72 gap-3 border border-gray-200 dark:border-gray-700 transition-all z-20">
                                             <button onclick="window.setReact('${f.id}', '❤️')" class="hover:scale-125 transition-transform text-xl">❤️</button>
@@ -1399,14 +1169,13 @@
                                 </div>
                             </div>
 
-                            <div class="mb-3">
+                            <div class="mb-3 shrink-0">
                                 <div class="flex justify-between text-[10px] text-gray-400 mb-1"><span>Unlock Progress</span><span class="prog-txt">0%</span></div>
                                 <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
                                     <div class="prog-bar bg-gradient-to-r from-blue-500 to-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
                                 </div>
                             </div>
-                            <!-- Button changed label to Download Now but actions keep inside modal -->
-                            <button class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2">
+                            <button class="w-full py-2.5 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg text-xs sm:text-sm flex items-center justify-center gap-2 mt-auto shrink-0">
                                 <span><i class="fas fa-download"></i> ${getTxt('unlock_button')}</span>
                             </button>
                         </div>
@@ -1564,10 +1333,29 @@
                         const date = c.timestamp.toDate();
                         timeStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     }
-                    const isMyComment = (currentUser && c.uid === currentUser.uid) || (c.deviceId === userDeviceId);
+                    const isMyComment = (c.deviceId === userDeviceId) || (tgUser && String(c.uid) === String(tgUser.id));
                     const deleteBtnHtml = isMyComment ? `<button onclick="window.deleteComment('${id}', '${d.id}')" class="text-gray-400 hover:text-red-500 ml-3 transition" title="Delete"><i class="fas fa-trash-alt text-xs"></i></button>` : '';
                     
-                    list.innerHTML += `<div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-lg flex-shrink-0 shadow-sm">${initial}</div><div class="flex-1"><div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none"><div class="flex justify-between items-baseline mb-1"><h4 class="font-bold text-sm text-gray-800 dark:text-gray-200">${c.name}</h4><div class="flex items-center"><span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>${deleteBtnHtml}</div></div><p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">${c.text}</p></div></div></div>`;
+                    const avatarContent = c.avatar 
+                        ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
+                        : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
+
+                    list.innerHTML += `
+                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]">
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">${avatarContent}</div>
+                            <div class="flex-1 min-w-0">
+                                <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
+                                    <div class="flex justify-between items-baseline mb-1">
+                                        <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                        <div class="flex items-center">
+                                            <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
+                                            ${deleteBtnHtml}
+                                        </div>
+                                    </div>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                </div>
+                            </div>
+                        </div>`;
                 });
             });
         };
@@ -1582,17 +1370,14 @@
         };
 
         document.getElementById('send-comment-btn').onclick = async () => {
-            if(!currentUser) {
-                return showToast("কমেন্ট করতে আপনাকে অবশ্যই লগিন করতে হবে।", {}, true);
-            }
-            
             const textInput = document.getElementById('comment-text');
             const text = textInput.value.trim();
             if(!text) return;
             
             textInput.value = '';
-            const userName = currentUser.displayName || "User";
-            const uid = currentUser.uid;
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
+            const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
 
             showToast("Comment posted successfully!", {}, true); 
             await addDoc(collection(db, "files", currentFileIdForComment, "comments"), { 
@@ -1601,7 +1386,8 @@
                 stars: 5,
                 timestamp: new Date(), 
                 deviceId: userDeviceId, 
-                uid: uid
+                uid: userId,
+                avatar: userAvatar
             });
             await updateDoc(doc(db, "files", currentFileIdForComment), { commentCount: increment(1) });
             const cSpan = document.getElementById(`comment-count-${currentFileIdForComment}`);
