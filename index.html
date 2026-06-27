@@ -1241,8 +1241,31 @@
             let targetVid = null;
             if(!window.forceShowAll) {
                 targetVid = new URLSearchParams(window.location.search).get('v');
-                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
-                    targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+                if(!targetVid) {
+                    targetVid = new URLSearchParams(window.location.search).get('tgWebAppStartParam');
+                }
+                if(!targetVid) {
+                    targetVid = new URLSearchParams(window.location.search).get('start_param');
+                }
+                if(!targetVid && window.location.hash) {
+                    const hashClean = window.location.hash.substring(1);
+                    const outerParams = new URLSearchParams(hashClean);
+                    targetVid = outerParams.get('tgWebAppStartParam') || outerParams.get('start_param') || outerParams.get('startapp');
+                    if(!targetVid) {
+                        const tgWebAppData = outerParams.get('tgWebAppData');
+                        if (tgWebAppData) {
+                            const innerParams = new URLSearchParams(tgWebAppData);
+                            targetVid = innerParams.get('start_param') || innerParams.get('startapp');
+                        }
+                    }
+                }
+                if(!targetVid && window.Telegram && window.Telegram.WebApp) {
+                    if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
+                        targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
+                    } else if (window.Telegram.WebApp.initData) {
+                        const initDataParams = new URLSearchParams(window.Telegram.WebApp.initData);
+                        targetVid = initDataParams.get('start_param');
+                    }
                 }
             }
 
@@ -1484,7 +1507,7 @@
         };
 
         window.setReact = async (id, emoji) => {
-            const menu = document.getElementById(`react-menu-${id}`);
+            const menu = document.getElementById('react-menu-' + id);
             if(menu) menu.classList.add('hidden'); 
             
             const currentReact = localStorage.getItem('react_' + id);
@@ -1510,7 +1533,7 @@
         };
 
         window.removeReact = async (id) => {
-            const menu = document.getElementById(`react-menu-${id}`);
+            const menu = document.getElementById('react-menu-' + id);
             if(menu) menu.classList.add('hidden');
             
             const currentReact = localStorage.getItem('react_' + id);
