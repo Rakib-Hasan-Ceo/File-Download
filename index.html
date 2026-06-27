@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📁  TrabVauld DL</title>
+    <title>📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -40,6 +40,24 @@
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
+
+    <!-- MAINTENANCE SCREEN OVERLAY -->
+    <div id="maintenance-screen" class="fixed inset-0 bg-yellow-50 dark:bg-darkBg z-[160] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
+        <div class="w-24 h-24 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 flex items-center justify-center text-4xl mb-6 animate-pulse border-2 border-yellow-300">
+            <i class="fas fa-tools"></i>
+        </div>
+        <h2 class="text-2xl font-black text-gray-800 dark:text-white mb-2">সিস্টেম আপডেট চলছে!</h2>
+        <p id="maintenance-message" class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-bold"></p>
+    </div>
+
+    <!-- BANNED SCREEN OVERLAY -->
+    <div id="banned-screen" class="fixed inset-0 bg-red-50 dark:bg-darkBg z-[170] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
+        <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 flex items-center justify-center text-4xl mb-6 animate-bounce border-2 border-red-300">
+            <i class="fas fa-user-slash"></i>
+        </div>
+        <h2 class="text-2xl font-black text-red-650 dark:text-red-500 mb-2">অ্যাকাউন্ট ব্যান করা হয়েছে!</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-semibold">আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্যান করা হয়েছে। অনুগ্রহ করে বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
+    </div>
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
@@ -92,7 +110,7 @@
             <!-- PREMIUM MENU OPTION DESIGNED BEAUTIFULLY -->
             <div class="p-4 space-y-4">
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="social_profiles_title">Social Profiles</div>
-                <div id="sidebar-social-links" class="space-y-2 px-1">
+                <div id="sidebar-social-links" class="space-y-2 px-1 font-semibold text-xs text-slate-700 dark:text-slate-200">
                     <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fab fa-telegram-plane"></i>
@@ -106,6 +124,16 @@
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="options_title">Options</div>
                 
                 <div class="space-y-2.5 px-1">
+                    <!-- Dynamic Premium Support Contact Button -->
+                    <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                        <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="font-bold text-xs text-slate-700 dark:text-slate-200">Admin Support</span>
+                        </div>
+                    </a>
+
                     <!-- Premium Language Selector Button -->
                     <button onclick="document.getElementById('language-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-green-500/10 dark:bg-green-500/20 text-green-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
@@ -143,7 +171,7 @@
                 <div class="inline-block p-3 rounded-full bg-red-100 dark:bg-red-900/40 mb-2 shadow-inner">
                     <i class="fas fa-bell text-3xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष নোটিশ</h3>
+                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष नोटीश</h3>
             </div>
             
             <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
@@ -156,12 +184,12 @@
 
     <!-- CUSTOM BEAUTIFUL POPUP ALERT MODAL (Replaces system alert box) -->
     <div id="custom-alert-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
-        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center">
-            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center animate-[fadeIn_0.2s_ease-out]">
+            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4 animate-bounce">
                 <i class="fas fa-bell"></i>
             </div>
             <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-800 dark:text-white mb-2">📁 FileVault DL</h3>
-            <p id="custom-alert-message" class="text-sm text-gray-650 dark:text-gray-300 leading-relaxed mb-6"></p>
+            <p id="custom-alert-message" class="text-sm text-gray-650 dark:text-gray-300 leading-relaxed mb-6 font-semibold"></p>
             <button onclick="window.closeCustomAlert()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg text-white font-bold rounded-2xl transition-all">OK</button>
         </div>
     </div>
@@ -496,7 +524,7 @@
                 toast_ad_load: "विज्ञापन लोड हो रहा है...", 
                 toast_unlocked: "सफलतापूर्वक अनलॉक!", 
                 toast_progress: "कार्य: {done}/{req}",
-                change_language: "भाषा बदलें",
+                change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
                 light_mode: "লাইট মোড",
                 menu_header: "मेन्यू",
@@ -504,7 +532,7 @@
                 options_title: "विकल्प",
                 nav_home: "होम",
                 nav_history: "इतिहास",
-                items_unit: "आइटम",
+                items_unit: "আিটম",
                 history_title: "डाउनलोड",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
@@ -515,9 +543,9 @@
                 rate_file_label: "इस फ़ाइल को रेट करें",
                 submit_review_btn: "समीक्षा सबमिट करें",
                 copy_link: "লিঙ্ক কপি করুন",
-                share: "शेयर करें",
+                share: "শেয়ার করুন",
                 unlock_progress: "अनलॉक प्रगति",
-                back_to_home_btn: "अन्य सभी फाइलें देखें (होम)",
+                back_to_home_btn: "অন্যান্য সব ফাইল দেখুন (Home)",
                 comments_title_modal: "टिप्पणियाँ",
                 comment_input_placeholder: "एक टिप्पणी लिखें...",
                 no_comments_text: "अभी तक कोई टिप्पणी नहीं। पहले बने!"
@@ -1186,7 +1214,7 @@
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
                 btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
 
@@ -1336,14 +1364,28 @@
                 document.getElementById('sidebar-tg-id').textContent = `ID: ${tgUser.id}`;
 
                 try {
-                    await setDoc(doc(db, "users", String(tgUser.id)), {
-                        id: tgUser.id,
-                        name: (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim(),
-                        photo: tgUser.photo_url || "",
-                        username: tgUser.username || "",
-                        lastActive: new Date(),
-                        status: "ACTIVE"
-                    }, { merge: true });
+                    // Check if current user is banned
+                    const uDoc = await getDoc(doc(db, "users", String(tgUser.id)));
+                    if (uDoc.exists()) {
+                        const userData = uDoc.data();
+                        if (userData.status === 'BANNED') {
+                            document.getElementById('banned-screen').classList.remove('hidden');
+                            document.getElementById('banned-screen').classList.add('flex');
+                            return; // Stop execution
+                        } else {
+                            document.getElementById('banned-screen').classList.add('hidden');
+                        }
+                    } else {
+                        // Create fresh user in Firestore
+                        await setDoc(doc(db, "users", String(tgUser.id)), {
+                            id: tgUser.id,
+                            name: (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim(),
+                            photo: tgUser.photo_url || "",
+                            username: tgUser.username || "",
+                            lastActive: new Date(),
+                            status: "ACTIVE"
+                        }, { merge: true });
+                    }
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
@@ -1353,7 +1395,7 @@
                 targetVid = getParamFromUrl('start_param') || 
                             getParamFromUrl('startapp') || 
                             getParamFromUrl('tgWebAppStartParam') || 
-                            getParamFromUrl('v');
+                            getParamFrom?v=v;
 
                 if (targetVid === "null" || targetVid === "undefined" || targetVid === "") {
                     targetVid = null;
@@ -1371,6 +1413,22 @@
                     if(id === 'general') {
                         timerDuration = data.timerDuration || 10;
                         appConfig = data; 
+
+                        // Update dynamic admin support URL in sidebar menu
+                        const adminSupportBtn = document.getElementById('sidebar-admin-support');
+                        if(adminSupportBtn && data.adminSupportUrl) {
+                            adminSupportBtn.href = data.adminSupportUrl;
+                        }
+                        
+                        // Check System Maintenance Mode
+                        if (data.maintenanceMode === true) {
+                            document.getElementById('maintenance-message').textContent = data.maintenanceMessage || 'বর্তমানে অ্যাপ ডাউন আছে, কিছুক্ষণের মধ্যে ফিরে আসছি।';
+                            document.getElementById('maintenance-screen').classList.remove('hidden');
+                            document.getElementById('maintenance-screen').classList.add('flex');
+                            return; // Stop loading UI further
+                        } else {
+                            document.getElementById('maintenance-screen').classList.add('hidden');
+                        }
                         
                         if(data.announcementText) {
                             document.getElementById('announcement-container').classList.remove('hidden');
@@ -1484,7 +1542,7 @@
                 document.getElementById('single-view-footer').innerHTML = '';
 
                 try {
-                    const sSnap = await getDocs(query(collection(db, "sliders")));
+                    const sSnap = await getDocs(collection(db, "sliders"));
                     const wrapper = document.getElementById('slider-wrapper');
                     const dots = document.getElementById('slider-dots');
                     wrapper.innerHTML = ''; dots.innerHTML = '';
