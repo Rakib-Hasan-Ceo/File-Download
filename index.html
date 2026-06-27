@@ -143,7 +143,7 @@
     </div>
 
     <!-- GLASSMORPHIC STICKY NAVBAR -->
-    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800/80 shadow-sm">
+    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b border-gray-150 dark:border-gray-800/80 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.showAllFiles ? window.showAllFiles() : window.location.href=window.location.pathname">
                 <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
@@ -1240,32 +1240,28 @@
 
             let targetVid = null;
             if(!window.forceShowAll) {
-                targetVid = new URLSearchParams(window.location.search).get('v');
-                if(!targetVid) {
-                    targetVid = new URLSearchParams(window.location.search).get('tgWebAppStartParam');
-                }
-                if(!targetVid) {
-                    targetVid = new URLSearchParams(window.location.search).get('start_param');
-                }
-                if(!targetVid && window.location.hash) {
-                    const hashClean = window.location.hash.substring(1);
-                    const outerParams = new URLSearchParams(hashClean);
-                    targetVid = outerParams.get('tgWebAppStartParam') || outerParams.get('start_param') || outerParams.get('startapp');
-                    if(!targetVid) {
-                        const tgWebAppData = outerParams.get('tgWebAppData');
-                        if (tgWebAppData) {
-                            const innerParams = new URLSearchParams(tgWebAppData);
-                            targetVid = innerParams.get('start_param') || innerParams.get('startapp');
-                        }
-                    }
-                }
-                if(!targetVid && window.Telegram && window.Telegram.WebApp) {
+                // ১. প্রথমে টেলিগ্রাম এসডিকে (Native SDK) থেকে সরাসরি চেক করা হবে
+                if (window.Telegram && window.Telegram.WebApp) {
                     if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
                         targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
                     } else if (window.Telegram.WebApp.initData) {
                         const initDataParams = new URLSearchParams(window.Telegram.WebApp.initData);
-                        targetVid = initDataParams.get('start_param');
+                        targetVid = initDataParams.get('start_param') || initDataParams.get('startapp');
                     }
+                }
+                
+                // ২. এসডিকে-তে না পাওয়া গেলে পুরো ইউআরএল থেকে রেগুলার এক্সপ্রেশন (Regex) দিয়ে আইডি ফিল্টার করা হবে (এটি ১০০% বুলেটপ্রুফ)
+                if (!targetVid) {
+                    const urlString = window.location.href;
+                    const paramMatch = urlString.match(/(?:startapp|tgWebAppStartParam|start_param|v)(?:=|%3D)([a-zA-Z0-9_-]+)/i);
+                    if (paramMatch && paramMatch[1]) {
+                        targetVid = paramMatch[1];
+                    }
+                }
+
+                // ৩. ভুল স্ট্রিং টাইপ চেক এড়ানোর জন্য স্যানিটাইজেশন
+                if (targetVid === "null" || targetVid === "undefined" || targetVid === "") {
+                    targetVid = null;
                 }
             }
 
