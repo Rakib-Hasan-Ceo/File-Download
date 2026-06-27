@@ -532,7 +532,7 @@
                 return (joined1 && joined2);
             } catch (e) {
                 console.error("Membership check failed: ", e);
-                return false; 
+                return true; 
             }
         };
 
@@ -1020,6 +1020,7 @@
             const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
             const isUnlocked = done >= req;
 
+            btn.disabled = false;
             btn.onclick = () => handleStickyBtnClick(id, req, fileObj.downloadUrl);
 
             if(isUnlocked) {
@@ -1194,7 +1195,8 @@
                     });
                 });
 
-                const isVerifiedLive = await checkRequiredChannelsLive();
+                const alreadyVerifiedCached = (tgUser && tgUser.id) ? (localStorage.getItem(`channelVerified_${tgUser.id}`) === 'true') : false;
+                const isVerifiedLive = alreadyVerifiedCached ? true : await checkRequiredChannelsLive();
                 if (!isVerifiedLive) {
                     const screen = document.getElementById('channel-verify-screen');
                     const btn1 = document.getElementById('cv-channel1-btn');
@@ -1207,6 +1209,8 @@
                     
                     screen.classList.remove('hidden');
                     screen.classList.add('flex');
+                } else if (tgUser && tgUser.id) {
+                    localStorage.setItem(`channelVerified_${tgUser.id}`, 'true');
                 }
 
                 const sideSocials = document.getElementById('sidebar-social-links');
