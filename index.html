@@ -47,7 +47,7 @@
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to 📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋 𝐁𝐨𝐭!</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to 📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮延𝐭 𝐃𝐋 𝐁𝐨𝐭!</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">Join our official channels<br>to unlock your requested files</p>
         
         <a id="cv-channel1-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-3 text-left transition hover:scale-[1.02]" href="#" target="_blank">
@@ -101,11 +101,11 @@
                 <hr class="border-gray-200 dark:border-gray-700 my-4">
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 ml-2">Options</div>
                 <button onclick="document.getElementById('language-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-855 hover:bg-blue-50 dark:hover:bg-blue-950/20 border border-gray-100 dark:border-gray-800 transition">
-                    <i class="fas fa-language text-green-500 w-6 text-xl"></i> <span class="font-bold text-xs">Change Language</span>
+                    <i class="fas fa-language text-green-500 w-6 text-xl"></i> <span data-key="change_language" class="font-bold text-xs">Change Language</span>
                 </button>
-                <button id="sidebar-theme-toggle" class="w-full text-left flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-855 hover:bg-blue-50 dark:hover:bg-blue-950/20 border border-gray-100 dark:border-gray-800 transition">
+                <button id="sidebar-theme-toggle" onclick="window.toggleTheme()" class="w-full text-left flex items-center gap-3 p-3 rounded-2xl bg-gray-50 dark:bg-gray-855 hover:bg-blue-50 dark:hover:bg-blue-950/20 border border-gray-100 dark:border-gray-800 transition">
                     <div class="w-6 flex justify-center"><i id="theme-icon" class="fas fa-moon text-purple-500 text-xl"></i></div>
-                    <span id="theme-text" class="font-bold text-xs">Dark Mode</span>
+                    <span id="theme-text" data-key="dark_mode" class="font-bold text-xs">Dark Mode</span>
                 </button>
             </div>
         </div>
@@ -143,7 +143,7 @@
     </div>
 
     <!-- GLASSMORPHIC STICKY NAVBAR -->
-    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b border-gray-150 dark:border-gray-800/80 shadow-sm">
+    <nav class="sticky top-0 z-30 bg-white/80 dark:bg-darkCard/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800/80 shadow-sm">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center max-w-7xl">
             <div class="flex items-center gap-2 cursor-pointer" onclick="window.showAllFiles ? window.showAllFiles() : window.location.href=window.location.pathname">
                 <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
@@ -330,7 +330,7 @@
     </div>
 
     <!-- PREMIUM FLOATING BOTTOM NAVIGATION CAPSULE -->
-    <div class="fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-darkCard/95 border border-gray-200 dark:border-gray-850 shadow-2xl z-40 rounded-2xl flex justify-around py-3 backdrop-blur-md">
+    <div class="fixed bottom-4 left-4 right-4 bg-white/95 dark:bg-darkCard/95 border border-gray-200 dark:border-gray-855 shadow-2xl z-40 rounded-2xl flex justify-around py-3 backdrop-blur-md">
         <button id="nav-home" onclick="window.switchTab('home')" class="flex items-center gap-2 px-6 py-2 rounded-xl text-blue-600 bg-blue-50 dark:bg-blue-900/30 transition-all font-black text-sm">
             <i class="fas fa-home text-lg"></i>
             <span>হোম</span>
@@ -351,9 +351,9 @@
         <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-2xl p-6 shadow-2xl transform scale-100 transition-all">
             <h3 class="text-xl font-bold mb-4 text-center dark:text-white">Select Language</h3>
             <div class="space-y-3">
-                <button onclick="setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
-                <button onclick="setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
-                <button onclick="setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
+                <button onclick="window.setLang('en')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇺🇸 <span class="font-semibold dark:text-gray-200">English</span></button>
+                <button onclick="window.setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
+                <button onclick="window.setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
             </div>
             <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
         </div>
@@ -419,9 +419,48 @@
         window.forceShowAll = false;
 
         const translations = {
-            en: { available_files: "Available Files", no_results_text: "No files found.", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "Search files...", toast_wait: "Please wait {t}s...", toast_ad_load: "Loading Ad...", toast_unlocked: "Unlocked Successfully!", toast_progress: "Task: {done}/{req}" },
-            hi: { available_files: "उपलब्ध फाइलें", no_results_text: "कोई फ़ाइल नहीं मिली।", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "फ़ाइलें खोजें...", toast_wait: "कृपया प्रतीक्षा करें {t}s...", toast_ad_load: "विज्ञापन लोड हो रहा है...", toast_unlocked: "सफलतापूर्वक अनलॉक!", toast_progress: "कार्य: {done}/{req}" },
-            bn: { available_files: "উপলব্ধ ফাইল", no_results_text: "কোনো ফাইল পাওয়া যায়নি।", unlock_button: "ডাউনলোড করুন", download_now_button: "ডাউনলোড করুন", search_placeholder: "ফাইল খুঁজুন...", toast_wait: "অপেক্ষা করুন {t}সে...", toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", toast_unlocked: "সফলভাবে আনলক!", toast_progress: "কাজ: {done}/{req}" }
+            en: { 
+                available_files: "Available Files", 
+                no_results_text: "No files found.", 
+                unlock_button: "Download", 
+                download_now_button: "Download Now", 
+                search_placeholder: "Search files...", 
+                toast_wait: "Please wait {t}s...", 
+                toast_ad_load: "Loading Ad...", 
+                toast_unlocked: "Unlocked Successfully!", 
+                toast_progress: "Task: {done}/{req}",
+                change_language: "Change Language",
+                dark_mode: "Dark Mode",
+                light_mode: "Light Mode"
+            },
+            hi: { 
+                available_files: "उपलब्ध फाइलें", 
+                no_results_text: "कोई फ़ाइल नहीं मिली।", 
+                unlock_button: "डाउनलोड करें", 
+                download_now_button: "अभी डाउनलोड करें", 
+                search_placeholder: "फ़ाइलें खोजें...", 
+                toast_wait: "कृपया प्रतीक्षा करें {t}s...", 
+                toast_ad_load: "विज्ञापन लोड हो रहा है...", 
+                toast_unlocked: "सफलतापूर्वक अनलॉक!", 
+                toast_progress: "कार्य: {done}/{req}",
+                change_language: "भाषा बदलें",
+                dark_mode: "डार्क मोड",
+                light_mode: "लाइट मोड"
+            },
+            bn: { 
+                available_files: "উপলব্ধ ফাইল", 
+                no_results_text: "কোনো ফাইল পাওয়া যায়নি।", 
+                unlock_button: "ডাউনলোড করুন", 
+                download_now_button: "এখন ডাউনলোড করুন", 
+                search_placeholder: "ফাইল খুঁজুন...", 
+                toast_wait: "অপেক্ষা করুন {t}সে...", 
+                toast_ad_load: "বিজ্ঞাপন লোড হচ্ছে...", 
+                toast_unlocked: "সফলভাবে আনলক!", 
+                toast_progress: "কাজ: {done}/{req}",
+                change_language: "ভাষা পরিবর্তন করুন",
+                dark_mode: "ডার্ক মোড",
+                light_mode: "লাইট মোড"
+            }
         };
 
         const getTxt = (k, p={}) => { let t = translations[currentLang][k] || k; for(let key in p) t = t.replace(`{${key}}`, p[key]); return t; };
@@ -1240,7 +1279,6 @@
 
             let targetVid = null;
             if(!window.forceShowAll) {
-                // ১. প্রথমে টেলিগ্রাম এসডিকে (Native SDK) থেকে সরাসরি চেক করা হবে
                 if (window.Telegram && window.Telegram.WebApp) {
                     if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
                         targetVid = window.Telegram.WebApp.initDataUnsafe.start_param;
@@ -1250,7 +1288,6 @@
                     }
                 }
                 
-                // ২. এসডিকে-তে না পাওয়া গেলে পুরো ইউআরএল থেকে রেগুলার এক্সপ্রেশন (Regex) দিয়ে আইডি ফিল্টার করা হবে (এটি ১০০% বুলেটপ্রুফ)
                 if (!targetVid) {
                     const urlString = window.location.href;
                     const paramMatch = urlString.match(/(?:startapp|tgWebAppStartParam|start_param|v)(?:=|%3D)([a-zA-Z0-9_-]+)/i);
@@ -1259,7 +1296,6 @@
                     }
                 }
 
-                // ৩. ভুল স্ট্রিং টাইপ চেক এড়ানোর জন্য স্যানিটাইজেশন
                 if (targetVid === "null" || targetVid === "undefined" || targetVid === "") {
                     targetVid = null;
                 }
@@ -1682,9 +1718,49 @@
             }
         };
 
+        window.toggleTheme = () => {
+            const current = localStorage.getItem('theme') || 'light';
+            if(current === 'light') {
+                window.setTheme('dark');
+            } else {
+                window.setTheme('light');
+            }
+        };
+
+        window.setTheme = (mode) => {
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (mode === 'dark') {
+                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
+                if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
+                if(text) {
+                    text.textContent = getTxt('light_mode');
+                    text.setAttribute('data-key', 'light_mode');
+                }
+            } else {
+                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
+                if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
+                if(text) {
+                    text.textContent = getTxt('dark_mode');
+                    text.setAttribute('data-key', 'dark_mode');
+                }
+            }
+        };
+
+        window.setLang = (l) => {
+            currentLang = l; localStorage.setItem('lang', l);
+            document.getElementById('language-modal').classList.add('hidden');
+            updateTexts(); loadData();
+        };
+
+        function updateTexts() {
+            document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
+            document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
+        }
+
         window.addEventListener('load', () => {
             const savedTheme = localStorage.getItem('theme');
-            if(savedTheme === 'dark') setTheme('dark'); else setTheme('light');
+            if(savedTheme === 'dark') window.setTheme('dark'); else window.setTheme('light');
             if(!localStorage.getItem('lang')) document.getElementById('language-modal').classList.remove('hidden');
             else updateTexts();
             loadData();
@@ -1704,31 +1780,6 @@
                 overlay.classList.add('hidden');
             }
         };
-
-        window.setLang = (l) => {
-            currentLang = l; localStorage.setItem('lang', l);
-            document.getElementById('language-modal').classList.add('hidden');
-            updateTexts(); loadData();
-        };
-
-        function updateTexts() {
-            document.querySelectorAll('[data-key]').forEach(el => el.textContent = getTxt(el.dataset.key));
-            document.querySelectorAll('[data-key-placeholder]').forEach(el => el.placeholder = getTxt(el.dataset.keyPlaceholder));
-        }
-        
-        function setTheme(mode) {
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-            if (mode === 'dark') {
-                document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark');
-                if(icon) icon.className = 'fas fa-sun text-yellow-400 text-xl';
-                if(text) text.textContent = 'Light Mode';
-            } else {
-                document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light');
-                if(icon) icon.className = 'fas fa-moon text-purple-500 text-xl';
-                if(text) text.textContent = 'Dark Mode';
-            }
-        }
 
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
