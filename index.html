@@ -52,16 +52,15 @@
 
     <!-- BANNED SCREEN OVERLAY -->
     <div id="banned-screen" class="fixed inset-0 bg-red-50 dark:bg-darkBg z-[170] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
-        <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/40 text-red-600 flex items-center justify-center text-4xl mb-6 animate-bounce border-2 border-red-300">
+        <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/40 text-red-650 flex items-center justify-center text-4xl mb-6 animate-bounce border-2 border-red-300">
             <i class="fas fa-user-slash"></i>
         </div>
         <h2 class="text-2xl font-black text-red-650 dark:text-red-500 mb-2">অ্যাকাউন্ট ব্যান করা হয়েছে!</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-semibold">আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্যান করা হয়েছে। অনুগ্রহ করে বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
+        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-semibold">আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্যান করা হয়েছে। বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
     </div>
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
-        <!-- Dynamic Logo Container -->
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
@@ -96,7 +95,6 @@
             <button onclick="window.toggleMenu()" class="text-white hover:text-gray-200 text-xl"><i class="fas fa-times"></i></button>
         </div>
         
-        <!-- Scrollable Content Area -->
         <div class="flex-1 overflow-y-auto custom-scroll pb-4">
             <div class="p-4 bg-gray-50 dark:bg-gray-800 border-b dark:border-gray-700 flex flex-col items-center">
                 <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-400 to-indigo-600 text-white flex items-center justify-center font-bold text-2xl shadow-md mb-2 overflow-hidden" id="sidebar-avatar">
@@ -107,10 +105,9 @@
                 <p class="text-xs text-gray-500 dark:text-gray-400" id="sidebar-tg-id">ID: 000000000</p>
             </div>
 
-            <!-- PREMIUM MENU OPTION DESIGNED BEAUTIFULLY -->
             <div class="p-4 space-y-4">
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="social_profiles_title">Social Profiles</div>
-                <div id="sidebar-social-links" class="space-y-2 px-1 font-semibold text-xs text-slate-700 dark:text-slate-200">
+                <div id="sidebar-social-links" class="space-y-2 px-1">
                     <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fab fa-telegram-plane"></i>
@@ -125,16 +122,15 @@
                 
                 <div class="space-y-2.5 px-1">
                     <!-- Dynamic Premium Support Contact Button -->
-                    <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-headset"></i>
                         </div>
                         <div class="flex-grow">
-                            <span class="font-bold text-xs text-slate-700 dark:text-slate-200">Admin Support</span>
+                            <span class="font-bold text-xs text-slate-700 dark:text-slate-200">Contact Admin</span>
                         </div>
                     </a>
 
-                    <!-- Premium Language Selector Button -->
                     <button onclick="document.getElementById('language-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-green-500/10 dark:bg-green-500/20 text-green-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-language"></i>
@@ -144,7 +140,6 @@
                         </div>
                     </button>
 
-                    <!-- Premium Theme Selector Button -->
                     <button id="sidebar-theme-toggle" onclick="window.toggleTheme()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i id="theme-icon" class="fas fa-moon"></i>
@@ -166,30 +161,27 @@
             <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-500 hover:bg-red-500 hover:text-white transition-colors">
                 <i class="fas fa-times text-lg"></i>
             </button>
-            
             <div class="text-center mb-4 mt-2">
                 <div class="inline-block p-3 rounded-full bg-red-100 dark:bg-red-900/40 mb-2 shadow-inner">
                     <i class="fas fa-bell text-3xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष नोटीश</h3>
+                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष নোটিশ</h3>
             </div>
-            
             <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
-            
             <div class="mt-5 text-center">
                 <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">আমি বুঝতে পেরেছি</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM BEAUTIFUL POPUP ALERT MODAL (Replaces system alert box) -->
+    <!-- CUSTOM BEAUTIFUL POPUP ALERT MODAL -->
     <div id="custom-alert-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
-        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center animate-[fadeIn_0.2s_ease-out]">
-            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4 animate-bounce">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center">
+            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4">
                 <i class="fas fa-bell"></i>
             </div>
             <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-800 dark:text-white mb-2">📁 FileVault DL</h3>
-            <p id="custom-alert-message" class="text-sm text-gray-650 dark:text-gray-300 leading-relaxed mb-6 font-semibold"></p>
+            <p id="custom-alert-message" class="text-sm text-gray-655 dark:text-gray-300 leading-relaxed mb-6 font-bold"></p>
             <button onclick="window.closeCustomAlert()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg text-white font-bold rounded-2xl transition-all">OK</button>
         </div>
     </div>
@@ -243,7 +235,6 @@
 
     <!-- MAIN HOME TAB CONTENT -->
     <main id="home-tab-content" class="container mx-auto px-4 py-2 max-w-7xl min-h-screen">
-        
         <div id="search-section" class="relative max-w-xl mx-auto mb-2 group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i class="fas fa-search text-gray-400 group-focus-within:text-blue-500 transition-colors"></i></div>
             <input type="text" id="search-input" data-key-placeholder="search_placeholder" placeholder="Search for files..." class="w-full pl-11 pr-4 py-3 rounded-full bg-white dark:bg-gray-800 shadow-lg border-2 border-transparent focus:border-blue-500 focus:outline-none transition-all dark:text-white">
@@ -251,7 +242,6 @@
 
         <div id="ad-container-1" class="mb-2 flex justify-center rounded-lg overflow-hidden"></div>
 
-        <!-- Stable Slider Image Container to avoid flickering/jumping -->
         <div id="slider-container" class="relative w-full h-32 sm:h-52 rounded-2xl overflow-hidden shadow-xl mb-2 bg-gray-200 dark:bg-gray-700 group shrink-0">
             <div id="slider-wrapper" class="flex h-full transition-transform duration-700 ease-in-out text-center"></div>
             <div id="slider-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
@@ -261,17 +251,12 @@
 
         <section id="main-section">
             <div id="single-view-header"></div>
-            
             <div class="flex items-center justify-between mb-3">
                 <h2 data-key="available_files" class="text-2xl font-bold text-gray-800 dark:text-white border-l-4 border-blue-500 pl-3">Available Files</h2>
                 <span id="file-count" class="text-sm bg-blue-100 text-blue-800 py-1 px-3 rounded-full dark:bg-blue-900 dark:text-blue-200">0 Items</span>
             </div>
-            
-            <!-- Force exactly 2 columns grid design on mobile matching reference perfectly -->
             <div id="files-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
-            
             <div id="single-view-footer" class="mt-8 flex justify-center"></div>
-
             <div id="no-results" class="hidden text-center py-20">
                 <div class="inline-block p-4 rounded-full bg-gray-100 dark:bg-gray-800 mb-3"><i class="fas fa-folder-open text-4xl text-gray-400"></i></div>
                 <p data-key="no_results_text" class="text-gray-500 dark:text-gray-400 text-lg">No files found.</p>
@@ -288,9 +273,7 @@
             <h2 data-key="history_title" class="text-2xl font-black text-gray-800 dark:text-white">Downloads</h2>
             <p data-key="history_subtitle" class="text-sm text-gray-500 dark:text-gray-400 mt-1">Your Unlocked Files</p>
         </div>
-
         <div id="history-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
-
         <div id="history-empty" class="text-center py-20">
             <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400 text-3xl mx-auto mb-4">
                 <i class="fas fa-box-open"></i>
@@ -320,7 +303,6 @@
                 </div>
                 <div class="min-w-0 flex-1">
                     <h3 id="details-title" class="font-extrabold text-lg sm:text-xl text-gray-800 dark:text-white truncate">App Name</h3>
-                    <!-- Subtitle updated to আলোর হাওয়া -->
                     <p class="text-xs sm:text-sm text-blue-500 dark:text-blue-400 font-extrabold mt-1">আলোর হাওয়া</p>
                 </div>
             </div>
@@ -352,7 +334,6 @@
 
             <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm space-y-4">
                 <h4 data-key="ratings_reviews_title" class="text-base font-black text-gray-800 dark:text-white pb-2 border-b dark:border-gray-800">Ratings and Reviews</h4>
-                
                 <div class="space-y-4">
                     <p data-key="rate_file_label" class="text-sm font-bold text-gray-700 dark:text-gray-200" id="details-review-box-anchor">Rate this file</p>
                     <div class="flex gap-2 text-3xl text-gray-300" id="review-stars-container">
@@ -362,12 +343,9 @@
                         <button onclick="window.setReviewStars(4)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
                         <button onclick="window.setReviewStars(5)" class="star-btn transition-transform hover:scale-110"><i class="fas fa-star"></i></button>
                     </div>
-
                     <textarea id="review-comment-text" rows="3" placeholder="Describe your experience (optional)..." class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 dark:text-white border dark:border-gray-700 focus:outline-none focus:border-blue-500 text-sm shadow-inner transition"></textarea>
-                    
                     <button id="btn-submit-file-review" onclick="window.submitFileReview()" data-key="submit_review_btn" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md hover:bg-blue-700 transition">Submit Review</button>
                 </div>
-
                 <div id="details-comments-section" class="pt-4 border-t dark:border-gray-800 space-y-4"></div>
             </div>
         </div>
@@ -379,10 +357,9 @@
         </div>
     </div>
 
-    <!-- NEW: INTERACTIVE LONG-PRESS POPUP DIALOG FOR LIKERS -->
     <div id="reactions-popup-modal-container"></div>
 
-    <!-- INTERACTIVE LIGHTBOX IMAGE MODAL -->
+    <!-- LIGHTBOX IMAGE MODAL -->
     <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4" onclick="document.getElementById('lightbox-modal').classList.add('hidden')">
         <button class="absolute top-6 right-6 text-white text-3xl hover:text-red-500 transition-colors"><i class="fas fa-times"></i></button>
         <img id="lightbox-img" src="" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl" onclick="event.stopPropagation()">
@@ -517,7 +494,7 @@
             hi: { 
                 available_files: "उपलब्ध फाइलें", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
-                unlock_button: "डाउनलोड करें", 
+                unlock_button: "ডাউনলোড করুন", 
                 download_now_button: "अभी डाउनलोड करें", 
                 search_placeholder: " can't find files...", 
                 toast_wait: "कृपया प्रतीक्षा करें {t}s...", 
@@ -1395,7 +1372,7 @@
                 targetVid = getParamFromUrl('start_param') || 
                             getParamFromUrl('startapp') || 
                             getParamFromUrl('tgWebAppStartParam') || 
-                            getParamFrom?v=v;
+                            getParamFromUrl('v');
 
                 if (targetVid === "null" || targetVid === "undefined" || targetVid === "") {
                     targetVid = null;
@@ -1421,7 +1398,7 @@
                         }
                         
                         // Check System Maintenance Mode
-                        if (data.maintenanceMode === true) {
+                        if (data.maintenanceMode === true || data.maintenanceMode === 'true') {
                             document.getElementById('maintenance-message').textContent = data.maintenanceMessage || 'বর্তমানে অ্যাপ ডাউন আছে, কিছুক্ষণের মধ্যে ফিরে আসছি।';
                             document.getElementById('maintenance-screen').classList.remove('hidden');
                             document.getElementById('maintenance-screen').classList.add('flex');
@@ -1475,6 +1452,16 @@
                         }
                     });
                 });
+
+                // Check live banned status again on every reload to lock screen immediately
+                if (tgUser && tgUser.id) {
+                    const freshUserDoc = await getDoc(doc(db, "users", String(tgUser.id)));
+                    if (freshUserDoc.exists() && freshUserDoc.data().status === 'BANNED') {
+                        document.getElementById('banned-screen').classList.remove('hidden');
+                        document.getElementById('banned-screen').classList.add('flex');
+                        return;
+                    }
+                }
 
                 // Always check live on startup/load - Cache removed to prevent bypass if user leaves channel
                 const isVerifiedLive = await checkRequiredChannelsLive();
