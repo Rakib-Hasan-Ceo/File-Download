@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋</title>
+    <title>File Downloader Pro</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -122,7 +122,7 @@
                 
                 <div class="space-y-2.5 px-1">
                     <!-- Dynamic Premium Support Contact Button -->
-                    <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-headset"></i>
                         </div>
@@ -131,7 +131,7 @@
                         </div>
                     </a>
 
-                    <button onclick="document.getElementById('language-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <button onclick="document.getElementById('language-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-green-500/10 dark:bg-green-500/20 text-green-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-language"></i>
                         </div>
@@ -140,7 +140,7 @@
                         </div>
                     </button>
 
-                    <button id="sidebar-theme-toggle" onclick="window.toggleTheme()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <button id="sidebar-theme-toggle" onclick="window.toggleTheme()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i id="theme-icon" class="fas fa-moon"></i>
                         </div>
@@ -492,7 +492,7 @@
                 no_comments_text: "No comments yet. Be the first!"
             },
             hi: { 
-                available_files: "उपलब्ध फाइलें", 
+                available_files: "উপলব্ধ ফাইল", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
                 unlock_button: "ডাউনলোড করুন", 
                 download_now_button: "अभी डाउनलोड करें", 
@@ -504,12 +504,12 @@
                 change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
                 light_mode: "লাইট মোড",
-                menu_header: "मेन्यू",
+                menu_header: "মেন্যূ",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
                 nav_history: "इतिहास",
-                items_unit: "আিটম",
+                items_unit: "আইটেম",
                 history_title: "डाउनलोड",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
@@ -632,12 +632,11 @@
         let appConfig = {};
         let tgUser = {};
 
-        // Robust function to cleanly extract Chat ID or Username from input link/number
         const getChatIdOrUsername = (input) => {
             if (!input) return "";
             let val = input.trim();
             if (/^-?\d+$/.test(val)) {
-                return val; // Returns numeric ID cleanly (e.g. -1001234567890)
+                return val; 
             }
             if (val.includes('/') && !val.includes('joinchat')) {
                 const parts = val.split('/');
@@ -1260,17 +1259,13 @@
         // ডিকোডেড ইউআরএল কোয়েরি এবং হ্যাশ অবজেক্ট থেকে নিখুঁত ডেটা প্যারামিটার রিডার ফাংশন
         const getParamFromUrl = (name) => {
             try {
-                // Decode the full URL (including search, hash, and nested query params inside tgWebAppData)
                 const decodedUrl = decodeURIComponent(window.location.href);
-                
-                // Regex matches parameters "parameterName=value" (Firestore ID format)
                 const regex = new RegExp('[?&|#]' + name + '=([a-zA-Z0-9_-]+)', 'i');
                 const match = regex.exec(decodedUrl);
                 if (match && match[1]) {
                     return match[1].trim();
                 }
                 
-                // Fallback: search for other common start-parameter keys in case of naming variations
                 if (name === 'start_param' || name === 'startapp' || name === 'tgWebAppStartParam' || name === 'v') {
                     const fallbackKeys = ['start_param', 'startapp', 'tgWebAppStartParam', 'v'];
                     for (const key of fallbackKeys) {
@@ -1285,7 +1280,6 @@
                 console.error("Url regex parsing failed: ", e);
             }
 
-            // Telegram WebApp SDK fallback
             try {
                 if (window.Telegram && window.Telegram.WebApp) {
                     const tgApp = window.Telegram.WebApp;
@@ -1306,6 +1300,48 @@
             }
 
             return null;
+        };
+
+        // NEW: HELPERS FOR DATE FORMAT & RECENCY (NEW BADGE)
+        // ১ দিন (২৪ ঘণ্টা) এর মধ্যে আপলোড করা ফাইলকে "NEW" চিহ্নিত করার চেক
+        const isNewFile = (timestamp) => {
+            if (!timestamp) return false;
+            try {
+                const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                const diffTime = Math.abs(new Date() - d);
+                const diffDays = diffTime / (1000 * 60 * 60 * 24);
+                return diffDays <= 1; // আপলোডের প্রথম ২৪ ঘণ্টার মধ্যে হলে "NEW" ব্যাজ দেখাবে
+            } catch(e) { return false; }
+        };
+
+        const formatCardDate = (timestamp) => {
+            if(!timestamp) return "";
+            try {
+                const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+                
+                // বাংলায় তারিখ রেন্ডারিং করার জন্য মানানসই কনভার্টার
+                if (currentLang === 'bn') {
+                    const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+                    const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+                    const conv = (num) => String(num).split('').map(x => bnDigits[x] || x).join('');
+                    
+                    const hours = d.getHours();
+                    const minutes = d.getMinutes();
+                    const ampm = hours >= 12 ? 'পিএম' : 'এএম';
+                    const displayHour = hours % 12 || 12;
+                    
+                    return `${conv(displayHour)}:${conv(String(minutes).padStart(2, '0'))} ${ampm}, ${conv(d.getDate())} ${bnMonths[d.getMonth()]} ${conv(d.getFullYear())}`;
+                }
+                
+                // ইংরেজি ও সাধারণ ফরম্যাট
+                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                let hours = d.getHours();
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12 || 12;
+                
+                return `${hours}:${minutes} ${ampm}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+            } catch(e) { return ""; }
         };
 
         async function loadData() {
@@ -1348,7 +1384,7 @@
                         if (userData.status === 'BANNED') {
                             document.getElementById('banned-screen').classList.remove('hidden');
                             document.getElementById('banned-screen').classList.add('flex');
-                            return; // Stop execution
+                            return; 
                         } else {
                             document.getElementById('banned-screen').classList.add('hidden');
                         }
@@ -1366,7 +1402,6 @@
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
-            // ডিকোডেড ইউআরএল কোয়েরি পার্সার রান করে টার্গেট ফাইল আইডি রিড করা
             let targetVid = null;
             if(!window.forceShowAll) {
                 targetVid = getParamFromUrl('start_param') || 
@@ -1402,7 +1437,7 @@
                             document.getElementById('maintenance-message').textContent = data.maintenanceMessage || 'বর্তমানে অ্যাপ ডাউন আছে, কিছুক্ষণের মধ্যে ফিরে আসছি।';
                             document.getElementById('maintenance-screen').classList.remove('hidden');
                             document.getElementById('maintenance-screen').classList.add('flex');
-                            return; // Stop loading UI further
+                            return; 
                         } else {
                             document.getElementById('maintenance-screen').classList.add('hidden');
                         }
@@ -1412,7 +1447,6 @@
                             document.getElementById('announcement-text').textContent = data.announcementText;
                         }
                         
-                        // শেয়ার লিংকের মাধ্যমে প্রবেশ করলে নোটিফিকেশন প্রদর্শন বন্ধ রাখা হয়েছে
                         if(data.popupNotice && data.popupNotice.trim() !== '' && !targetVid) {
                             if(!sessionStorage.getItem('popupNoticeShown')) {
                                 document.getElementById('popup-notice-content').textContent = data.popupNotice;
@@ -1453,7 +1487,6 @@
                     });
                 });
 
-                // Check live banned status again on every reload to lock screen immediately
                 if (tgUser && tgUser.id) {
                     const freshUserDoc = await getDoc(doc(db, "users", String(tgUser.id)));
                     if (freshUserDoc.exists() && freshUserDoc.data().status === 'BANNED') {
@@ -1463,7 +1496,6 @@
                     }
                 }
 
-                // Always check live on startup/load - Cache removed to prevent bypass if user leaves channel
                 const isVerifiedLive = await checkRequiredChannelsLive();
                 if (!isVerifiedLive) {
                     const screen = document.getElementById('channel-verify-screen');
@@ -1497,7 +1529,7 @@
                     const name = platform.charAt(0).toUpperCase() + platform.slice(1);
                     
                     sideHtml += `
-                    <a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <a href="${url}" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="${iconClass}"></i>
                         </div>
@@ -1513,49 +1545,15 @@
                 }
             } catch(e) { console.error(e); }
 
-            if(targetVid) {
-                document.getElementById('slider-container').style.display = 'none';
-                document.getElementById('search-section').style.display = 'none';
-                document.getElementById('single-view-header').innerHTML = ''; 
-                
-                document.getElementById('single-view-footer').innerHTML = `
-                    <button onclick="window.showAllFiles()" class="w-full sm:w-auto mt-6 bg-white dark:bg-gray-800 border-2 border-blue-500 text-blue-600 dark:text-blue-400 px-8 py-4 rounded-2xl font-extrabold shadow-lg hover:bg-blue-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-3 group text-lg">
-                        <i class="fas fa-home text-xl group-hover:scale-110 transition-transform"></i> 
-                        <span data-key="back_to_home_btn">অন্যান্য সব ফাইল দেখুন (Home)</span>
-                    </button>`;
-            } else {
-                document.getElementById('slider-container').style.display = 'block';
-                document.getElementById('search-section').style.display = 'block';
-                document.getElementById('single-view-footer').innerHTML = '';
-
-                try {
-                    const sSnap = await getDocs(collection(db, "sliders"));
-                    const wrapper = document.getElementById('slider-wrapper');
-                    const dots = document.getElementById('slider-dots');
-                    wrapper.innerHTML = ''; dots.innerHTML = '';
-                    const slides = [];
-                    sSnap.forEach(d => slides.push(d.data()));
-                    if(slides.length) {
-                        slides.forEach((s, i) => {
-                            const img = document.createElement('img');
-                            img.src = s.imageUrl;
-                            img.className = 'w-full h-full object-cover flex-shrink-0'; 
-                            wrapper.appendChild(img);
-                            const dot = document.createElement('div');
-                            dot.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===0 ? 'w-6 bg-white' : ''}`;
-                            dots.appendChild(dot);
-                        });
-                        setInterval(() => {
-                            currentSlide = (currentSlide + 1) % slides.length;
-                            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
-                            Array.from(dots.children).forEach((d, i) => { d.className = `w-2 h-2 rounded-full bg-white/50 transition-all ${i===currentSlide ? 'w-6 bg-white' : ''}`; });
-                        }, 4000);
-                    } else { document.getElementById('slider-container').style.display = 'none'; }
-                } catch(e) {}
-            }
-
             try {
-                const fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                let fSnap;
+                try {
+                    fSnap = await getDocs(query(collection(db, "files"), orderBy("createdAt", "desc")));
+                } catch (idxError) {
+                    console.warn("Index query failed, falling back to simple collection fetch:", idxError);
+                    fSnap = await getDocs(collection(db, "files"));
+                }
+
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
                 let count = 0;
@@ -1568,7 +1566,6 @@
 
                     globalFiles.push(f); 
 
-                    // ৩. শেয়ার করা লিংকের টার্গেট ফাইল ফিল্টারিং নিশ্চিতকরণ
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
                     
@@ -1593,23 +1590,41 @@
                     const emojis = ['❤️'];
                     let likesTotal = Math.max(0, f[`react_❤️`] || f.likeCount || 0);
 
+                    // NEW & STABLE RECENCY/DATE CONVERTERS
+                    const isNew = isNewFile(f.createdAt);
+                    const newBadgeHtml = isNew 
+                        ? `<div class="absolute top-8 left-2 bg-gradient-to-r from-red-500 to-pink-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm animate-pulse z-10">NEW</div>` 
+                        : '';
+                    
+                    const dateHtml = f.createdAt 
+                        ? `<div class="text-[9px] sm:text-[10px] text-gray-400 dark:text-gray-500 font-bold mt-1 flex items-center gap-1 shrink-0">
+                             <i class="far fa-calendar-alt text-blue-400"></i> <span>${formatCardDate(f.createdAt)}</span>
+                           </div>` 
+                        : '';
+
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
                             ${mediaElement}
+                            <!-- Download badge left top -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> <span id="download-badge-${f.id}">${f.downloadCount || 0}</span>
                             </div>
+                            <!-- "NEW" pulsing badge just below download count badge on left top -->
+                            ${newBadgeHtml}
                             ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
                         <div class="p-3 sm:p-4 flex flex-col flex-1 min-w-0">
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
+                            <!-- Spaced upload date of this file -->
+                            ${dateHtml}
+
                             <!-- UPPER ROW: Stat badges (Views, Likes, Comments) -->
                             <div class="flex justify-between items-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-sm text-gray-600 dark:text-gray-300 font-black shrink-0">
                                 <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
-                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
                                     <i class="fas fa-heart text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                 </span>
                                 
