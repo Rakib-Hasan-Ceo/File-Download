@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋</title>
+    <title>📁  TrabVauld DL</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -489,16 +489,16 @@
             hi: { 
                 available_files: "उपलब्ध फाइलें", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
-                unlock_button: "ডাউনলোড করুন", 
+                unlock_button: "डाउनलोड करें", 
                 download_now_button: "अभी डाउनलोड करें", 
-                search_placeholder: "फ़ाइलें खोजें...", 
+                search_placeholder: " can't find files...", 
                 toast_wait: "कृपया प्रतीक्षा करें {t}s...", 
                 toast_ad_load: "विज्ञापन लोड हो रहा है...", 
                 toast_unlocked: "सफलतापूर्वक अनलॉक!", 
                 toast_progress: "कार्य: {done}/{req}",
                 change_language: "भाषा बदलें",
-                dark_mode: "ডार्क मोड",
-                light_mode: "लाइट मोड",
+                dark_mode: "ডার্ক মোড",
+                light_mode: "লাইট মোড",
                 menu_header: "मेन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
@@ -508,7 +508,7 @@
                 history_title: "डाउनलोड",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
-                history_empty_subtitle: "ไฟล์গুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
+                history_empty_subtitle: "ফাইলগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
@@ -631,9 +631,8 @@
         const getChatIdOrUsername = (input) => {
             if (!input) return "";
             let val = input.trim();
-            // If it is a numeric ID (starts with -100 or -), return directly
             if (/^-?\d+$/.test(val)) {
-                return val;
+                return val; // Returns numeric ID cleanly (e.g. -1001234567890)
             }
             if (val.includes('/') && !val.includes('joinchat')) {
                 const parts = val.split('/');
@@ -1187,7 +1186,7 @@
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
                 btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
 
@@ -1419,8 +1418,8 @@
                     });
                 });
 
-                const alreadyVerifiedCached = (tgUser && tgUser.id) ? (localStorage.getItem(`channelVerified_${tgUser.id}`) === 'true') : false;
-                const isVerifiedLive = alreadyVerifiedCached ? true : await checkRequiredChannelsLive();
+                // Always check live on startup/load - Cache removed to prevent bypass if user leaves channel
+                const isVerifiedLive = await checkRequiredChannelsLive();
                 if (!isVerifiedLive) {
                     const screen = document.getElementById('channel-verify-screen');
                     const btn1 = document.getElementById('cv-channel1-btn');
@@ -1529,6 +1528,8 @@
                     count++;
                     
                     const localReact = localStorage.getItem('react_' + f.id);
+                    const isInMem = window.likedFiles && window.likedFiles.has(f.id);
+                    const activeReact = (localReact === '❤️' || isInMem) ? '❤️' : null;
                     
                     const mediaElement = f.videoUrl 
                         ? `<video src="${f.videoUrl}" poster="${f.thumbnailUrl}" controls preload="none" class="w-full h-full object-contain bg-black"></video>`
@@ -1563,7 +1564,7 @@
                             <div class="flex justify-between items-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-sm text-gray-600 dark:text-gray-300 font-black shrink-0">
                                 <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
-                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
                                     <i class="fas fa-heart text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                 </span>
                                 
@@ -1607,13 +1608,18 @@
         }
 
         window.toggleHomeLike = async (fileId) => {
+            window.likedFiles = window.likedFiles || new Set();
             const currentReact = localStorage.getItem('react_' + fileId);
+            const inMemory = window.likedFiles.has(fileId);
             let updates = {};
-            if(currentReact === '❤️') {
+
+            if(currentReact === '❤️' || inMemory) {
                 localStorage.removeItem('react_' + fileId);
+                window.likedFiles.delete(fileId);
                 updates[`react_❤️`] = increment(-1);
             } else {
                 localStorage.setItem('react_' + fileId, '❤️');
+                window.likedFiles.add(fileId);
                 updates[`react_❤️`] = increment(1);
             }
             await updateDoc(doc(db, "files", fileId), updates);
@@ -1628,7 +1634,7 @@
                 if(countEl) {
                     const likesTotal = Math.max(0, updatedData[`react_❤️`] || 0);
                     countEl.innerHTML = `<i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>`;
-                    if(currentReact === '❤️') {
+                    if(currentReact === '❤️' || inMemory) {
                         countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-gray-400";
                     } else {
                         countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-red-500";
