@@ -236,7 +236,7 @@
             <div class="w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center text-gray-400 text-3xl mx-auto mb-4">
                 <i class="fas fa-box-open"></i>
             </div>
-            <h3 class="text-lg font-bold text-gray-800 dark:text-white">এখনও কোনো ফাইল আনলক করা হয়নি।</h3>
+            <h3 class="text-lg font-bold text-gray-800 dark:text-white">এখনও কোনো ফাইল আনলক করা হয়নি।</h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Start exploring and downloading files!</p>
         </div>
     </main>
@@ -413,6 +413,8 @@
         let editingReviewDocId = null; 
         let editingCommentDocId = null; 
         let likePressTimeout = null;
+        let homeLikePressTimeout = null;
+        let homeLikeLongPressTriggered = false;
 
         window.forceShowAll = false;
 
@@ -544,9 +546,9 @@
                 localStorage.setItem(`channelVerified_${tgUser.id}`, 'true');
                 document.getElementById('channel-verify-screen').classList.add('hidden');
                 document.getElementById('channel-verify-screen').classList.remove('flex');
-                showToast("স্বাগতম! চ্যানেল ভেরিফিকেশন সফল হয়েছে।", {}, true);
+                showToast("স্বাগতম! চ্যানেল ভেরিফিকেশন সফল হয়েছে।", {}, true);
             } else {
-                alert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
+                alert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
             }
             btn.disabled = false;
             btn.textContent = "VERIFY MEMBERSHIP";
@@ -641,7 +643,7 @@
             document.getElementById('details-thumb').src = fileObj.thumbnailUrl;
             document.getElementById('details-title').textContent = fileObj.title;
             document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
-            document.getElementById('details-description').textContent = fileObj.description || "কোনো ডেসক্রিপশন দেওয়া হয়নি।";
+            document.getElementById('details-description').textContent = fileObj.description || "কোনো ডেসক্রিপশন দেওয়া হয়নি।";
 
             // screenshots
             const ssContainer = document.getElementById('details-screenshots-container');
@@ -698,7 +700,7 @@
                 modal.innerHTML = `
                     <div class="bg-white dark:bg-darkCard w-full max-w-xs rounded-3xl p-5 shadow-2xl relative" onclick="event.stopPropagation()">
                         <div class="flex justify-between items-center pb-2 border-b dark:border-gray-800 mb-4">
-                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
+                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
                             <button onclick="document.getElementById('reactions-popup-modal').remove()" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
                         </div>
                         <div id="likers-real-list" class="max-h-60 overflow-y-auto custom-scroll space-y-3.5">
@@ -728,17 +730,74 @@
                             </div>`;
                     });
                     if(count === 0) {
-                        uContainer.innerHTML = '<div class="text-center py-4 text-xs text-gray-500">কেউ এখনও রিঅ্যাকশন বা রেটিং দেয়নি।</div>';
+                        uContainer.innerHTML = '<div class="text-center py-4 text-xs text-gray-500">কেউ এখনও রিঅ্যাকশন বা রেটিং দেয়নি।</div>';
                     }
                 } catch(e) {
                     const uContainer = document.getElementById('likers-real-list');
-                    if(uContainer) uContainer.innerHTML = '<div class="text-center py-4 text-xs text-red-500">লোডিং ব্যর্থ হয়েছে।</div>';
+                    if(uContainer) uContainer.innerHTML = '<div class="text-center py-4 text-xs text-red-500">লোডিং ব্যর্থ হয়েছে।</div>';
                 }
             }, 800);
         };
 
         window.endLikePress = () => {
             if(likePressTimeout) clearTimeout(likePressTimeout);
+        };
+
+        // NEW: HOME PAGE CARD LIKE BUTTON LONG-PRESS -> SHOW WHO LIKED (REUSES SAME REAL LIKERS LIST AS DETAILS VIEW)
+        window.startHomeLikePress = (fileId) => {
+            window.endHomeLikePress();
+            homeLikeLongPressTriggered = false;
+            homeLikePressTimeout = setTimeout(async () => {
+                homeLikeLongPressTriggered = true;
+                const modal = document.createElement('div');
+                modal.id = 'reactions-popup-modal';
+                modal.className = "fixed inset-0 bg-black/75 backdrop-blur-sm z-[105] flex items-center justify-center p-4 animate-[fadeIn_0.2s_ease-out]";
+                modal.onclick = () => modal.remove();
+
+                modal.innerHTML = `
+                    <div class="bg-white dark:bg-darkCard w-full max-w-xs rounded-3xl p-5 shadow-2xl relative" onclick="event.stopPropagation()">
+                        <div class="flex justify-between items-center pb-2 border-b dark:border-gray-800 mb-4">
+                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
+                            <button onclick="document.getElementById('reactions-popup-modal').remove()" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div id="likers-real-list" class="max-h-60 overflow-y-auto custom-scroll space-y-3.5">
+                            <div class="text-center py-4 text-xs text-gray-400"><i class="fas fa-spinner fa-spin animate-spin"></i> Loading...</div>
+                        </div>
+                    </div>`;
+                document.body.appendChild(modal);
+
+                try {
+                    const snap = await getDocs(collection(db, "files", fileId, "comments"));
+                    const uContainer = document.getElementById('likers-real-list');
+                    if(!uContainer) return;
+                    uContainer.innerHTML = '';
+                    let count = 0;
+                    snap.forEach(d => {
+                        const c = d.data();
+                        count++;
+                        const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
+                        const avatar = c.avatar 
+                            ? `<img src="${c.avatar}" class="w-8 h-8 rounded-full object-cover shrink-0">`
+                            : `<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs shrink-0">${initial}</div>`;
+                        
+                        uContainer.innerHTML += `
+                            <div class="flex items-center gap-2">
+                                ${avatar}
+                                <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">${c.name}</span>
+                            </div>`;
+                    });
+                    if(count === 0) {
+                        uContainer.innerHTML = '<div class="text-center py-4 text-xs text-gray-500">কেউ এখনও রিঅ্যাকশন বা রেটিং দেয়নি।</div>';
+                    }
+                } catch(e) {
+                    const uContainer = document.getElementById('likers-real-list');
+                    if(uContainer) uContainer.innerHTML = '<div class="text-center py-4 text-xs text-red-500">লোডিং ব্যর্থ হয়েছে।</div>';
+                }
+            }, 600);
+        };
+
+        window.endHomeLikePress = () => {
+            if(homeLikePressTimeout) clearTimeout(homeLikePressTimeout);
         };
 
         function renderDetailsReactions(fileObj) {
@@ -799,7 +858,7 @@
             if(!detailsActiveFileId) return;
             const text = document.getElementById('review-comment-text').value.trim();
             if(currentActiveReviewStars === 0) {
-                return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
+                return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
             }
 
             const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
@@ -824,11 +883,11 @@
                 });
                 editingReviewDocId = null;
                 document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা জমা দিন";
-                showToast("পর্যালোচনা আপডেট করা হয়েছে!");
+                showToast("পর্যালোচনা আপডেট করা হয়েছে!");
             } else {
                 await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
                 await updateDoc(doc(db, "files", detailsActiveFileId), { commentCount: increment(1) });
-                showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
+                showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
             }
 
             const commentsSnap = await getDocs(collection(db, "files", detailsActiveFileId, "comments"));
@@ -877,7 +936,7 @@
                 await updateDoc(doc(db, "files", fileId), {
                     avgRating: avg
                 });
-                showToast("পর্যালোচনা মুছে ফেলা হয়েছে!");
+                showToast("পর্যালোচনা মুছে ফেলা হয়েছে!");
             }
         };
 
@@ -1007,7 +1066,7 @@
                 const fileObj = globalFiles.find(f => f.id === id);
                 updateDetailsStickyBtn(fileObj);
                 if (err.message === "AdBlocked") {
-                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
+                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
                 } else {
                     alert("Failed to load ad. Please try again.");
                 }
@@ -1252,7 +1311,7 @@
                             <div class="flex justify-between items-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-sm text-gray-600 dark:text-gray-300 font-black shrink-0">
                                 <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
-                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); window.toggleHomeLike('${f.id}')" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like (চেপে ধরে রাখুন কারা লাইক দিয়েছে দেখার জন্য)" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${localReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
                                     <i class="fas fa-heart text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                 </span>
                                 
