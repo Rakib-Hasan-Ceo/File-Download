@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -143,7 +143,7 @@
                 <div class="inline-block p-3 rounded-full bg-red-100 dark:bg-red-900/40 mb-2 shadow-inner">
                     <i class="fas fa-bell text-3xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-black text-gray-800 dark:text-white">বিশেষ নোটিশ</h3>
+                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष নোটিশ</h3>
             </div>
             
             <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
@@ -151,6 +151,18 @@
             <div class="mt-5 text-center">
                 <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">আমি বুঝতে পেরেছি</button>
             </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM BEAUTIFUL POPUP ALERT MODAL (Replaces system alert box) -->
+    <div id="custom-alert-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl relative text-center">
+            <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fas fa-bell"></i>
+            </div>
+            <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-800 dark:text-white mb-2">📁 FileVault DL</h3>
+            <p id="custom-alert-message" class="text-sm text-gray-650 dark:text-gray-300 leading-relaxed mb-6"></p>
+            <button onclick="window.closeCustomAlert()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg text-white font-bold rounded-2xl transition-all">OK</button>
         </div>
     </div>
 
@@ -477,7 +489,7 @@
             hi: { 
                 available_files: "उपलब्ध फाइलें", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
-                unlock_button: "डाउनलोड करें", 
+                unlock_button: "ডাউনলোড করুন", 
                 download_now_button: "अभी डाउनलोड करें", 
                 search_placeholder: "फ़ाइलें खोजें...", 
                 toast_wait: "कृपया प्रतीक्षा करें {t}s...", 
@@ -485,7 +497,7 @@
                 toast_unlocked: "सफलतापूर्वक अनलॉक!", 
                 toast_progress: "कार्य: {done}/{req}",
                 change_language: "भाषा बदलें",
-                dark_mode: "डार्क मोड",
+                dark_mode: "ডार्क मोड",
                 light_mode: "लाइट मोड",
                 menu_header: "मेन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
@@ -496,13 +508,13 @@
                 history_title: "डाउनलोड",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
-                history_empty_subtitle: "फ़ाइलें खोजना और डाउनलोड करना शुरू करें!",
+                history_empty_subtitle: "ไฟล์গুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
                 rate_file_label: "इस फ़ाइल को रेट करें",
                 submit_review_btn: "समीक्षा सबमिट करें",
-                copy_link: "लिंक कॉपी करें",
+                copy_link: "লিঙ্ক কপি করুন",
                 share: "शेयर करें",
                 unlock_progress: "अनलॉक प्रगति",
                 back_to_home_btn: "अन्य सभी फाइलें देखें (होम)",
@@ -615,28 +627,41 @@
         let appConfig = {};
         let tgUser = {};
 
+        // Robust function to cleanly extract Chat ID or Username from input link/number
+        const getChatIdOrUsername = (input) => {
+            if (!input) return "";
+            let val = input.trim();
+            // If it is a numeric ID (starts with -100 or -), return directly
+            if (/^-?\d+$/.test(val)) {
+                return val;
+            }
+            if (val.includes('/') && !val.includes('joinchat')) {
+                const parts = val.split('/');
+                const lastPart = parts[parts.length - 1].split('?')[0];
+                if (lastPart) {
+                    val = lastPart;
+                }
+            } else if (val.includes('joinchat')) {
+                return val;
+            }
+            val = val.replace('@', '');
+            return '@' + val;
+        };
+
         const checkRequiredChannelsLive = async () => {
             if (!appConfig.channel1Url && !appConfig.channel2Url) return true; 
             const botToken = appConfig.botToken;
             if (!botToken) return true; 
 
-            const getUsername = (url) => {
-                if (!url) return "";
-                let cleanUrl = url.trim().replace('@', '');
-                const parts = cleanUrl.split('/');
-                const lastPart = parts[parts.length - 1];
-                return lastPart ? '@' + lastPart.split('?')[0] : "";
-            };
-
-            const ch1User = getUsername(appConfig.channel1Url);
-            const ch2User = getUsername(appConfig.channel2Url);
+            const ch1User = getChatIdOrUsername(appConfig.channel1Url);
+            const ch2User = getChatIdOrUsername(appConfig.channel2Url);
 
             try {
                 let joined1 = true;
                 let joined2 = true;
 
                 if (ch1User) {
-                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${ch1User}&user_id=${tgUser.id}`);
+                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(ch1User)}&user_id=${tgUser.id}`);
                     const data = await res.json();
                     if (data.ok) {
                         const status = data.result.status;
@@ -645,7 +670,7 @@
                 }
 
                 if (ch2User) {
-                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${ch2User}&user_id=${tgUser.id}`);
+                    const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(ch2User)}&user_id=${tgUser.id}`);
                     const data = await res.json();
                     if (data.ok) {
                         const status = data.result.status;
@@ -660,6 +685,16 @@
             }
         };
 
+        window.showAlert = (msg, title = "📁 FileVault DL") => {
+            document.getElementById('custom-alert-title').textContent = title;
+            document.getElementById('custom-alert-message').textContent = msg;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        };
+
+        window.closeCustomAlert = () => {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        };
+
         window.verifyChannelMembership = async () => {
             const btn = document.querySelector('#channel-verify-screen button');
             btn.disabled = true;
@@ -672,7 +707,7 @@
                 document.getElementById('channel-verify-screen').classList.remove('flex');
                 showToast("স্বাগতম! চ্যানেল ভেরিফিকেশন সফল হয়েছে।", {}, true);
             } else {
-                alert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
+                window.showAlert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
             }
             btn.disabled = false;
             btn.textContent = "VERIFY MEMBERSHIP";
@@ -982,7 +1017,7 @@
             if(!detailsActiveFileId) return;
             const text = document.getElementById('review-comment-text').value.trim();
             if(currentActiveReviewStars === 0) {
-                return alert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
+                return window.showAlert("দয়া করে একটি স্টার রেটিং সিলেক্ট করুন!");
             }
 
             const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
@@ -1211,9 +1246,9 @@
                 const fileObj = globalFiles.find(f => f.id === id);
                 updateDetailsStickyBtn(fileObj);
                 if (err.message === "AdBlocked") {
-                    alert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
+                    window.showAlert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
                 } else {
-                    alert("Failed to load ad. Please try again.");
+                    window.showAlert("Failed to load ad. Please try again.");
                 }
             }
         }
