@@ -539,7 +539,7 @@
                 rate_file_label: "এই ফাইলটি রেট করুন",
                 submit_review_btn: "পর্যালোচনা জমা দিন",
                 copy_link: "কপি লিংক",
-                share: "শেয়ার",
+                share: "শেয়ার",
                 unlock_progress: "আনলক প্রগ্রেস",
                 back_to_home_btn: "অন্যান্য সব ফাইল দেখুন (Home)",
                 comments_title_modal: "কমেন্টস",
@@ -1228,10 +1228,20 @@
                 const hashParams = new URLSearchParams(hashClean);
                 if (hashParams.has(name)) return hashParams.get(name);
                 
+                if (name === 'start_param' || name === 'startapp' || name === 'tgWebAppStartParam' || name === 'v') {
+                    if (hashParams.has('tgWebAppStartParam')) return hashParams.get('tgWebAppStartParam');
+                    if (hashParams.has('start_param')) return hashParams.get('start_param');
+                    if (hashParams.has('startapp')) return hashParams.get('startapp');
+                }
+
                 const tgWebAppData = hashParams.get('tgWebAppData');
                 if (tgWebAppData) {
-                    const innerParams = new URLSearchParams(tgWebAppData);
+                    const innerParams = new URLSearchParams(decodeURIComponent(tgWebAppData));
                     if (innerParams.has(name)) return innerParams.get(name);
+                    if (name === 'start_param' || name === 'startapp' || name === 'tgWebAppStartParam' || name === 'v') {
+                        if (innerParams.has('start_param')) return innerParams.get('start_param');
+                        if (innerParams.has('startapp')) return innerParams.get('startapp');
+                    }
                 }
             }
 
@@ -1243,6 +1253,7 @@
                     const initDataParams = new URLSearchParams(window.Telegram.WebApp.initData);
                     if (initDataParams.has('start_param')) return initDataParams.get('start_param');
                     if (initDataParams.has('startapp')) return initDataParams.get('startapp');
+                    if (initDataParams.has('tgWebAppStartParam')) return initDataParams.get('tgWebAppStartParam');
                 }
             }
 
