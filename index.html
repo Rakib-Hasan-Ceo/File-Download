@@ -603,7 +603,7 @@
                             ${mediaElement}
                             <!-- Download count overlay badge left -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
-                                <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
+                                <i class="fas fa-download text-blue-400"></i> <span id="download-badge-hist-${f.id}">${f.downloadCount || 0}</span>
                             </div>
                             <div class="absolute top-2 right-2 bg-emerald-600 text-white text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-check-circle"></i> Unlocked</div>
                         </div>
@@ -1036,6 +1036,26 @@
             if(done >= req) { 
                 await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
                 window.open(downloadUrl, '_blank'); 
+
+                // Live-update the UI everywhere the download count is shown, without a full reload
+                try {
+                    const updatedDoc = await getDoc(doc(db, "files", id));
+                    if(updatedDoc.exists()) {
+                        const newCount = updatedDoc.data().downloadCount || 0;
+                        const idx = globalFiles.findIndex(f => f.id === id);
+                        if(idx !== -1) globalFiles[idx].downloadCount = newCount;
+
+                        const detailsBadge = document.getElementById('details-downloads-badge');
+                        if(detailsBadge) detailsBadge.innerHTML = `📥 ${newCount}`;
+
+                        const homeBadge = document.getElementById(`download-badge-${id}`);
+                        if(homeBadge) homeBadge.innerText = newCount;
+
+                        const histBadge = document.getElementById(`download-badge-hist-${id}`);
+                        if(histBadge) histBadge.innerText = newCount;
+                    }
+                } catch(e) { console.error("Failed to refresh download count UI: ", e); }
+
                 return; 
             }
 
@@ -1299,7 +1319,7 @@
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
                             ${mediaElement}
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
-                                <i class="fas fa-download text-blue-400"></i> ${f.downloadCount || 0}
+                                <i class="fas fa-download text-blue-400"></i> <span id="download-badge-${f.id}">${f.downloadCount || 0}</span>
                             </div>
                             ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> Premium</div>` : ''}
                         </div>
