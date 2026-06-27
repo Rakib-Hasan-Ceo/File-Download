@@ -1220,53 +1220,51 @@
 
         // ডিকোডেড ইউআরএল কোয়েরি এবং হ্যাশ অবজেক্ট থেকে নিখুঁত ডেটা প্যারামিটার রিডার ফাংশন
         const getParamFromUrl = (name) => {
-            const searchParams = new URLSearchParams(window.location.search);
-            if (searchParams.has(name)) return searchParams.get(name);
-            
-            if (window.location.hash) {
-                const hashClean = window.location.hash.substring(1);
-                const hashParams = new URLSearchParams(hashClean);
-                if (hashParams.has(name)) return hashParams.get(name);
-                
-                const tgWebAppData = hashParams.get('tgWebAppData');
-                if (tgWebAppData) {
-                    try {
-                        const decodedData = decodeURIComponent(tgWebAppData);
-                        const innerParams = new URLSearchParams(decodedData);
-                        if (innerParams.has(name)) return innerParams.get(name);
-                        
-                        // Fallback check for start parameters in telegram
-                        if (name === 'start_param' || name === 'startapp' || name === 'tgWebAppStartParam' || name === 'v') {
-                            if (innerParams.has('start_param')) return innerParams.get('start_param');
-                            if (innerParams.has('startapp')) return innerParams.get('startapp');
-                        }
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            }
-
-            if (window.Telegram && window.Telegram.WebApp) {
-                if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.start_param) {
-                    return window.Telegram.WebApp.initDataUnsafe.start_param;
-                }
-                if (window.Telegram.WebApp.initData) {
-                    try {
-                        const initDataParams = new URLSearchParams(window.Telegram.WebApp.initData);
-                        if (initDataParams.has('start_param')) return initDataParams.get('start_param');
-                        if (initDataParams.has('startapp')) return initDataParams.get('startapp');
-                    } catch (e) {
-                        console.error(e);
-                    }
-                }
-            }
-
             try {
+                // Decode the full URL (including search, hash, and nested query params inside tgWebAppData)
                 const decodedUrl = decodeURIComponent(window.location.href);
-                const regex = new RegExp('[?&]' + name + '=([^&#]*)', 'i');
-                const results = regex.exec(decodedUrl);
-                if (results && results[1]) return results[1];
-            } catch(e) {}
+                
+                // Regex matches parameters "parameterName=value" (Firestore ID format)
+                const regex = new RegExp('[?&|#]' + name + '=([a-zA-Z0-9_-]+)', 'i');
+                const match = regex.exec(decodedUrl);
+                if (match && match[1]) {
+                    return match[1].trim();
+                }
+                
+                // Fallback: search for other common start-parameter keys in case of naming variations
+                if (name === 'start_param' || name === 'startapp' || name === 'tgWebAppStartParam' || name === 'v') {
+                    const fallbackKeys = ['start_param', 'startapp', 'tgWebAppStartParam', 'v'];
+                    for (const key of fallbackKeys) {
+                        const fallbackRegex = new RegExp('[?&|#]' + key + '=([a-zA-Z0-9_-]+)', 'i');
+                        const fallbackMatch = fallbackRegex.exec(decodedUrl);
+                        if (fallbackMatch && fallbackMatch[1]) {
+                            return fallbackMatch[1].trim();
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Url regex parsing failed: ", e);
+            }
+
+            // Telegram WebApp SDK fallback
+            try {
+                if (window.Telegram && window.Telegram.WebApp) {
+                    const tgApp = window.Telegram.WebApp;
+                    if (tgApp.initDataUnsafe && tgApp.initDataUnsafe.start_param) {
+                        return String(tgApp.initDataUnsafe.start_param).trim();
+                    }
+                    if (tgApp.initData) {
+                        const decodedInitData = decodeURIComponent(tgApp.initData);
+                        const regex = new RegExp('[?&]start_param=([a-zA-Z0-9_-]+)', 'i');
+                        const match = regex.exec(decodedInitData);
+                        if (match && match[1]) {
+                            return match[1].trim();
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Telegram WebApp SDK fallback failed: ", e);
+            }
 
             return null;
         };
