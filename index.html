@@ -41,24 +41,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
 
-    <!-- MAINTENANCE SCREEN OVERLAY -->
-    <div id="maintenance-screen" class="fixed inset-0 bg-yellow-50 dark:bg-darkBg z-[160] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
-        <div class="w-24 h-24 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 flex items-center justify-center text-4xl mb-6 animate-pulse border-2 border-yellow-300">
-            <i class="fas fa-tools"></i>
-        </div>
-        <h2 class="text-2xl font-black text-gray-800 dark:text-white mb-2">সিস্টেম আপডেট চলছে!</h2>
-        <p id="maintenance-message" class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-bold"></p>
-    </div>
-
-    <!-- BANNED SCREEN OVERLAY -->
-    <div id="banned-screen" class="fixed inset-0 bg-red-50 dark:bg-darkBg z-[170] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
-        <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/40 text-red-650 flex items-center justify-center text-4xl mb-6 animate-bounce border-2 border-red-300">
-            <i class="fas fa-user-slash"></i>
-        </div>
-        <h2 class="text-2xl font-black text-red-650 dark:text-red-500 mb-2">অ্যাকাউন্ট ব্যান করা হয়েছে!</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-semibold">আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্যান করা হয়েছে। বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
-    </div>
-
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
@@ -108,7 +90,7 @@
             <div class="p-4 space-y-4">
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="social_profiles_title">Social Profiles</div>
                 <div id="sidebar-social-links" class="space-y-2 px-1">
-                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-950/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                    <a href="https://t.me/AlorHawa_Developer" target="_blank" class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fab fa-telegram-plane"></i>
                         </div>
@@ -165,7 +147,7 @@
                 <div class="inline-block p-3 rounded-full bg-red-100 dark:bg-red-900/40 mb-2 shadow-inner">
                     <i class="fas fa-bell text-3xl text-red-500 animate-ring"></i>
                 </div>
-                <h3 class="text-2xl font-black text-gray-800 dark:text-white">विशेष নোটিশ</h3>
+                <h3 class="text-2xl font-black text-gray-800 dark:text-white">বিশেষ নোটিশ</h3>
             </div>
             <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
             <div class="mt-5 text-center">
@@ -230,6 +212,30 @@
             <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ACTIVE
             </span>
+        </div>
+    </div>
+
+    <!-- NEW: GLOBAL STATS BAR (মোট ডাউনলোড এবং রেটিং প্রফেশনাল কাউন্টার) -->
+    <div id="global-stats-bar" class="hidden max-w-xl mx-auto mt-3 px-4 animate-[fadeIn_0.4s_ease-out]">
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
+                <div class="w-8.5 h-8.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-base shrink-0">
+                    <i class="fas fa-download"></i>
+                </div>
+                <div class="min-w-0">
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block">Total Downloads</span>
+                    <span id="global-total-downloads" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0</span>
+                </div>
+            </div>
+            <div class="bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
+                <div class="w-8.5 h-8.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-base shrink-0">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="min-w-0">
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block">Average Rating</span>
+                    <span id="global-avg-rating" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0.0</span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -351,13 +357,11 @@
         </div>
 
         <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 dark:bg-darkCard/90 backdrop-blur-md border-t dark:border-gray-800 z-30 flex justify-center shadow-lg">
-            <button id="details-sticky-unlock-btn" class="w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3">
+            <button id="details-sticky-unlock-btn" class="w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3">
                 <i class="fas fa-lock"></i> আনলক করতে বিজ্ঞাপন দেখুন (০/৪০)
             </button>
         </div>
     </div>
-
-    <div id="reactions-popup-modal-container"></div>
 
     <!-- LIGHTBOX IMAGE MODAL -->
     <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4" onclick="document.getElementById('lightbox-modal').classList.add('hidden')">
@@ -492,7 +496,7 @@
                 no_comments_text: "No comments yet. Be the first!"
             },
             hi: { 
-                available_files: "উপলব্ধ ফাইল", 
+                available_files: "उपलब्ध फाइलें", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
                 unlock_button: "ডাউনলোড করুন", 
                 download_now_button: "अभी डाउनलोड करें", 
@@ -504,7 +508,7 @@
                 change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
                 light_mode: "লাইট মোড",
-                menu_header: "মেন্যূ",
+                menu_header: "मेन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
@@ -1148,6 +1152,26 @@
                             </div>`;
                     }
 
+                    // ৪. এডমিন রিপ্লাই প্রিমিয়াম লেআউট ডাইনামিক রেন্ডারিং
+                    let replyHtml = '';
+                    if (c.replyText) {
+                        let replyTimeStr = "Just now";
+                        if (c.replyTimestamp) {
+                            const rDate = c.replyTimestamp.toDate();
+                            replyTimeStr = rDate.toLocaleDateString() + ' ' + rDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        }
+                        replyHtml = `
+                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-950/10 p-3 rounded-2xl">
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <h5 class="font-extrabold text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                                        <i class="fas fa-shield-halved text-[10px]"></i> 📁 FileVault DL (Support)
+                                    </h5>
+                                    <span class="text-[8px] text-gray-400 font-semibold">${replyTimeStr}</span>
+                                </div>
+                                <p class="text-xs text-gray-650 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
+                            </div>`;
+                    }
+
                     list.innerHTML += `
                         <div class="flex gap-3 text-left">
                             <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
@@ -1164,6 +1188,7 @@
                                     </div>
                                     <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
+                                    ${replyHtml}
                                 </div>
                             </div>
                         </div>`;
@@ -1303,7 +1328,6 @@
         };
 
         // NEW: HELPERS FOR DATE FORMAT & RECENCY (NEW BADGE)
-        // ১ দিন (২৪ ঘণ্টা) এর মধ্যে আপলোড করা ফাইলকে "NEW" চিহ্নিত করার চেক
         const isNewFile = (timestamp) => {
             if (!timestamp) return false;
             try {
@@ -1319,7 +1343,6 @@
             try {
                 const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
                 
-                // বাংলায় তারিখ রেন্ডারিং করার জন্য মানানসই কনভার্টার
                 if (currentLang === 'bn') {
                     const bnMonths = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
                     const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
@@ -1333,7 +1356,6 @@
                     return `${conv(displayHour)}:${conv(String(minutes).padStart(2, '0'))} ${ampm}, ${conv(d.getDate())} ${bnMonths[d.getMonth()]} ${conv(d.getFullYear())}`;
                 }
                 
-                // ইংরেজি ও সাধারণ ফরম্যাট
                 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                 let hours = d.getHours();
                 const minutes = String(d.getMinutes()).padStart(2, '0');
@@ -1402,6 +1424,7 @@
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
+            // ডিকোডেড ইউআরএল কোয়েরি পার্সার রান করে টার্গেট ফাইল আইডি রিড করা
             let targetVid = null;
             if(!window.forceShowAll) {
                 targetVid = getParamFromUrl('start_param') || 
@@ -1557,6 +1580,9 @@
                 const grid = document.getElementById('files-grid');
                 grid.innerHTML = '';
                 let count = 0;
+                let totalDownloadsAccumulated = 0;
+                let totalRatingsAccumulated = 0;
+                let ratingSum = 0;
                 
                 globalFiles = []; 
 
@@ -1565,6 +1591,12 @@
                     if(f.isDeleted) return; 
 
                     globalFiles.push(f); 
+
+                    totalDownloadsAccumulated += (f.downloadCount || 0);
+                    if (f.avgRating && parseFloat(f.avgRating) > 0) {
+                        totalRatingsAccumulated++;
+                        ratingSum += parseFloat(f.avgRating);
+                    }
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -1590,7 +1622,6 @@
                     const emojis = ['❤️'];
                     let likesTotal = Math.max(0, f[`react_❤️`] || f.likeCount || 0);
 
-                    // NEW & STABLE RECENCY/DATE CONVERTERS
                     const isNew = isNewFile(f.createdAt);
                     const newBadgeHtml = isNew 
                         ? `<div class="absolute top-8 left-2 bg-gradient-to-r from-red-500 to-pink-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm animate-pulse z-10">NEW</div>` 
@@ -1662,6 +1693,27 @@
                     progBar.style.width = `${pctVal}%`;
                     progTxt.innerText = `${Math.floor(pctVal)}%`;
                 });
+
+                // ৫. ডাইনামিক রিয়েল-টাইম গ্লোবাল স্ট্যাটাস রেন্ডারিং
+                if (count > 0 && !targetVid) {
+                    document.getElementById('global-stats-bar').classList.remove('hidden');
+                    
+                    // টোটাল ডাউনলোডের সংখ্যাকে প্রিমিয়াম ফরম্যাটে রেন্ডারিং
+                    const formatNum = (num) => {
+                        if (currentLang === 'bn') {
+                            const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+                            return String(num).split('').map(x => bnDigits[x] || x).join('');
+                        }
+                        return num;
+                    };
+
+                    document.getElementById('global-total-downloads').textContent = `${formatNum(totalDownloadsAccumulated)}+`;
+                    const avgCalculated = totalRatingsAccumulated > 0 ? (ratingSum / totalRatingsAccumulated).toFixed(1) : "0.0";
+                    document.getElementById('global-avg-rating').textContent = formatNum(avgCalculated);
+                } else {
+                    document.getElementById('global-stats-bar').classList.add('hidden');
+                }
+
                 document.getElementById('file-count').innerText = `${count} ${getTxt('items_unit')}`;
                 updateTexts();
             } catch(e) { console.error(e); }
@@ -1854,6 +1906,26 @@
                                 <button onclick="window.deleteComment('${id}', '${d.id}')" class="hover:text-red-500 transition-colors"><i class="fas fa-trash-alt mr-0.5"></i> Delete</button>
                             </div>`;
                     }
+
+                    // ৪. এডমিন রিপ্লাই প্রিমিয়াম লেআউট ডাইনামিক রেন্ডারিং
+                    let replyHtml = '';
+                    if (c.replyText) {
+                        let replyTimeStr = "Just now";
+                        if (c.replyTimestamp) {
+                            const rDate = c.replyTimestamp.toDate();
+                            replyTimeStr = rDate.toLocaleDateString() + ' ' + rDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                        }
+                        replyHtml = `
+                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-950/10 p-3 rounded-2xl">
+                                <div class="flex justify-between items-baseline mb-1">
+                                    <h5 class="font-extrabold text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1">
+                                        <i class="fas fa-shield-halved text-[10px]"></i> 📁 FileVault DL (Support)
+                                    </h5>
+                                    <span class="text-[8px] text-gray-400 font-semibold">${replyTimeStr}</span>
+                                </div>
+                                <p class="text-xs text-gray-650 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
+                            </div>`;
+                    }
                     
                     const avatarContent = c.avatar 
                         ? `<img src="${c.avatar}" class="w-full h-full object-cover">` 
@@ -1870,6 +1942,7 @@
                                     </div>
                                     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
+                                    ${replyHtml}
                                 </div>
                             </div>
                         </div>`;
