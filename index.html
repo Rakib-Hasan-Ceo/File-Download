@@ -181,7 +181,7 @@
         </div>
     </div>
 
-    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-950 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
+    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-955 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
         <div class="container mx-auto px-2 flex items-center">
             <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">NOTICE</span>
             <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">Welcome to Web App Rakib!</marquee>
@@ -346,7 +346,7 @@
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-150 dark:border-gray-750 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-750 shadow-sm">
                 <h4 data-key="about_file_title" class="text-base font-black text-gray-800 dark:text-white mb-3">About this file</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -523,13 +523,13 @@
                 change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
                 light_mode: " can't find mode",
-                menu_header: "मेन्यू",
+                menu_header: "মেन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
-                nav_home: "होम",
-                nav_history: "इतिहास",
+                nav_home: "হোম",
+                nav_history: "ইতিহাস",
                 items_unit: "আইটেম",
-                history_title: "डाउनलोड",
+                history_title: "دانلود",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
                 history_empty_subtitle: "ফাইলগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
@@ -1068,7 +1068,7 @@
                 showToast("পর্যালোচনা আপডেট করা হয়েছে!");
             } else {
                 await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
-                await updateDoc(doc(db, "files", detailsActiveFileId), { commentCount: increment(1) });
+                await updateDoc(doc(db, "files", detailsActiveFileId), { ratingCount: increment(1) });
                 showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
             }
 
@@ -1102,7 +1102,7 @@
         window.deleteReviewInline = async (fileId, docId) => {
             if(confirm("আপনার পর্যালোচনাটি ডিলিট করতে চান?")) {
                 await deleteDoc(doc(db, "files", fileId, "comments", docId));
-                await updateDoc(doc(db, "files", fileId), { commentCount: increment(-1) });
+                await updateDoc(doc(db, "files", fileId), { ratingCount: increment(-1) });
                 
                 const commentsSnap = await getDocs(collection(db, "files", fileId, "comments"));
                 let totalStars = 0;
@@ -1613,6 +1613,7 @@
                 let count = 0;
                 let totalDownloadsAccumulated = 0;
                 let totalRatingsAccumulated = 0;
+                let ratingSum = 0;
                 
                 globalFiles = []; 
 
@@ -1623,7 +1624,10 @@
                     globalFiles.push(f); 
 
                     totalDownloadsAccumulated += (f.downloadCount || 0);
-                    totalRatingsAccumulated += (f.commentCount || 0); // ৫. রিয়েল মোট রিভিউ বা রেটিং কাউন্ট যোগফল জেনারেটর
+                    if (f.avgRating && parseFloat(f.avgRating) > 0) {
+                        totalRatingsAccumulated++;
+                        ratingSum += parseFloat(f.avgRating);
+                    }
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -1915,13 +1919,8 @@
             unsubscribeComments = onSnapshot(q, (snap) => {
                 list.innerHTML = '';
                 if(snap.empty) list.innerHTML = `<div class="text-center text-gray-400 mt-10">${getTxt('no_comments_text')}</div>`;
-                
-                let commentCount = 0;
                 snap.forEach(d => {
                     const c = d.data();
-                    if(c.isComment !== true) return; // সাধারণ কমেন্ট ফিল্টারিং
-                    commentCount++;
-
                     const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
                     let timeStr = "Just now";
                     if(c.timestamp) {
@@ -1979,10 +1978,6 @@
                             </div>
                         </div>`;
                 });
-                
-                if (commentCount === 0) {
-                    list.innerHTML = `<div class="text-center text-gray-400 py-4">${getTxt('no_comments_text')}</div>`;
-                }
             });
         };
 
