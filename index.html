@@ -240,7 +240,7 @@
                     <span id="global-total-downloads" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0</span>
                 </div>
             </div>
-            <div class="bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-gray-700/80 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
+            <div class="bg-amber-50/50 dark:bg-amber-955/20 border border-amber-100 dark:border-gray-700/80 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
                 <div class="w-8.5 h-8.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-base shrink-0">
                     <i class="fas fa-star"></i>
                 </div>
@@ -1535,7 +1535,7 @@
                             else if(k.includes('youtube')) socialLinks['youtube'] = cleanUrl;
                             else if(k.includes('whatsapp')) socialLinks['whatsapp'] = cleanUrl;
                             else if(k.includes('twitter')) socialLinks['twitter'] = cleanUrl;
-                            else if(k.includes('instagram')) socialLinks['instagram'] = cleanUrl;
+                            else if(k.includes('indigo')) socialLinks['instagram'] = cleanUrl;
                             else if(k.includes('tiktok')) socialLinks['tiktok'] = cleanUrl;
                         }
                     });
@@ -1623,36 +1623,53 @@
 
                     globalFiles.push(f); 
 
-                    // Self-healing: পুরনো ফাইলের রেটিং কাউন্টার ডাটাবেজে না থাকলে ব্যাকগ্রাউন্ডে সংশোধন করার লজিক
-                    if (f.ratingCount === undefined || f.ratingCount === 0) {
-                        (async () => {
-                            try {
-                                const commentsSnap = await getDocs(collection(db, "files", f.id, "comments"));
-                                let realRatingCount = 0;
-                                let totalStars = 0;
-                                commentsSnap.forEach(cd => {
-                                    const c = cd.data();
-                                    if (c.stars && c.isComment !== true) {
-                                        realRatingCount++;
+                    // Self-healing: পুরনো ফাইলের কমেন্ট এবং রেটিং কাউন্টার ডাটাবেজে ভুল থাকলে ব্যাকগ্রাউন্ডে সংশোধন করার লজিক
+                    (async () => {
+                        try {
+                            const commentsSnap = await getDocs(collection(db, "files", f.id, "comments"));
+                            let realRatingCount = 0;
+                            let realCommentCount = 0;
+                            let totalStars = 0;
+                            
+                            commentsSnap.forEach(cd => {
+                                const c = cd.data();
+                                if (c.isComment === true) {
+                                    realCommentCount++;
+                                } else {
+                                    realRatingCount++;
+                                    if (c.stars) {
                                         totalStars += c.stars;
                                     }
-                                });
-                                if (realRatingCount > 0) {
-                                    const realAvg = (totalStars / realRatingCount).toFixed(1);
-                                    f.ratingCount = realRatingCount;
-                                    f.avgRating = realAvg;
-                                    const homeBadge = document.getElementById(`rating-count-home-${f.id}`);
-                                    if (homeBadge) homeBadge.innerText = realRatingCount;
-                                    await updateDoc(doc(db, "files", f.id), {
-                                        ratingCount: realRatingCount,
-                                        avgRating: realAvg
-                                    });
                                 }
-                            } catch(err) {
-                                console.error("Self-healing failed for " + f.id, err);
+                            });
+                            
+                            // ডাটাবেজের কাউন্টারে কোনো ভুল থাকলে সেটি স্বয়ংক্রিয়ভাবে কারেক্ট করা হবে
+                            const currentRatingCount = f.ratingCount || 0;
+                            const currentCommentCount = f.commentCount || 0;
+                            
+                            if (realRatingCount !== currentRatingCount || realCommentCount !== currentCommentCount) {
+                                const realAvg = realRatingCount > 0 ? (totalStars / realRatingCount).toFixed(1) : "0.0";
+                                
+                                f.ratingCount = realRatingCount;
+                                f.commentCount = realCommentCount;
+                                f.avgRating = realAvg;
+                                
+                                const ratingCountSpan = document.getElementById(`rating-count-home-${f.id}`);
+                                if (ratingCountSpan) ratingCountSpan.innerText = realRatingCount;
+                                
+                                const commentCountSpan = document.getElementById(`comment-count-${f.id}`);
+                                if (commentCountSpan) commentCountSpan.innerText = realCommentCount;
+                                
+                                await updateDoc(doc(db, "files", f.id), {
+                                    ratingCount: realRatingCount,
+                                    commentCount: realCommentCount,
+                                    avgRating: realAvg
+                                });
                             }
-                        })();
-                    }
+                        } catch(err) {
+                            console.error("Self-healing failed for file: " + f.id, err);
+                        }
+                    })();
 
                     totalDownloadsAccumulated += (f.downloadCount || 0);
                     if (f.avgRating && parseFloat(f.avgRating) > 0) {
@@ -1809,11 +1826,12 @@
                 const countEl = document.getElementById(`like-count-${fileId}`);
                 if(countEl) {
                     const likesTotal = Math.max(0, updatedData[`react_❤️`] || 0);
-                    countEl.innerHTML = `<i class="fas fa-heart text-base sm:text-lg"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>`;
+                    // বাটন সাইজ ও ক্লাস যাতে লাইক চাপার পর নষ্ট না হয় তার সমাধান
+                    countEl.innerHTML = `<i class="fas fa-heart text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>`;
                     if(currentReact === '❤️' || inMemory) {
-                        countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-gray-400";
+                        countEl.className = "likers-btn-trigger flex items-center justify-center gap-0.5 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none text-gray-400";
                     } else {
-                        countEl.className = "likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none text-red-500";
+                        countEl.className = "likers-btn-trigger flex items-center justify-center gap-0.5 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none text-red-500";
                     }
                 }
             }
