@@ -1623,6 +1623,37 @@
 
                     globalFiles.push(f); 
 
+                    // Self-healing: পুরনো ফাইলের রেটিং কাউন্টার ডাটাবেজে না থাকলে ব্যাকগ্রাউন্ডে সংশোধন করার লজিক
+                    if (f.ratingCount === undefined || f.ratingCount === 0) {
+                        (async () => {
+                            try {
+                                const commentsSnap = await getDocs(collection(db, "files", f.id, "comments"));
+                                let realRatingCount = 0;
+                                let totalStars = 0;
+                                commentsSnap.forEach(cd => {
+                                    const c = cd.data();
+                                    if (c.stars && c.isComment !== true) {
+                                        realRatingCount++;
+                                        totalStars += c.stars;
+                                    }
+                                });
+                                if (realRatingCount > 0) {
+                                    const realAvg = (totalStars / realRatingCount).toFixed(1);
+                                    f.ratingCount = realRatingCount;
+                                    f.avgRating = realAvg;
+                                    const homeBadge = document.getElementById(`rating-count-home-${f.id}`);
+                                    if (homeBadge) homeBadge.innerText = realRatingCount;
+                                    await updateDoc(doc(db, "files", f.id), {
+                                        ratingCount: realRatingCount,
+                                        avgRating: realAvg
+                                    });
+                                }
+                            } catch(err) {
+                                console.error("Self-healing failed for " + f.id, err);
+                            }
+                        })();
+                    }
+
                     totalDownloadsAccumulated += (f.downloadCount || 0);
                     if (f.avgRating && parseFloat(f.avgRating) > 0) {
                         totalRatingsAccumulated++;
@@ -1693,7 +1724,7 @@
                                 
                                 <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center justify-center gap-0.5 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-sm sm:text-base"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
 
-                                <span title="Ratings" class="flex items-center justify-center gap-0.5"><i class="fas fa-star text-yellow-500 text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${f.ratingCount || 0}</span></span>
+                                <span title="Ratings" class="flex items-center justify-center gap-0.5"><i class="fas fa-star text-yellow-500 text-sm sm:text-base"></i> <span id="rating-count-home-${f.id}" class="text-xs sm:text-sm">${f.ratingCount || 0}</span></span>
                             </div>
 
                             <!-- LOWER ROW: Copy and Share buttons -->
