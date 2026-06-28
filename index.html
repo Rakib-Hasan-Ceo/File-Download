@@ -1683,15 +1683,17 @@
                             <!-- Spaced upload date of this file -->
                             ${dateHtml}
 
-                            <!-- UPPER ROW: Stat badges (Views, Likes, Comments) -->
-                            <div class="flex justify-between items-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-sm text-gray-600 dark:text-gray-300 font-black shrink-0">
-                                <span title="Views" class="flex items-center gap-1"><i class="fas fa-eye text-blue-500 text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
+                            <!-- UPPER ROW: Stat badges (Views, Likes, Comments, Ratings) -->
+                            <div class="grid grid-cols-4 gap-1 text-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-gray-600 dark:text-gray-300 font-black shrink-0">
+                                <span title="Views" class="flex items-center justify-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
-                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center gap-1 cursor-pointer transition-transform hover:scale-125 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
-                                    <i class="fas fa-heart text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center justify-center gap-0.5 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                    <i class="fas fa-heart text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                 </span>
                                 
-                                <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center gap-1 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-base"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
+                                <span onclick="event.stopPropagation(); window.openComments('${f.id}')" title="Comments" class="comment-btn-trigger flex items-center justify-center gap-0.5 hover:text-blue-500 transition-colors cursor-pointer"><i class="fas fa-comment text-indigo-500 text-sm sm:text-base"></i> <span id="comment-count-${f.id}" class="text-xs sm:text-sm">${f.commentCount || 0}</span></span>
+
+                                <span title="Ratings" class="flex items-center justify-center gap-0.5"><i class="fas fa-star text-yellow-500 text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${f.ratingCount || 0}</span></span>
                             </div>
 
                             <!-- LOWER ROW: Copy and Share buttons -->
@@ -1921,6 +1923,10 @@
                 if(snap.empty) list.innerHTML = `<div class="text-center text-gray-400 mt-10">${getTxt('no_comments_text')}</div>`;
                 snap.forEach(d => {
                     const c = d.data();
+                    
+                    // রেটিং এবং কুইক কমেন্ট আলাদা ফিল্টারিং লজিক (কমেন্ট সেকশনে রেটিং ফিল্টার করা হচ্ছে)
+                    if(c.isComment !== true) return;
+
                     const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
                     let timeStr = "Just now";
                     if(c.timestamp) {
