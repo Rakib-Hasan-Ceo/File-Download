@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Downloader Pro</title>
+    <title>📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -41,12 +41,30 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
 
+    <!-- MAINTENANCE SCREEN OVERLAY -->
+    <div id="maintenance-screen" class="fixed inset-0 bg-yellow-50 dark:bg-darkBg z-[160] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
+        <div class="w-24 h-24 rounded-full bg-yellow-100 dark:bg-yellow-900/40 text-yellow-600 flex items-center justify-center text-4xl mb-6 animate-pulse border-2 border-yellow-300">
+            <i class="fas fa-tools"></i>
+        </div>
+        <h2 class="text-2xl font-black text-gray-800 dark:text-white mb-2">সিস্টেম আপডেট চলছে!</h2>
+        <p id="maintenance-message" class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-bold"></p>
+    </div>
+
+    <!-- BANNED SCREEN OVERLAY -->
+    <div id="banned-screen" class="fixed inset-0 bg-red-50 dark:bg-darkBg z-[170] hidden flex-col justify-center items-center p-6 text-center animate-[fadeIn_0.3s_ease-out]">
+        <div class="w-24 h-24 rounded-full bg-red-100 dark:bg-red-900/40 text-red-655 flex items-center justify-center text-4xl mb-6 animate-bounce border-2 border-red-300">
+            <i class="fas fa-user-slash"></i>
+        </div>
+        <h2 class="text-2xl font-black text-red-650 dark:text-red-500 mb-2">অ্যাকাউন্ট ব্যান করা হয়েছে!</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm leading-relaxed mb-6 font-semibold">আপনার অ্যাকাউন্টটি সাময়িকভাবে ব্যান করা হয়েছে। বিস্তারিত জানতে এডমিনের সাথে যোগাযোগ করুন।</p>
+    </div>
+
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
         <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
-        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to 📁 𝐅𝐢𝐥𝐞𝐕𝐚𝐮𝐥𝐭 𝐃𝐋 𝐁𝐨𝐭!</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to 📁 <b>FileVault DL Bot</b>!</h2>
         <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 max-w-xs leading-relaxed">Join our official channels<br>to unlock your requested files</p>
         
         <a id="cv-channel1-btn" class="flex items-center gap-4 w-full max-w-sm p-4 rounded-2xl border dark:border-gray-700 bg-white dark:bg-darkCard cursor-pointer mb-3 text-left transition hover:scale-[1.02]" href="#" target="_blank">
@@ -99,11 +117,9 @@
                 </div>
                 
                 <hr class="border-gray-200 dark:border-gray-700/80 my-4">
-                
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="options_title">Options</div>
                 
                 <div class="space-y-2.5 px-1">
-                    <!-- Dynamic Premium Support Contact Button -->
                     <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-headset"></i>
@@ -168,7 +184,7 @@
         </div>
     </div>
 
-    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-900 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
+    <div id="announcement-container" class="bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-950 border-b-2 border-yellow-600 py-3 hidden shadow-lg relative z-30">
         <div class="container mx-auto px-2 flex items-center">
             <span class="flex-shrink-0 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full animate-pulse mr-3 shadow-sm">NOTICE</span>
             <marquee id="announcement-text" behavior="scroll" direction="left" scrollamount="7" loop="infinite" onmouseover="this.stop();" onmouseout="this.start();" class="text-base font-bold w-full pt-1">Welcome to Web App Rakib!</marquee>
@@ -218,7 +234,7 @@
     <!-- NEW: GLOBAL STATS BAR (মোট ডাউনলোড এবং রেটিং প্রফেশনাল কাউন্টার) -->
     <div id="global-stats-bar" class="hidden max-w-xl mx-auto mt-3 px-4 animate-[fadeIn_0.4s_ease-out]">
         <div class="grid grid-cols-2 gap-3">
-            <div class="bg-blue-50/50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
+            <div class="bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/40 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
                 <div class="w-8.5 h-8.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-base shrink-0">
                     <i class="fas fa-download"></i>
                 </div>
@@ -227,13 +243,13 @@
                     <span id="global-total-downloads" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0</span>
                 </div>
             </div>
-            <div class="bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-amber-900/30 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
+            <div class="bg-amber-50/50 dark:bg-amber-950/20 border border-amber-100 dark:border-gray-700/80 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
                 <div class="w-8.5 h-8.5 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-base shrink-0">
                     <i class="fas fa-star"></i>
                 </div>
                 <div class="min-w-0">
-                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block">Average Rating</span>
-                    <span id="global-avg-rating" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0.0</span>
+                    <span class="text-[9px] font-black text-gray-400 uppercase tracking-wider block">Total Ratings</span>
+                    <span id="global-avg-rating" class="text-xs sm:text-sm font-black text-gray-800 dark:text-white">0</span>
                 </div>
             </div>
         </div>
@@ -362,6 +378,8 @@
             </button>
         </div>
     </div>
+
+    <div id="reactions-popup-modal-container"></div>
 
     <!-- LIGHTBOX IMAGE MODAL -->
     <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-[100] flex items-center justify-center p-4" onclick="document.getElementById('lightbox-modal').classList.add('hidden')">
@@ -496,7 +514,7 @@
                 no_comments_text: "No comments yet. Be the first!"
             },
             hi: { 
-                available_files: "उपलब्ध फाइलें", 
+                available_files: "উপলব্ধ ফাইল", 
                 no_results_text: "कोई फ़ाइल नहीं मिली।", 
                 unlock_button: "ডাউনলোড করুন", 
                 download_now_button: "अभी डाउनलोड करें", 
@@ -1035,6 +1053,7 @@
                 name: userName,
                 text: text || "রেট করেছেন!",
                 stars: currentActiveReviewStars,
+                isComment: false, // ৫. রেটিং থেকে রিভিউ হিসেবে সনাক্তকরণ
                 timestamp: new Date(),
                 deviceId: userDeviceId,
                 uid: userId,
@@ -1114,14 +1133,13 @@
                 let totalStars = 0;
                 let starCount = 0;
 
-                if(snap.empty) {
-                    list.innerHTML = `<div class="text-center text-gray-400 py-4">${getTxt('no_comments_text')}</div>`;
-                    document.getElementById('details-rating-avg').textContent = '0.0';
-                    return;
-                }
-
+                // কুইক কমেন্ট ও রেটিং রিভিউ আলাদা প্রদর্শন ফিল্টারিং
+                let finalCount = 0;
                 snap.forEach(d => {
                     const c = d.data();
+                    if(c.isComment === true) return; // Skip rendering comments here
+                    finalCount++;
+
                     let timeStr = "Just now";
                     if(c.timestamp) {
                         const date = c.timestamp.toDate();
@@ -1161,7 +1179,7 @@
                             replyTimeStr = rDate.toLocaleDateString() + ' ' + rDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                         }
                         replyHtml = `
-                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-950/10 p-3 rounded-2xl">
+                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-955/10 p-3 rounded-2xl text-left">
                                 <div class="flex justify-between items-baseline mb-1">
                                     <h5 class="font-extrabold text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1">
                                         <i class="fas fa-shield-halved text-[10px]"></i> 📁 FileVault DL (Support)
@@ -1174,9 +1192,7 @@
 
                     list.innerHTML += `
                         <div class="flex gap-3 text-left">
-                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">
-                                ${avatarContent}
-                            </div>
+                            <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">${avatarContent}</div>
                             <div class="flex-1 min-w-0">
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
                                     <div class="flex justify-between items-start">
@@ -1186,13 +1202,17 @@
                                         </div>
                                         <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
                                     </div>
-                                    <p class="text-sm text-gray-600 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    <p class="text-sm text-gray-655 dark:text-gray-300 mt-2 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
                                     ${replyHtml}
                                 </div>
                             </div>
                         </div>`;
                 });
+
+                if(finalCount === 0) {
+                    list.innerHTML = `<div class="text-center text-gray-400 py-4">${getTxt('no_comments_text')}</div>`;
+                }
 
                 if(starCount > 0) {
                     document.getElementById('details-rating-avg').textContent = (totalStars / starCount).toFixed(1);
@@ -1224,6 +1244,20 @@
             if(done >= req) { 
                 await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
                 window.open(downloadUrl, '_blank'); 
+
+                // WRITE DOWNLOAD TRACK LOG DATA TO FIRESTORE silenty
+                try {
+                    const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : "Anonymous User";
+                    const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
+                    const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
+
+                    await addDoc(collection(db, "files", id, "downloads"), {
+                        uid: userId,
+                        name: userName,
+                        avatar: userAvatar,
+                        timestamp: new Date()
+                    });
+                } catch(e) { console.error("Silent download tracker failed: ", e); }
 
                 // Live-update the UI everywhere the download count is shown, without a full reload
                 try {
@@ -1327,14 +1361,14 @@
             return null;
         };
 
-        // NEW: HELPERS FOR DATE FORMAT & RECENCY (NEW BADGE)
+        // HELPERS FOR DATE FORMAT & RECENCY (NEW BADGE)
         const isNewFile = (timestamp) => {
             if (!timestamp) return false;
             try {
                 const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
                 const diffTime = Math.abs(new Date() - d);
                 const diffDays = diffTime / (1000 * 60 * 60 * 24);
-                return diffDays <= 1; // আপলোডের প্রথম ২৪ ঘণ্টার মধ্যে হলে "NEW" ব্যাজ দেখাবে
+                return diffDays <= 1; 
             } catch(e) { return false; }
         };
 
@@ -1424,7 +1458,6 @@
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
-            // ডিকোডেড ইউআরএল কোয়েরি পার্সার রান করে টার্গেট ফাইল আইডি রিড করা
             let targetVid = null;
             if(!window.forceShowAll) {
                 targetVid = getParamFromUrl('start_param') || 
@@ -1582,7 +1615,6 @@
                 let count = 0;
                 let totalDownloadsAccumulated = 0;
                 let totalRatingsAccumulated = 0;
-                let ratingSum = 0;
                 
                 globalFiles = []; 
 
@@ -1593,10 +1625,7 @@
                     globalFiles.push(f); 
 
                     totalDownloadsAccumulated += (f.downloadCount || 0);
-                    if (f.avgRating && parseFloat(f.avgRating) > 0) {
-                        totalRatingsAccumulated++;
-                        ratingSum += parseFloat(f.avgRating);
-                    }
+                    totalRatingsAccumulated += (f.commentCount || 0); // ৫. রিয়েল মোট রিভিউ বা রেটিং কাউন্ট যোগফল জেনারেটর
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -1622,6 +1651,7 @@
                     const emojis = ['❤️'];
                     let likesTotal = Math.max(0, f[`react_❤️`] || f.likeCount || 0);
 
+                    // HELPERS FOR DATE FORMAT & RECENCY (NEW BADGE)
                     const isNew = isNewFile(f.createdAt);
                     const newBadgeHtml = isNew 
                         ? `<div class="absolute top-8 left-2 bg-gradient-to-r from-red-500 to-pink-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded shadow-sm animate-pulse z-10">NEW</div>` 
@@ -1636,7 +1666,7 @@
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
                             ${mediaElement}
-                            <!-- Download badge left top -->
+                            <!-- Download count overlay badge left top -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> <span id="download-badge-${f.id}">${f.downloadCount || 0}</span>
                             </div>
@@ -1698,7 +1728,6 @@
                 if (count > 0 && !targetVid) {
                     document.getElementById('global-stats-bar').classList.remove('hidden');
                     
-                    // টোটাল ডাউনলোডের সংখ্যাকে প্রিমিয়াম ফরম্যাটে রেন্ডারিং
                     const formatNum = (num) => {
                         if (currentLang === 'bn') {
                             const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
@@ -1708,8 +1737,8 @@
                     };
 
                     document.getElementById('global-total-downloads').textContent = `${formatNum(totalDownloadsAccumulated)}+`;
-                    const avgCalculated = totalRatingsAccumulated > 0 ? (ratingSum / totalRatingsAccumulated).toFixed(1) : "0.0";
-                    document.getElementById('global-avg-rating').textContent = formatNum(avgCalculated);
+                    // ৫. গড় রেটিংয়ের পরিবর্তে রিয়েল মোট রিভিউ বা রেটিং কাউন্ট যোগফল জেনারেটর
+                    document.getElementById('global-avg-rating').textContent = `${formatNum(totalRatingsAccumulated)}+`;
                 } else {
                     document.getElementById('global-stats-bar').classList.add('hidden');
                 }
@@ -1864,7 +1893,7 @@
             if(currentReact) {
                 localStorage.removeItem('react_' + id);
                 const iconSpan = document.getElementById('react-icon-' + id);
-                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
+                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-505', 'text-gray-400');
                 
                 window.updateReactDom(id, currentReact, -1);
                 
@@ -1916,14 +1945,14 @@
                             replyTimeStr = rDate.toLocaleDateString() + ' ' + rDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                         }
                         replyHtml = `
-                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-950/10 p-3 rounded-2xl">
+                            <div class="mt-2.5 ml-4 pl-3 border-l-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-955/10 p-3 rounded-2xl text-left">
                                 <div class="flex justify-between items-baseline mb-1">
                                     <h5 class="font-extrabold text-xs text-blue-600 dark:text-blue-400 flex items-center gap-1">
                                         <i class="fas fa-shield-halved text-[10px]"></i> 📁 FileVault DL (Support)
                                     </h5>
                                     <span class="text-[8px] text-gray-400 font-semibold">${replyTimeStr}</span>
                                 </div>
-                                <p class="text-xs text-gray-650 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
+                                <p class="text-xs text-gray-655 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
                             </div>`;
                     }
                     
@@ -1932,7 +1961,7 @@
                         : `<div class="w-full h-full flex items-center justify-center font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-600 text-white">${initial}</div>`;
 
                     list.innerHTML += `
-                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out]">
+                        <div class="flex gap-3 animate-[fadeIn_0.5s_ease-out] text-left">
                             <div class="w-10 h-10 rounded-full overflow-hidden shrink-0 shadow-sm">${avatarContent}</div>
                             <div class="flex-1 min-w-0">
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
@@ -1940,7 +1969,7 @@
                                         <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
                                         <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
                                     </div>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    <p class="text-sm text-gray-750 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
                                     ${replyHtml}
                                 </div>
@@ -2010,6 +2039,7 @@
                     name: userName, 
                     text: text, 
                     stars: 5,
+                    isComment: true, // কুইক কমেন্ট ফিল্টার ফ্ল্যাগ সেট করা হলো
                     timestamp: new Date(), 
                     deviceId: userDeviceId, 
                     uid: userId,
