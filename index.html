@@ -346,7 +346,7 @@
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-750 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-150 dark:border-gray-750 shadow-sm">
                 <h4 data-key="about_file_title" class="text-base font-black text-gray-800 dark:text-white mb-3">About this file</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -523,7 +523,7 @@
                 change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
                 light_mode: " can't find mode",
-                menu_header: "মেन्यू",
+                menu_header: "मेन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
@@ -1232,7 +1232,7 @@
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
                 btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
 
@@ -1573,7 +1573,7 @@
                 let footHtml = '';
                 
                 const sIcons = { facebook: 'fab fa-facebook', telegram: 'fab fa-telegram', youtube: 'fab fa-youtube', whatsapp: 'fab fa-whatsapp', twitter: 'fab fa-twitter', instagram: 'fab fa-indigo', tiktok: 'fab fa-tiktok' };
-                const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-600', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
+                const sColors = { facebook: 'text-blue-600', telegram: 'text-blue-500', youtube: 'text-red-650', whatsapp: 'text-green-500', twitter: 'text-blue-400', instagram: 'text-pink-500', tiktok: 'text-gray-900 dark:text-gray-100' };
 
                 let hasLinks = false;
                 for(const [platform, url] of Object.entries(socialLinks)) {
@@ -1590,7 +1590,7 @@
                         <span class="font-bold text-xs text-slate-700 dark:text-slate-200">${name}</span>
                     </a>`;
                     
-                    footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
+                    footHtml += `<a href="${url}" target="_blank" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-655 hover:${colorClass} hover:shadow-md transition-all text-xl"><i class="${iconClass}"></i></a>`;
                 }
                 
                 if(hasLinks) {
@@ -1915,8 +1915,13 @@
             unsubscribeComments = onSnapshot(q, (snap) => {
                 list.innerHTML = '';
                 if(snap.empty) list.innerHTML = `<div class="text-center text-gray-400 mt-10">${getTxt('no_comments_text')}</div>`;
+                
+                let commentCount = 0;
                 snap.forEach(d => {
                     const c = d.data();
+                    if(c.isComment !== true) return; // সাধারণ কমেন্ট ফিল্টারিং
+                    commentCount++;
+
                     const initial = c.name ? c.name.charAt(0).toUpperCase() : 'U';
                     let timeStr = "Just now";
                     if(c.timestamp) {
@@ -1974,6 +1979,10 @@
                             </div>
                         </div>`;
                 });
+                
+                if (commentCount === 0) {
+                    list.innerHTML = `<div class="text-center text-gray-400 py-4">${getTxt('no_comments_text')}</div>`;
+                }
             });
         };
 
