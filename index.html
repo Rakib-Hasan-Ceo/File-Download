@@ -34,9 +34,6 @@
         .custom-scroll::-webkit-scrollbar { width: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
         .dark .custom-scroll::-webkit-scrollbar-thumb { background: #475569; }
-        
-        .react-menu { display: none; }
-        .react-menu-dropdown { position: absolute; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans transition-colors duration-300 dark:bg-darkBg dark:text-gray-200 overflow-x-hidden pb-28">
@@ -165,7 +162,7 @@
                 </div>
                 <h3 class="text-2xl font-black text-gray-800 dark:text-white">বিশেষ নোটিশ</h3>
             </div>
-            <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-750 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
+            <div class="max-h-[45vh] overflow-y-auto custom-scroll p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-700 text-gray-755 dark:text-gray-300 text-sm sm:text-base leading-relaxed whitespace-pre-wrap font-medium text-left" id="popup-notice-content"></div>
             <div class="mt-5 text-center">
                 <button onclick="document.getElementById('popup-notice-modal').classList.add('hidden')" class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-2.5 rounded-full font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all text-base">আমি বুঝতে পেরেছি</button>
             </div>
@@ -525,8 +522,8 @@
                 toast_progress: "कार्य: {done}/{req}",
                 change_language: "ভাষা পরিবর্তন করুন",
                 dark_mode: "ডার্ক মোড",
-                light_mode: "লাইট মোড",
-                menu_header: "मेन्यू",
+                light_mode: " can't find mode",
+                menu_header: "মেन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
@@ -1186,7 +1183,7 @@
                                     </h5>
                                     <span class="text-[8px] text-gray-400 font-semibold">${replyTimeStr}</span>
                                 </div>
-                                <p class="text-xs text-gray-650 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
+                                <p class="text-xs text-gray-655 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.replyText}</p>
                             </div>`;
                     }
 
@@ -1235,7 +1232,7 @@
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
                 btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${req - done})`;
-                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
+                btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
 
@@ -1458,6 +1455,7 @@
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
+            // ডিকোডেড ইউআরএল কোয়েরি পার্সার রান করে টার্গেট ফাইল আইডি রিড করা
             let targetVid = null;
             if(!window.forceShowAll) {
                 targetVid = getParamFromUrl('start_param') || 
@@ -1893,7 +1891,7 @@
             if(currentReact) {
                 localStorage.removeItem('react_' + id);
                 const iconSpan = document.getElementById('react-icon-' + id);
-                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-505', 'text-gray-400');
+                if(iconSpan) iconSpan.parentElement.classList.replace('text-blue-500', 'text-gray-400');
                 
                 window.updateReactDom(id, currentReact, -1);
                 
@@ -1936,7 +1934,7 @@
                             </div>`;
                     }
 
-                    // ৪. এডমিন রিপ্লাই প্রিমিয়াম লেআউট ডাইনামিক রেন্ডারিং
+                    // এডমিন রিপ্লাই প্রিমিয়াম লেআউট ডাইনামিক রেন্ডারিং
                     let replyHtml = '';
                     if (c.replyText) {
                         let replyTimeStr = "Just now";
@@ -1969,7 +1967,7 @@
                                         <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
                                         <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
                                     </div>
-                                    <p class="text-sm text-gray-750 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
                                     ${replyHtml}
                                 </div>
