@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
     <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
     <!-- Telegram Web App SDK -->
@@ -206,23 +206,23 @@
         </div>
     </nav>
 
-    <!-- PREMIUM TELEGRAM USER PROFILE WIDGET -->
+    <!-- PREMIUM TELEGRAM USER PROFILE WIDGET (FIXED USERNAME WRAPPING AND ALIGNED FB BLUE BADGE AT THE END) -->
     <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-2 px-4">
-        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between">
-            <div class="flex items-center gap-3">
+        <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-150 dark:border-gray-700 shadow-md flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3 min-w-0">
                 <div class="w-12 h-12 rounded-full border-2 border-blue-500 overflow-hidden shrink-0 bg-gray-100">
                     <img id="tg-photo" src="" class="w-full h-full object-cover hidden" alt="Avatar">
                     <div id="tg-avatar-placeholder" class="w-full h-full flex items-center justify-center text-blue-600 font-black text-lg">U</div>
                 </div>
-                <div>
-                    <div class="flex items-center gap-1">
-                        <span id="tg-name" class="font-extrabold text-gray-800 dark:text-white text-base">Telegram User</span>
-                        <i class="fas fa-check-circle text-emerald-500 text-sm"></i>
+                <div class="min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 min-w-0">
+                        <span id="tg-name" class="font-extrabold text-gray-800 dark:text-white text-xs sm:text-sm truncate whitespace-nowrap">Telegram User</span>
+                        <i class="fas fa-check-circle text-blue-500 text-xs sm:text-sm shrink-0" title="Verified"></i>
                     </div>
-                    <span id="tg-id-text" class="text-xs text-gray-500 dark:text-gray-400 font-semibold block">ID: 000000000</span>
+                    <span id="tg-id-text" class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold block">ID: 000000000</span>
                 </div>
             </div>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold rounded-full">
+            <span class="inline-flex items-center gap-1 shrink-0 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[10px] sm:text-xs font-bold rounded-full">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ACTIVE
             </span>
         </div>
@@ -1200,7 +1200,7 @@
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
                                     <div class="flex justify-between items-start">
                                         <div>
-                                            <h4 class="font-extrabold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                            <h4 class="font-extrabold text-sm text-gray-805 dark:text-gray-200 truncate">${c.name}</h4>
                                             <div class="flex items-center gap-1 mt-0.5">${starsHtml}</div>
                                         </div>
                                         <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
@@ -2040,10 +2040,10 @@
                             <div class="flex-1 min-w-0">
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
                                     <div class="flex justify-between items-baseline mb-1">
-                                        <h4 class="font-bold text-sm text-gray-800 dark:text-gray-200 truncate">${c.name}</h4>
+                                        <h4 class="font-bold text-sm text-gray-805 dark:text-gray-200 truncate">${c.name}</h4>
                                         <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
                                     </div>
-                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    <p class="text-sm text-gray-750 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
                                     ${replyHtml}
                                 </div>
