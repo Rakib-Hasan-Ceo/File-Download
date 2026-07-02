@@ -905,9 +905,12 @@
                             : `<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs shrink-0">${initial}</div>`;
                         
                         uContainer.innerHTML += `
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 min-w-0 w-full py-0.5">
                                 ${avatar}
-                                <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">${c.name}</span>
+                                <div class="min-w-0 flex-1 flex items-center gap-1">
+                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 truncate leading-none">${c.name}</span>
+                                    <i class="fas fa-check-circle text-blue-500 text-[10px] sm:text-[11px] shrink-0" title="Verified"></i>
+                                </div>
                             </div>`;
                     });
                     if(count === 0) {
@@ -962,9 +965,12 @@
                             : `<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-black text-xs shrink-0">${initial}</div>`;
                         
                         uContainer.innerHTML += `
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-2 min-w-0 w-full py-0.5">
                                 ${avatar}
-                                <span class="text-xs font-bold text-gray-800 dark:text-gray-200 truncate">${c.name}</span>
+                                <div class="min-w-0 flex-1 flex items-center gap-1">
+                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 truncate leading-none">${c.name}</span>
+                                    <i class="fas fa-check-circle text-blue-500 text-[10px] sm:text-[11px] shrink-0" title="Verified"></i>
+                                </div>
                             </div>`;
                     });
                     if(count === 0) {
@@ -974,7 +980,7 @@
                     const uContainer = document.getElementById('likers-real-list');
                     if(uContainer) uContainer.innerHTML = '<div class="text-center py-4 text-xs text-red-500">লোডিং ব্যর্থ হয়েছে।</div>';
                 }
-            }, 600);
+            }, 800);
         };
 
         window.endHomeLikePress = () => {
@@ -1746,7 +1752,7 @@
                             <div class="grid grid-cols-4 gap-1 text-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-gray-600 dark:text-gray-300 font-black shrink-0">
                                 <span title="Views" class="flex items-center justify-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
-                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center justify-center gap-0.5 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
+                                <span id="like-count-${f.id}" onclick="event.stopPropagation(); if(window.homeLikeLongPressTriggered){window.homeLikeLongPressTriggered=false;return;} window.toggleHomeLike('${f.id}')" onmousedown="event.stopPropagation(); window.startHomeLikePress('${f.id}')" onmouseup="window.endHomeLikePress()" onmouseleave="window.endHomeLikePress()" onmousemove="window.endHomeLikePress()" ontouchstart="event.stopPropagation(); window.startHomeLikePress('${f.id}')" ontouchend="window.endHomeLikePress()" ontouchmove="window.endHomeLikePress()" ontouchcancel="window.endHomeLikePress()" oncontextmenu="event.preventDefault()" title="Like" class="likers-btn-trigger flex items-center justify-center gap-0.5 cursor-pointer transition-transform hover:scale-110 active:scale-95 select-none ${activeReact === '❤️' ? 'text-red-500' : 'text-gray-400'}">
                                     <i class="fas fa-heart text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${likesTotal}</span>
                                 </span>
                                 
