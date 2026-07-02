@@ -18,7 +18,7 @@
             }
         }
     </script>
-    <link class="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Adsterra SDK -->
     <script src='https://libtl.com/sdk.js' data-zone='10889205' data-sdk='show_10889205'></script>
     <!-- Telegram Web App SDK -->
@@ -175,7 +175,7 @@
             <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4">
                 <i class="fas fa-bell"></i>
             </div>
-            <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-800 dark:text-white mb-2">📁 FileVault DL</h3>
+            <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-805 dark:text-white mb-2">📁 FileVault DL</h3>
             <p id="custom-alert-message" class="text-sm text-gray-655 dark:text-gray-300 leading-relaxed mb-6 font-bold"></p>
             <button onclick="window.closeCustomAlert()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg text-white font-bold rounded-2xl transition-all">OK</button>
         </div>
@@ -410,7 +410,7 @@
                 <button onclick="window.setLang('hi')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇮🇳 <span class="font-semibold dark:text-gray-200">हिन्दी</span></button>
                 <button onclick="window.setLang('bn')" class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-700 hover:bg-blue-50 dark:hover:bg-gray-600 flex items-center gap-3 transition">🇧🇩 <span class="font-semibold dark:text-gray-200">বাংলা</span></button>
             </div>
-            <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition">Close</button>
+            <button onclick="document.getElementById('language-modal').classList.add('hidden')" class="mt-4 w-full py-2 text-red-500 font-bold hover:bg-red-55 rounded-lg transition">Close</button>
         </div>
     </div>
 
@@ -532,7 +532,7 @@
                 history_title: "دانلود",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
-                history_empty_subtitle: "ফাইলগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
+                history_empty_subtitle: "फाइलগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
@@ -2043,7 +2043,7 @@
                                         <h4 class="font-bold text-sm text-gray-805 dark:text-gray-200 truncate">${c.name}</h4>
                                         <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
                                     </div>
-                                    <p class="text-sm text-gray-750 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
+                                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
                                     ${controlsHtml}
                                     ${replyHtml}
                                 </div>
