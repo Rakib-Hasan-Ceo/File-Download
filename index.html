@@ -58,7 +58,7 @@
 
     <!-- CHANNEL VERIFICATION SCREEN -->
     <div id="channel-verify-screen" class="fixed inset-0 bg-white dark:bg-darkBg z-[110] hidden flex-col justify-center items-center p-6 text-center">
-        <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/20 overflow-hidden">
+        <div id="cv-logo-container" class="w-20 h-20 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-3xl font-bold text-white mb-6 shadow-lg shadow-blue-500/25 overflow-hidden">
             <i class="fas fa-cloud-download-alt text-3xl"></i>
         </div>
         <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Welcome to 📁 <b>FileVault DL Bot</b>!</h2>
@@ -346,7 +346,7 @@
                 <div id="details-screenshots-container" class="flex gap-3 overflow-x-auto pb-3 custom-scroll snap-x snap-mandatory"></div>
             </div>
 
-            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-750 shadow-sm">
+            <div class="bg-white dark:bg-darkCard p-5 rounded-2xl border border-gray-100 dark:border-gray-755 shadow-sm">
                 <h4 data-key="about_file_title" class="text-base font-black text-gray-800 dark:text-white mb-3">About this file</h4>
                 <p id="details-description" class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed whitespace-pre-line"></p>
             </div>
@@ -1243,6 +1243,16 @@
                     globalFiles[idx].ratingCount = starCount;
                     globalFiles[idx].avgRating = starCount > 0 ? (totalStars / starCount).toFixed(1) : "0.0";
                 }
+
+                // Update global total ratings stats dynamically
+                let liveTotalRatings = 0;
+                globalFiles.forEach(gf => {
+                    liveTotalRatings += (gf.ratingCount || 0);
+                });
+                const globalRatingEl = document.getElementById('global-avg-rating');
+                if (globalRatingEl) {
+                    globalRatingEl.textContent = `${formatNumStr(liveTotalRatings)}+`;
+                }
             });
         }
 
@@ -1701,10 +1711,7 @@
                     })();
 
                     totalDownloadsAccumulated += (f.downloadCount || 0);
-                    if (f.avgRating && parseFloat(f.avgRating) > 0) {
-                        totalRatingsAccumulated++;
-                        ratingSum += parseFloat(f.avgRating);
-                    }
+                    totalRatingsAccumulated += (f.ratingCount || 0);
 
                     if(targetVid && f.id !== targetVid) return; 
                     count++;
@@ -2052,7 +2059,7 @@
                             <div class="flex-1 min-w-0">
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
                                     <div class="flex justify-between items-baseline mb-1">
-                                        <h4 class="font-bold text-sm text-gray-805 dark:text-gray-200 truncate">${c.name}</h4>
+                                        <h4 class="font-bold text-sm text-gray-855 dark:text-gray-200 truncate">${c.name}</h4>
                                         <span class="text-[10px] text-gray-500 ml-2 whitespace-nowrap">${timeStr}</span>
                                     </div>
                                     <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">${c.text}</p>
