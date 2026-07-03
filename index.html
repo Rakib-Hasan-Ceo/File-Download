@@ -175,7 +175,7 @@
             <div class="w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-500 flex items-center justify-center text-2xl mx-auto mb-4">
                 <i class="fas fa-bell"></i>
             </div>
-            <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-805 dark:text-white mb-2">📁 FileVault DL</h3>
+            <h3 id="custom-alert-title" class="text-lg font-extrabold text-gray-850 dark:text-white mb-2">📁 FileVault DL</h3>
             <p id="custom-alert-message" class="text-sm text-gray-655 dark:text-gray-300 leading-relaxed mb-6 font-bold"></p>
             <button onclick="window.closeCustomAlert()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:shadow-lg text-white font-bold rounded-2xl transition-all">OK</button>
         </div>
@@ -222,7 +222,7 @@
                     <span id="tg-id-text" class="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-semibold block">ID: 000000000</span>
                 </div>
             </div>
-            <span class="inline-flex items-center gap-1 shrink-0 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/30 text-emerald-600 dark:text-emerald-400 text-[10px] sm:text-xs font-bold rounded-full">
+            <span class="inline-flex items-center gap-1 shrink-0 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-955/30 text-emerald-600 dark:text-emerald-400 text-[10px] sm:text-xs font-bold rounded-full">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> ACTIVE
             </span>
         </div>
@@ -532,7 +532,7 @@
                 history_title: "دانلود",
                 history_subtitle: "आपकी अनलॉक की गई फ़ाइलें",
                 history_empty_title: "अभी तक कोई फ़ाइल अनलॉक नहीं हुई है।",
-                history_empty_subtitle: "फाइलগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
+                history_empty_subtitle: "ফাইলগুলি অন্বেষণ এবং ডাউনলোড করা শুরু করুন!",
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
@@ -881,7 +881,7 @@
                 modal.innerHTML = `
                     <div class="bg-white dark:bg-darkCard w-full max-w-xs rounded-3xl p-5 shadow-2xl relative" onclick="event.stopPropagation()">
                         <div class="flex justify-between items-center pb-2 border-b dark:border-gray-800 mb-4">
-                            <h4 class="font-extrabold text-sm text-gray-805 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
+                            <h4 class="font-extrabold text-sm text-gray-850 dark:text-white"><i class="fas fa-heart text-pink-500 mr-1.5 animate-pulse"></i> লাইক দেওয়া ইউজাররা</h4>
                             <button onclick="document.getElementById('reactions-popup-modal').remove()" class="text-gray-400 hover:text-red-500 transition"><i class="fas fa-times"></i></button>
                         </div>
                         <div id="likers-real-list" class="max-h-60 overflow-y-auto custom-scroll space-y-3.5">
@@ -908,7 +908,7 @@
                             <div class="flex items-center gap-2 min-w-0 w-full py-0.5">
                                 ${avatar}
                                 <div class="min-w-0 flex-1 flex items-center gap-1">
-                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 truncate leading-none">${c.name}</span>
+                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-805 dark:text-gray-200 truncate leading-none">${c.name}</span>
                                     <i class="fas fa-check-circle text-blue-500 text-[10px] sm:text-[11px] shrink-0" title="Verified"></i>
                                 </div>
                             </div>`;
@@ -968,7 +968,7 @@
                             <div class="flex items-center gap-2 min-w-0 w-full py-0.5">
                                 ${avatar}
                                 <div class="min-w-0 flex-1 flex items-center gap-1">
-                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-800 dark:text-gray-200 truncate leading-none">${c.name}</span>
+                                    <span class="text-[11px] sm:text-xs font-extrabold text-gray-805 dark:text-gray-200 truncate leading-none">${c.name}</span>
                                     <i class="fas fa-check-circle text-blue-500 text-[10px] sm:text-[11px] shrink-0" title="Verified"></i>
                                 </div>
                             </div>`;
@@ -1070,11 +1070,10 @@
                     timestamp: new Date()
                 });
                 editingReviewDocId = null;
-                document.getElementById('btn-submit-file-review').textContent = "পর্যালোচনা জমা দিন";
+                document.getElementById('btn-submit-file-review').textContent = getTxt('submit_review_btn');
                 showToast("পর্যালোচনা আপডেট করা হয়েছে!");
             } else {
                 await addDoc(collection(db, "files", detailsActiveFileId, "comments"), reviewPayload);
-                await updateDoc(doc(db, "files", detailsActiveFileId), { ratingCount: increment(1) });
                 showToast("পর্যালোচনা জমা দেওয়া হয়েছে!");
             }
 
@@ -1083,14 +1082,15 @@
             let count = 0;
             commentsSnap.forEach(d => {
                 const c = d.data();
-                if(c.stars) {
+                if(c.stars && c.isComment !== true) { // Exclude comments
                     totalStars += c.stars;
                     count++;
                 }
             });
             const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
             await updateDoc(doc(db, "files", detailsActiveFileId), {
-                avgRating: avg
+                avgRating: avg,
+                ratingCount: count
             });
 
             document.getElementById('review-comment-text').value = '';
@@ -1108,21 +1108,21 @@
         window.deleteReviewInline = async (fileId, docId) => {
             if(confirm("আপনার পর্যালোচনাটি ডিলিট করতে চান?")) {
                 await deleteDoc(doc(db, "files", fileId, "comments", docId));
-                await updateDoc(doc(db, "files", fileId), { ratingCount: increment(-1) });
                 
                 const commentsSnap = await getDocs(collection(db, "files", fileId, "comments"));
                 let totalStars = 0;
                 let count = 0;
                 commentsSnap.forEach(d => {
                     const c = d.data();
-                    if(c.stars) {
+                    if(c.stars && c.isComment !== true) { // Exclude comments
                         totalStars += c.stars;
                         count++;
                     }
                 });
                 const avg = count > 0 ? (totalStars / count).toFixed(1) : "0.0";
                 await updateDoc(doc(db, "files", fileId), {
-                    avgRating: avg
+                    avgRating: avg,
+                    ratingCount: count
                 });
                 showToast("পর্যালোচনা মুছে ফেলা হয়েছে!");
             }
@@ -1200,7 +1200,7 @@
                                 <div class="bg-gray-100 dark:bg-gray-800 px-4 py-3 rounded-2xl rounded-tl-none">
                                     <div class="flex justify-between items-start">
                                         <div>
-                                            <h4 class="font-extrabold text-sm text-gray-805 dark:text-gray-200 truncate">${c.name}</h4>
+                                            <h4 class="font-extrabold text-sm text-gray-850 dark:text-gray-200 truncate">${c.name}</h4>
                                             <div class="flex items-center gap-1 mt-0.5">${starsHtml}</div>
                                         </div>
                                         <span class="text-[9px] text-gray-400 shrink-0">${timeStr}</span>
@@ -1217,19 +1217,31 @@
                     list.innerHTML = `<div class="text-center text-gray-400 py-4">${getTxt('no_comments_text')}</div>`;
                 }
 
+                const formatNumStr = (num) => {
+                    if (currentLang === 'bn') {
+                        const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+                        return String(num).split('').map(x => bnDigits[x] || x).join('');
+                    }
+                    return num;
+                };
+
                 // গড় রেটিংয়ের ঠিক পাশে মোট রেটিং দাতা সংখ্যা সঠিকভাবে ব্র্যাকেটে বসানোর স্ক্রিপ্ট
                 if(starCount > 0) {
                     const avgScore = (totalStars / starCount).toFixed(1);
-                    const formatNumStr = (num) => {
-                        if (currentLang === 'bn') {
-                            const bnDigits = {'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
-                            return String(num).split('').map(x => bnDigits[x] || x).join('');
-                        }
-                        return num;
-                    };
                     document.getElementById('details-rating-avg').textContent = `${avgScore} (${formatNumStr(starCount)})`;
                 } else {
                     document.getElementById('details-rating-avg').textContent = "0.0";
+                }
+
+                // Update home page rating count and global array live!
+                const homeRatingCountSpan = document.getElementById(`rating-count-home-${fileId}`);
+                if (homeRatingCountSpan) {
+                    homeRatingCountSpan.textContent = formatNumStr(starCount);
+                }
+                const idx = globalFiles.findIndex(f => f.id === fileId);
+                if (idx !== -1) {
+                    globalFiles[idx].ratingCount = starCount;
+                    globalFiles[idx].avgRating = starCount > 0 ? (totalStars / starCount).toFixed(1) : "0.0";
                 }
             });
         }
