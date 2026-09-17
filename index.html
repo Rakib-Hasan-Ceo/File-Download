@@ -1446,7 +1446,7 @@
             }
         };
 
-        // HANDLE 3-IN-1 AD TRIGGER & UNLOCK (FIXED GIGAPUB EXECUTION)
+        // FIXED 100% REWARDED AD CONTROLLER & COUNTER
         async function handleStickyBtnClick(fileObj) {
             const id = fileObj.id;
             const reqAds = parseInt(fileObj.requiredAds || 0);
@@ -1517,59 +1517,71 @@
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
                 showToast('toast_ad_load');
                 
-                // 1. GIGAPUB REWARDED EXECUTION
+                let adSuccess = false;
+
+                // 1. GIGAPUB
                 if(adType === 'gigapub') {
                     const gigapubId = fileObj.adCustomId ? fileObj.adCustomId.trim() : "8208";
                     const showMethodName = `show_${gigapubId}`;
 
-                    if (typeof window[showMethodName] === 'function') {
-                        await window[showMethodName]();
-                    } else if (typeof window.show_8208 === 'function') {
-                        await window.show_8208();
-                    } else if (window.GigaPub && typeof window.GigaPub.showRewarded === 'function') {
-                        await window.GigaPub.showRewarded({ appId: gigapubId });
-                    } else {
-                        // Dynamically load script safely if not initialized
-                        await new Promise((resolve, reject) => {
-                            const script = document.createElement('script');
-                            script.src = `https://ad.gigapub.tech/script?id=${gigapubId}`;
-                            script.onload = async () => {
-                                if (typeof window[showMethodName] === 'function') {
-                                    await window[showMethodName]();
-                                    resolve();
-                                } else {
-                                    resolve();
-                                }
-                            };
-                            script.onerror = () => reject(new Error("AdBlocked"));
-                            document.head.appendChild(script);
-                        });
-                    }
+                    adSuccess = await new Promise((resolve) => {
+                        let timer = setTimeout(() => resolve(true), 8000);
+                        try {
+                            if (typeof window[showMethodName] === 'function') {
+                                window[showMethodName]().then(() => { clearTimeout(timer); resolve(true); }).catch(() => { clearTimeout(timer); resolve(false); });
+                            } else if (typeof window.show_8208 === 'function') {
+                                window.show_8208().then(() => { clearTimeout(timer); resolve(true); }).catch(() => { clearTimeout(timer); resolve(false); });
+                            } else if (window.GigaPub && typeof window.GigaPub.showRewarded === 'function') {
+                                window.GigaPub.showRewarded({ appId: gigapubId }).then(() => { clearTimeout(timer); resolve(true); }).catch(() => { clearTimeout(timer); resolve(false); });
+                            } else {
+                                clearTimeout(timer);
+                                resolve(false);
+                            }
+                        } catch(e) {
+                            clearTimeout(timer);
+                            resolve(false);
+                        }
+                    });
                 } 
                 // 2. DIRECT LINK
                 else if(adType === 'directlink') {
                     const link = fileObj.adCustomId || "https://google.com";
                     window.open(link, '_blank');
+                    adSuccess = true;
                 } 
                 // 3. MONETAG REWARDED SDK (DEFAULT)
                 else {
-                    if (typeof show_11816971 !== 'function') {
-                        throw new Error("AdBlocked");
+                    adSuccess = await new Promise((resolve) => {
+                        let timer = setTimeout(() => resolve(true), 7000);
+                        try {
+                            if (typeof show_11816971 === 'function') {
+                                show_11816971().then(() => { clearTimeout(timer); resolve(true); }).catch(() => { clearTimeout(timer); resolve(false); });
+                            } else {
+                                clearTimeout(timer);
+                                resolve(false);
+                            }
+                        } catch(e) {
+                            clearTimeout(timer);
+                            resolve(false);
+                        }
+                    });
+                }
+
+                if (adSuccess) {
+                    done++;
+                    localStorage.setItem(`ad_${id}`, done);
+                    await updateDetailsStickyBtn(fileObj);
+                    loadData(); 
+
+                    if(done >= reqAds) { 
+                        showToast('toast_unlocked'); 
+                        return; 
                     }
-                    await show_11816971();
+                    showToast('toast_progress', {done, req: reqAds});
+                } else {
+                    await updateDetailsStickyBtn(fileObj);
+                    window.showAlert("বিজ্ঞাপন লোড হতে সমস্যা হয়েছে! দয়া করে ইন্টারনেট কানেকশন বা Private DNS চেক করে পুনরায় চেষ্টা করুন।");
                 }
-
-                done++;
-                localStorage.setItem(`ad_${id}`, done);
-                
-                await updateDetailsStickyBtn(fileObj);
-                loadData(); 
-
-                if(done >= reqAds) { 
-                    showToast('toast_unlocked'); 
-                    return; 
-                }
-                showToast('toast_progress', {done, req: reqAds});
             } catch(err) {
                 await updateDetailsStickyBtn(fileObj);
                 if (err.message === "AdBlocked") {
@@ -1577,6 +1589,8 @@
                 } else {
                     window.showAlert("Failed to load ad. Please try again.");
                 }
+            } finally {
+                await updateDetailsStickyBtn(fileObj);
             }
         }
 
