@@ -19,8 +19,16 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Adsterra SDK -->
+    
+    <!-- 1. Adsterra SDK (Updated) -->
     <script src='//libtl.com/sdk.js' data-zone='11816971' data-sdk='show_11816971'></script>
+    
+    <!-- 2. GigaPub SDK -->
+    <script src="https://ad.gigapub.tech/script?id=8208"></script>
+    
+    <!-- 3. Monetag SDK -->
+    <script src="https://alwingulla.com/88/tag.min.js" data-zone="auto" async data-cfasync="false"></script>
+
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -84,6 +92,36 @@
         <button class="w-full max-w-sm p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full font-bold text-lg hover:shadow-lg transition-all" onclick="window.verifyChannelMembership()">VERIFY MEMBERSHIP</button>
     </div>
 
+    <!-- SPONSOR CHANNEL POPUP MODAL (LEVEL 2 LOCK) -->
+    <div id="sponsor-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl text-center">
+            <div class="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fab fa-telegram-plane"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-2">স্পনসর চ্যানেল টাস্ক!</h3>
+            <p class="text-sm text-gray-500 dark:text-gray-300 mb-6 font-medium">এই স্পেশাল ফাইলটি ডাউনলোড করার পূর্বে আপনাকে স্পনসর চ্যানেলে জয়েন করতে হবে।</p>
+            <a id="sponsor-join-link" href="#" target="_blank" class="block w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-2xl mb-3 transition shadow-md">
+                <i class="fas fa-plus-circle mr-1"></i> চ্যানেলে জয়েন করুন
+            </a>
+            <button onclick="window.confirmSponsorJoin()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl transition shadow-md">
+                <i class="fas fa-check-circle mr-1"></i> জয়েন করেছি (যাচাই করুন)
+            </button>
+        </div>
+    </div>
+
+    <!-- USER FILE REQUEST MODAL -->
+    <div id="request-file-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4 animate-[fadeIn_0.3s_ease-out]">
+        <div class="bg-white dark:bg-darkCard w-full max-w-sm rounded-3xl p-6 shadow-2xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold dark:text-white flex items-center gap-2"><i class="fas fa-bullhorn text-blue-500"></i> রিকোয়েস্ট ফাইল</h3>
+                <button onclick="document.getElementById('request-file-modal').classList.add('hidden')" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></button>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-semibold">আপনার পছন্দের কোনো সফটওয়্যার, মুভি বা ফাইল খুঁজে না পেলে নাম বা বিবরণ লিখে পাঠিয়ে দিন।</p>
+            <input type="text" id="request-file-input" placeholder="ফাইলের নাম বা লিংক..." class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 dark:text-white text-sm mb-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold">
+            <button onclick="window.submitUserRequest()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition shadow">রিকোয়েস্ট জমা দিন</button>
+        </div>
+    </div>
+
     <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity" onclick="window.toggleMenu()"></div>
 
     <aside id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white dark:bg-darkCard z-50 shadow-2xl sidebar-closed transition-transform duration-300 flex flex-col">
@@ -117,6 +155,16 @@
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="options_title">Options</div>
                 
                 <div class="space-y-2.5 px-1">
+                    <!-- FILE REQUEST OPTION -->
+                    <button onclick="document.getElementById('request-file-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
+                        <div class="w-9 h-9 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="flex-grow">
+                            <span class="font-bold text-xs text-slate-700 dark:text-slate-200">Request a File</span>
+                        </div>
+                    </button>
+
                     <a id="sidebar-admin-support" href="https://t.me/AlorHawa_Developer" target="_blank" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-blue-500/10 dark:bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-headset"></i>
@@ -216,7 +264,7 @@
         </div>
     </nav>
 
-    <!-- PREMIUM TELEGRAM USER PROFILE WIDGET (FIXED USERNAME WRAPPING AND ALIGNED FB BLUE BADGE AT THE END) -->
+    <!-- PREMIUM TELEGRAM USER PROFILE WIDGET -->
     <div id="tg-profile-widget" class="hidden max-w-xl mx-auto mt-2 px-4">
         <div class="bg-white dark:bg-darkCard p-4 rounded-2xl border border-gray-155 dark:border-gray-700 shadow-md flex items-center justify-between gap-3">
             <div class="flex items-center gap-3 min-w-0">
@@ -238,7 +286,7 @@
         </div>
     </div>
 
-    <!-- NEW: GLOBAL STATS BAR (মোট ডাউনলোড এবং রেটিং প্রফেশনাল কাউন্টার) -->
+    <!-- GLOBAL STATS BAR -->
     <div id="global-stats-bar" class="hidden max-w-xl mx-auto mt-3 px-4 animate-[fadeIn_0.4s_ease-out]">
         <div class="grid grid-cols-2 gap-3">
             <div class="bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/40 p-3 rounded-2xl flex items-center gap-2.5 shadow-sm">
@@ -313,7 +361,7 @@
     </main>
 
     <!-- DYNAMIC DETAILED SINGLE VIEW PAGE OVERLAY -->
-    <div id="details-overlay" class="hidden fixed inset-0 bg-white dark:bg-darkBg z-[80] overflow-y-auto pb-24 animate-[fadeIn_0.3s_ease-out]">
+    <div id="details-overlay" class="hidden fixed inset-0 bg-white dark:bg-darkBg z-[80] overflow-y-auto pb-32 animate-[fadeIn_0.3s_ease-out]">
         <div class="sticky top-0 bg-white/95 dark:bg-darkBg/95 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 py-4 px-6 flex justify-between items-center z-10">
             <button onclick="window.closeDetailsOverlay()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 flex items-center justify-center text-lg hover:bg-gray-200 transition-colors">
                 <i class="fas fa-arrow-left"></i>
@@ -348,6 +396,39 @@
                 <div class="bg-white dark:bg-darkCard p-3 rounded-2xl border border-gray-155 dark:border-gray-700 text-center flex flex-col justify-center items-center">
                     <i class="fas fa-shield-alt text-emerald-500 text-lg"></i>
                     <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mt-1">SAFE</span>
+                </div>
+            </div>
+
+            <!-- DUAL UNLOCK PROGRESS BOX (ADS OR REFERRAL) -->
+            <div id="dual-unlock-container" class="bg-gradient-to-tr from-blue-50 to-indigo-50/50 dark:from-slate-800/40 dark:to-indigo-950/30 p-4 rounded-2xl border border-blue-100 dark:border-indigo-900/40 shadow-sm space-y-3">
+                <div class="flex justify-between items-center">
+                    <h4 class="font-extrabold text-xs text-gray-700 dark:text-gray-300 flex items-center gap-1.5"><i class="fas fa-key text-blue-500"></i> আনলক অগ্রগতি</h4>
+                    <span class="text-[10px] font-bold text-gray-400">বিজ্ঞাপন দেখুন অথবা রেফার করুন</span>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="bg-white dark:bg-darkCard p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                        <div class="flex justify-between items-center mb-1 text-[11px] font-extrabold">
+                            <span class="text-blue-600 dark:text-blue-400" id="unlock-ad-status">বিজ্ঞাপন: ০/০</span>
+                            <span id="unlock-ad-pct">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden">
+                            <div id="unlock-ad-bar" class="bg-blue-600 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-darkCard p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                        <div class="flex justify-between items-center mb-1 text-[11px] font-extrabold">
+                            <span class="text-emerald-600 dark:text-emerald-400" id="unlock-ref-status">রেফার: ০/০</span>
+                            <span id="unlock-ref-pct">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden mb-2">
+                            <div id="unlock-ref-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                        <button onclick="window.shareFileReferralLink()" class="w-full py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-lg text-[10px] font-black hover:bg-emerald-100 transition flex items-center justify-center gap-1 shadow-sm">
+                            <i class="fas fa-share-alt"></i> রেফার লিংক শেয়ার করুন
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -561,7 +642,7 @@
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
-                rate_file_label: "इस फ़ाइल को रेट करें",
+                rate_file_label: "इस फ़ाइल को rate करें",
                 submit_review_btn: "समीक्षा सबमिट करें",
                 copy_link: "लिंक कॉपी करें",
                 share: "शेयर करें",
@@ -912,8 +993,8 @@
                 reviewTextarea.placeholder = getTxt('rate_box_placeholder');
             }
 
-            // Update sticky unlock btn status
-            updateDetailsStickyBtn(fileObj);
+            // Update sticky unlock btn status and dual-progress box
+            await updateDetailsStickyBtn(fileObj);
 
             // Load reviews & comments live from subcollection
             loadDetailsReviewsLive(id);
@@ -929,7 +1010,7 @@
             }
         };
 
-        // NEW: STABLE LONG PRESS TO TRIGGER REACTION LIST MODAL WITH NO SHAKING
+        // STABLE LONG PRESS TO TRIGGER REACTION LIST MODAL WITH NO SHAKING
         window.startLikePress = (fileId) => {
             window.endLikePress();
             likePressTimeout = setTimeout(async () => {
@@ -987,7 +1068,7 @@
             if(likePressTimeout) clearTimeout(likePressTimeout);
         };
 
-        // NEW: HOME PAGE CARD LIKE BUTTON LONG-PRESS -> SHOW WHO LIKED (REUSES SAME REAL LIKERS LIST AS DETAILS VIEW)
+        // HOME PAGE CARD LIKE BUTTON LONG-PRESS -> SHOW WHO LIKED
         window.startHomeLikePress = (fileId) => {
             window.endHomeLikePress();
             homeLikeLongPressTriggered = false;
@@ -1045,36 +1126,6 @@
 
         window.endHomeLikePress = () => {
             if(homeLikePressTimeout) clearTimeout(homeLikePressTimeout);
-        };
-
-        function renderDetailsReactions(fileObj) {
-            
-        }
-
-        window.submitReaction = async (fileId, emoji) => {
-            const currentReact = localStorage.getItem('react_' + fileId);
-            let updates = {};
-
-            if(currentReact === emoji) {
-                localStorage.removeItem('react_' + fileId);
-                updates[`react_${emoji}`] = increment(-1);
-            } else {
-                if(currentReact) {
-                    updates[`react_${currentReact}`] = increment(-1);
-                }
-                localStorage.setItem('react_' + fileId, emoji);
-                updates[`react_${emoji}`] = increment(1);
-            }
-
-            await updateDoc(doc(db, "files", fileId), updates);
-            
-            const updatedDoc = await getDoc(doc(db, "files", fileId));
-            if(updatedDoc.exists()) {
-                const updatedData = {id: updatedDoc.id, ...updatedDoc.data()};
-                const idx = globalFiles.findIndex(f => f.id === fileId);
-                if(idx !== -1) globalFiles[idx] = updatedData;
-                loadData(); 
-            }
         };
 
         window.closeDetailsOverlay = () => {
@@ -1315,15 +1366,23 @@
             });
         }
 
-        function updateDetailsStickyBtn(fileObj) {
+        // UPDATE STICKY UNLOCK BTN AND PER-FILE DUAL PROGRESS
+        async function updateDetailsStickyBtn(fileObj) {
             const btn = document.getElementById('details-sticky-unlock-btn');
             const id = fileObj.id;
-            const req = parseInt(fileObj.requiredAds || 0);
-            const done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
-            const isUnlocked = done >= req;
+            const reqAds = parseInt(fileObj.requiredAds || 0);
+            const reqRef = parseInt(fileObj.requiredRefers || 0);
+            
+            const doneAds = parseInt(localStorage.getItem(`ad_${id}`) || 0);
 
-            btn.disabled = false;
-            btn.onclick = () => handleStickyBtnClick(id, req, fileObj.downloadUrl);
+            // Fetch Live Referral Count for this file
+            let doneRef = 0;
+            if(tgUser && tgUser.id) {
+                try {
+                    const refDoc = await getDoc(doc(db, "files", id, "file_refers", String(tgUser.id)));
+                    if(refDoc.exists()) doneRef = parseInt(refDoc.data().count || 0);
+                } catch(e) {}
+            }
 
             const formatNumStr = (num) => {
                 if (currentLang === 'bn') {
@@ -1337,11 +1396,28 @@
                 return num;
             };
 
+            // Update Progress Indicators
+            const adPct = reqAds > 0 ? Math.min((doneAds / reqAds) * 100, 100) : 100;
+            document.getElementById('unlock-ad-status').textContent = `বিজ্ঞাপন: ${formatNumStr(doneAds)}/${formatNumStr(reqAds)}`;
+            document.getElementById('unlock-ad-pct').textContent = `${Math.floor(adPct)}%`;
+            document.getElementById('unlock-ad-bar').style.width = `${adPct}%`;
+
+            const refPct = reqRef > 0 ? Math.min((doneRef / reqRef) * 100, 100) : 100;
+            document.getElementById('unlock-ref-status').textContent = `রেফার: ${formatNumStr(doneRef)}/${formatNumStr(reqRef)}`;
+            document.getElementById('unlock-ref-pct').textContent = `${Math.floor(refPct)}%`;
+            document.getElementById('unlock-ref-bar').style.width = `${refPct}%`;
+
+            const isUnlocked = (reqAds > 0 && doneAds >= reqAds) || (reqRef > 0 && doneRef >= reqRef) || (reqAds === 0 && reqRef === 0);
+
+            btn.disabled = false;
+            btn.onclick = () => handleStickyBtnClick(fileObj);
+
             if(isUnlocked) {
                 btn.innerHTML = `<i class="fas fa-download"></i> ${getTxt('download_now_button')}`;
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-2xl font-black text-base shadow-lg shadow-green-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             } else {
-                btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${formatNumStr(req - done)})`;
+                const remaining = Math.max(0, reqAds - doneAds);
+                btn.innerHTML = `<i class="fas fa-lock"></i> ${getTxt('unlock_button')} (${formatNumStr(remaining)})`;
                 btn.className = "w-full max-w-xl py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-2xl font-black text-base shadow-lg shadow-blue-500/25 flex items-center justify-center gap-3 active:scale-95 transition";
             }
         }
@@ -1387,19 +1463,36 @@
             }
         };
 
-        async function handleStickyBtnClick(id, req, downloadUrl) {
+        // HANDLE 4-IN-1 AD TRIGGER & UNLOCK
+        async function handleStickyBtnClick(fileObj) {
+            const id = fileObj.id;
+            const reqAds = parseInt(fileObj.requiredAds || 0);
+            const reqRef = parseInt(fileObj.requiredRefers || 0);
             let done = parseInt(localStorage.getItem(`ad_${id}`) || 0);
-            if(done >= req) { 
-                await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
-                
-                const fileObj = globalFiles.find(f => f.id === id);
-                if(fileObj) {
-                    sendAdminNotification(fileObj);
+
+            let doneRef = 0;
+            if(tgUser && tgUser.id) {
+                try {
+                    const refDoc = await getDoc(doc(db, "files", id, "file_refers", String(tgUser.id)));
+                    if(refDoc.exists()) doneRef = parseInt(refDoc.data().count || 0);
+                } catch(e) {}
+            }
+
+            const isUnlocked = (reqAds > 0 && done >= reqAds) || (reqRef > 0 && doneRef >= reqRef) || (reqAds === 0 && reqRef === 0);
+
+            if(isUnlocked) { 
+                // SPONSOR CHANNEL (LEVEL 2 LOCK) CHECK
+                if(fileObj.sponsorChannelUrl && fileObj.sponsorChannelUrl.trim() !== '' && !localStorage.getItem(`sponsor_joined_${id}`)) {
+                    document.getElementById('sponsor-join-link').href = fileObj.sponsorChannelUrl;
+                    document.getElementById('sponsor-modal').classList.remove('hidden');
+                    return;
                 }
 
-                window.open(downloadUrl, '_blank'); 
+                await updateDoc(doc(db, "files", id), { downloadCount: increment(1) });
+                sendAdminNotification(fileObj);
+                window.open(fileObj.downloadUrl, '_blank'); 
 
-                // WRITE DOWNLOAD TRACK LOG DATA TO FIRESTORE silenty
+                // Silent download tracker
                 try {
                     const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : getTxt('anonymous_user');
                     const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
@@ -1436,30 +1529,56 @@
 
             const btn = document.getElementById('details-sticky-unlock-btn');
             btn.disabled = true;
+
+            const adType = fileObj.adNetwork || 'adsterra';
+
             try {
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
                 showToast('toast_ad_load');
                 
-                if (typeof show_11816971 !== 'function') {
-                    throw new Error("AdBlocked");
+                // 1. GIGAPUB
+                if(adType === 'gigapub') {
+                    if (window.GigaPub && typeof window.GigaPub.showRewarded === 'function') {
+                        await window.GigaPub.showRewarded({ appId: "8208" });
+                    } else {
+                        window.open("https://ad.gigapub.tech/script?id=8208", "_blank");
+                    }
+                } 
+                // 2. MONETAG
+                else if(adType === 'monetag') {
+                    if (typeof show_tag === 'function') {
+                        await show_tag();
+                    } else {
+                        const customLink = fileObj.adCustomId || "https://alwingulla.com";
+                        window.open(customLink, '_blank');
+                    }
                 }
-                
-                await show_11816971();
+                // 3. DIRECT LINK
+                else if(adType === 'directlink') {
+                    const link = fileObj.adCustomId || "https://google.com";
+                    window.open(link, '_blank');
+                } 
+                // 4. ADSTERRA (DEFAULT)
+                else {
+                    if (typeof show_11816971 !== 'function') {
+                        throw new Error("AdBlocked");
+                    }
+                    await show_11816971();
+                }
+
                 done++;
                 localStorage.setItem(`ad_${id}`, done);
                 
-                const fileObj = globalFiles.find(f => f.id === id);
-                updateDetailsStickyBtn(fileObj);
+                await updateDetailsStickyBtn(fileObj);
                 loadData(); 
 
-                if(done >= req) { 
+                if(done >= reqAds) { 
                     showToast('toast_unlocked'); 
                     return; 
                 }
-                showToast('toast_progress', {done, req});
+                showToast('toast_progress', {done, req: reqAds});
             } catch(err) {
-                const fileObj = globalFiles.find(f => f.id === id);
-                updateDetailsStickyBtn(fileObj);
+                await updateDetailsStickyBtn(fileObj);
                 if (err.message === "AdBlocked") {
                     window.showAlert("বিজ্ঞাপন লোড হচ্ছে না! ⚠️\nPrivate DNS (যেমন AdGuard) চালু থাকলে বন্ধ করুন বা নেটওয়ার্ক চেক করুন।");
                 } else {
@@ -1467,6 +1586,58 @@
                 }
             }
         }
+
+        // LEVEL 2 SPONSOR JOIN CONFIRMATION
+        window.confirmSponsorJoin = () => {
+            if(!detailsActiveFileId) return;
+            localStorage.setItem(`sponsor_joined_${detailsActiveFileId}`, 'true');
+            document.getElementById('sponsor-modal').classList.add('hidden');
+            const fileObj = globalFiles.find(f => f.id === detailsActiveFileId);
+            if(fileObj) handleStickyBtnClick(fileObj);
+        };
+
+        // PER-FILE REFERRAL SHARE LINK GENERATOR
+        window.shareFileReferralLink = () => {
+            if(!detailsActiveFileId) return;
+            const uid = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
+            const botUser = "FileVaultDLBot"; // টেলিগ্রাম বট ইউজারনেম
+            const refLink = `https://t.me/${botUser}?startapp=ref_${detailsActiveFileId}_${uid}`;
+            const msg = `📁 এই ফাইলটি বিজ্ঞাপন ছাড়া ফ্রিতে আনলক করতে নিচের লিংকে ক্লিক করে টেলিগ্রাম বটে প্রবেশ করুন:\n${refLink}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Unlock File',
+                    text: msg,
+                    url: refLink
+                }).catch(() => {});
+            } else {
+                window.open(`https://t.me/share/url?url=${encodeURIComponent(refLink)}&text=${encodeURIComponent(msg)}`, '_blank');
+            }
+        };
+
+        // SUBMIT USER FILE REQUEST
+        window.submitUserRequest = async () => {
+            const input = document.getElementById('request-file-input');
+            const val = input.value.trim();
+            if(!val) return;
+            
+            const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : getTxt('anonymous_user');
+            const userId = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
+
+            try {
+                await addDoc(collection(db, "requests"), {
+                    text: val,
+                    userName: userName,
+                    uid: userId,
+                    timestamp: new Date()
+                });
+                document.getElementById('request-file-modal').classList.add('hidden');
+                input.value = '';
+                window.showAlert("আপনার রিকোয়েস্ট অ্যাডমিনের কাছে সফলভাবে জমা হয়েছে!", "রিকোয়েস্ট জমা হয়েছে");
+            } catch(e) {
+                alert("রিকোয়েস্ট পাঠাতে ব্যর্থ হয়েছে!");
+            }
+        };
 
         const getParamFromUrl = (name) => {
             try {
@@ -1573,6 +1744,30 @@
                 tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
             }
 
+            // CHECK AND COUNT PER-FILE REFERRAL ACCESS
+            const startParam = getParamFromUrl('start_param') || getParamFromUrl('startapp');
+            if(startParam && startParam.startsWith('ref_')) {
+                const parts = startParam.split('_');
+                const fileId = parts[1];
+                const referrerUid = parts[2];
+
+                if(fileId && referrerUid && String(referrerUid) !== String(tgUser.id)) {
+                    const refKey = `ref_done_${fileId}_${referrerUid}`;
+                    if(!localStorage.getItem(refKey)) {
+                        localStorage.setItem(refKey, 'true');
+                        try {
+                            await updateDoc(doc(db, "files", fileId, "file_refers", String(referrerUid)), {
+                                count: increment(1)
+                            });
+                        } catch(e) {
+                            await setDoc(doc(db, "files", fileId, "file_refers", String(referrerUid)), {
+                                count: 1
+                            }, { merge: true });
+                        }
+                    }
+                }
+            }
+
             if (tgUser && tgUser.id) {
                 document.getElementById('tg-profile-widget').classList.remove('hidden');
                 document.getElementById('tg-name').textContent = (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim();
@@ -1627,7 +1822,7 @@
                             getParamFromUrl('tgWebAppStartParam') || 
                             getParamFromUrl('v');
 
-                if (targetVid === "null" || targetVid === "undefined" || targetVid === "") {
+                if (targetVid === "null" || targetVid === "undefined" || targetVid === "" || (targetVid && targetVid.startsWith('ref_'))) {
                     targetVid = null;
                 }
             }
@@ -2332,7 +2527,6 @@
             loadData();
         });
 
-        // FIXED SIDEBAR BLURRY OVERFLOW TYPO
         window.toggleMenu = () => {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
