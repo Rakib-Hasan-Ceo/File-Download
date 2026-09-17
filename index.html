@@ -20,14 +20,11 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- 1. Adsterra SDK (Updated) -->
+    <!-- 1. Monetag Rewarded SDK -->
     <script src='//libtl.com/sdk.js' data-zone='11816971' data-sdk='show_11816971'></script>
     
-    <!-- 2. GigaPub SDK -->
+    <!-- 2. GigaPub Telegram SDK -->
     <script src="https://ad.gigapub.tech/script?id=8208"></script>
-    
-    <!-- 3. Monetag SDK -->
-    <script src="https://alwingulla.com/88/tag.min.js" data-zone="auto" async data-cfasync="false"></script>
 
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -117,7 +114,7 @@
                 <button onclick="document.getElementById('request-file-modal').classList.add('hidden')" class="text-gray-400 hover:text-red-500 text-xl"><i class="fas fa-times"></i></button>
             </div>
             <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-semibold">আপনার পছন্দের কোনো সফটওয়্যার, মুভি বা ফাইল খুঁজে না পেলে নাম বা বিবরণ লিখে পাঠিয়ে দিন।</p>
-            <input type="text" id="request-file-input" placeholder="ফাইলের নাম বা লিংক..." class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 dark:text-white text-sm mb-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold">
+            <input type="text" id="request-file-input" placeholder="ফাইলের নাম বা বিবরণ..." class="w-full p-3 rounded-xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700 dark:text-white text-sm mb-4 outline-none focus:ring-2 focus:ring-blue-500 font-bold">
             <button onclick="window.submitUserRequest()" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition shadow">রিকোয়েস্ট জমা দিন</button>
         </div>
     </div>
@@ -155,7 +152,6 @@
                 <div class="text-[11px] font-black text-blue-500 dark:text-blue-400 uppercase tracking-widest ml-1" data-key="options_title">Options</div>
                 
                 <div class="space-y-2.5 px-1">
-                    <!-- FILE REQUEST OPTION -->
                     <button onclick="document.getElementById('request-file-modal').classList.remove('hidden'); window.toggleMenu()" class="w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-bullhorn"></i>
@@ -174,7 +170,6 @@
                         </div>
                     </a>
 
-                    <!-- DYNAMIC ACTIVE BOTS DIRECT ACCESS BUTTON -->
                     <a id="sidebar-active-bots" href="#" target="_blank" class="hidden w-full text-left flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 hover:bg-blue-50/50 dark:bg-slate-800/50 dark:hover:bg-blue-955/30 border border-slate-100 dark:border-slate-700/50 transition-all duration-300 transform active:scale-95 hover:translate-x-1 group shadow-sm">
                         <div class="w-9 h-9 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-500 flex items-center justify-center text-xl shrink-0 group-hover:rotate-12 transition-transform duration-300">
                             <i class="fas fa-robot"></i>
@@ -425,7 +420,7 @@
                         <div class="w-full bg-gray-200 dark:bg-gray-700 h-2 rounded-full overflow-hidden mb-2">
                             <div id="unlock-ref-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
                         </div>
-                        <button onclick="window.shareFileReferralLink()" class="w-full py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-lg text-[10px] font-black hover:bg-emerald-100 transition flex items-center justify-center gap-1 shadow-sm">
+                        <button onclick="window.shareFileReferralLink()" class="w-full py-1 bg-emerald-50 text-emerald-700 dark:bg-emerald-955/40 dark:text-emerald-300 rounded-lg text-[10px] font-black hover:bg-emerald-100 transition flex items-center justify-center gap-1 shadow-sm">
                             <i class="fas fa-share-alt"></i> রেফার লিংক শেয়ার করুন
                         </button>
                     </div>
@@ -629,7 +624,7 @@
                 change_language: "भाषा बदलें",
                 dark_mode: "डार्क मोड",
                 light_mode: "लाइट मोड",
-                menu_header: "मेन्यू",
+                menu_header: "মেन्यू",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
@@ -642,7 +637,7 @@
                 screenshots_title: "स्क्रीनशॉट",
                 about_file_title: "इस फ़ाइल के बारे में",
                 ratings_reviews_title: "रेटिंग और समीक्षाएं",
-                rate_file_label: "इस फ़ाइल को rate करें",
+                rate_file_label: "इस फ़ाइल को रेट करें",
                 submit_review_btn: "समीक्षा सबमिट करें",
                 copy_link: "लिंक कॉपी करें",
                 share: "शेयर करें",
@@ -918,7 +913,6 @@
                     card.innerHTML = `
                         <div class="relative h-28 sm:h-36 overflow-hidden bg-black flex justify-center">
                             ${mediaElement}
-                            <!-- Download count overlay badge left -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> <span id="download-badge-hist-${f.id}">${f.downloadCount || 0}</span>
                             </div>
@@ -955,14 +949,12 @@
 
             window.trackView(id);
 
-            // Populate static UI elements
             document.getElementById('details-title-top').textContent = fileObj.title;
             document.getElementById('details-thumb').src = fileObj.thumbnailUrl;
             document.getElementById('details-title').textContent = fileObj.title;
             document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
             document.getElementById('details-description').textContent = fileObj.description || getTxt('no_description');
 
-            // screenshots
             const ssContainer = document.getElementById('details-screenshots-container');
             const ssSec = document.getElementById('details-screenshots-sec');
             ssContainer.innerHTML = '';
@@ -984,7 +976,6 @@
                 ssSec.classList.add('hidden');
             }
 
-            // star system reset
             window.setReviewStars(0);
             document.getElementById('review-comment-text').value = '';
 
@@ -993,13 +984,9 @@
                 reviewTextarea.placeholder = getTxt('rate_box_placeholder');
             }
 
-            // Update sticky unlock btn status and dual-progress box
             await updateDetailsStickyBtn(fileObj);
-
-            // Load reviews & comments live from subcollection
             loadDetailsReviewsLive(id);
 
-            // Open overlay page
             document.getElementById('details-overlay').classList.remove('hidden');
 
             if(focusCommentBox) {
@@ -1010,7 +997,6 @@
             }
         };
 
-        // STABLE LONG PRESS TO TRIGGER REACTION LIST MODAL WITH NO SHAKING
         window.startLikePress = (fileId) => {
             window.endLikePress();
             likePressTimeout = setTimeout(async () => {
@@ -1068,7 +1054,6 @@
             if(likePressTimeout) clearTimeout(likePressTimeout);
         };
 
-        // HOME PAGE CARD LIKE BUTTON LONG-PRESS -> SHOW WHO LIKED
         window.startHomeLikePress = (fileId) => {
             window.endHomeLikePress();
             homeLikeLongPressTriggered = false;
@@ -1375,7 +1360,6 @@
             
             const doneAds = parseInt(localStorage.getItem(`ad_${id}`) || 0);
 
-            // Fetch Live Referral Count for this file
             let doneRef = 0;
             if(tgUser && tgUser.id) {
                 try {
@@ -1396,7 +1380,6 @@
                 return num;
             };
 
-            // Update Progress Indicators
             const adPct = reqAds > 0 ? Math.min((doneAds / reqAds) * 100, 100) : 100;
             document.getElementById('unlock-ad-status').textContent = `বিজ্ঞাপন: ${formatNumStr(doneAds)}/${formatNumStr(reqAds)}`;
             document.getElementById('unlock-ad-pct').textContent = `${Math.floor(adPct)}%`;
@@ -1481,7 +1464,6 @@
             const isUnlocked = (reqAds > 0 && done >= reqAds) || (reqRef > 0 && doneRef >= reqRef) || (reqAds === 0 && reqRef === 0);
 
             if(isUnlocked) { 
-                // SPONSOR CHANNEL (LEVEL 2 LOCK) CHECK
                 if(fileObj.sponsorChannelUrl && fileObj.sponsorChannelUrl.trim() !== '' && !localStorage.getItem(`sponsor_joined_${id}`)) {
                     document.getElementById('sponsor-join-link').href = fileObj.sponsorChannelUrl;
                     document.getElementById('sponsor-modal').classList.remove('hidden');
@@ -1492,7 +1474,6 @@
                 sendAdminNotification(fileObj);
                 window.open(fileObj.downloadUrl, '_blank'); 
 
-                // Silent download tracker
                 try {
                     const userName = (tgUser && tgUser.first_name) ? (tgUser.first_name + ' ' + (tgUser.last_name || '')).trim() : getTxt('anonymous_user');
                     const userAvatar = (tgUser && tgUser.photo_url) ? tgUser.photo_url : "";
@@ -1530,7 +1511,7 @@
             const btn = document.getElementById('details-sticky-unlock-btn');
             btn.disabled = true;
 
-            const adType = fileObj.adNetwork || 'adsterra';
+            const adType = fileObj.adNetwork || 'monetag';
 
             try {
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
@@ -1544,21 +1525,12 @@
                         window.open("https://ad.gigapub.tech/script?id=8208", "_blank");
                     }
                 } 
-                // 2. MONETAG
-                else if(adType === 'monetag') {
-                    if (typeof show_tag === 'function') {
-                        await show_tag();
-                    } else {
-                        const customLink = fileObj.adCustomId || "https://alwingulla.com";
-                        window.open(customLink, '_blank');
-                    }
-                }
-                // 3. DIRECT LINK
+                // 2. DIRECT LINK
                 else if(adType === 'directlink') {
                     const link = fileObj.adCustomId || "https://google.com";
                     window.open(link, '_blank');
                 } 
-                // 4. ADSTERRA (DEFAULT)
+                // 3. MONETAG REWARDED SDK / ADSTERRA (DEFAULT)
                 else {
                     if (typeof show_11816971 !== 'function') {
                         throw new Error("AdBlocked");
@@ -1587,7 +1559,6 @@
             }
         }
 
-        // LEVEL 2 SPONSOR JOIN CONFIRMATION
         window.confirmSponsorJoin = () => {
             if(!detailsActiveFileId) return;
             localStorage.setItem(`sponsor_joined_${detailsActiveFileId}`, 'true');
@@ -1596,11 +1567,10 @@
             if(fileObj) handleStickyBtnClick(fileObj);
         };
 
-        // PER-FILE REFERRAL SHARE LINK GENERATOR
         window.shareFileReferralLink = () => {
             if(!detailsActiveFileId) return;
             const uid = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
-            const botUser = "FileVaultDLBot"; // টেলিগ্রাম বট ইউজারনেম
+            const botUser = "FileVaultDLBot"; 
             const refLink = `https://t.me/${botUser}?startapp=ref_${detailsActiveFileId}_${uid}`;
             const msg = `📁 এই ফাইলটি বিজ্ঞাপন ছাড়া ফ্রিতে আনলক করতে নিচের লিংকে ক্লিক করে টেলিগ্রাম বটে প্রবেশ করুন:\n${refLink}`;
             
@@ -1615,7 +1585,6 @@
             }
         };
 
-        // SUBMIT USER FILE REQUEST
         window.submitUserRequest = async () => {
             const input = document.getElementById('request-file-input');
             const val = input.value.trim();
@@ -1744,7 +1713,6 @@
                 tgUser = { id: 6579664275, first_name: "AlorHawa Developer", photo_url: "" }; 
             }
 
-            // CHECK AND COUNT PER-FILE REFERRAL ACCESS
             const startParam = getParamFromUrl('start_param') || getParamFromUrl('startapp');
             if(startParam && startParam.startsWith('ref_')) {
                 const parts = startParam.split('_');
@@ -2073,11 +2041,9 @@
                     card.innerHTML = `
                         <div class="relative h-32 sm:h-44 overflow-hidden bg-black flex justify-center shrink-0">
                             ${mediaElement}
-                            <!-- Download count overlay badge left top -->
                             <div class="absolute top-2 left-2 bg-black/65 text-white text-[10px] sm:text-[11px] font-extrabold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-md backdrop-blur-md flex items-center gap-1">
                                 <i class="fas fa-download text-blue-400"></i> <span id="download-badge-${f.id}">${f.downloadCount || 0}</span>
                             </div>
-                            <!-- "NEW" pulsing badge just below download count badge on left top -->
                             ${newBadgeHtml}
                             ${!f.videoUrl ? `<div class="absolute top-2 right-2 bg-black/60 text-white text-[9px] sm:text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded backdrop-blur-md"><i class="fas fa-star text-yellow-400"></i> ${getTxt('premium_badge')}</div>` : ''}
                         </div>
@@ -2085,10 +2051,8 @@
                             <h3 class="text-sm sm:text-lg font-bold text-gray-800 dark:text-gray-100 line-clamp-1">${f.title}</h3>
                             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 flex-1 line-clamp-2">${f.description}</p>
                             
-                            <!-- Spaced upload date of this file -->
                             ${dateHtml}
 
-                            <!-- UPPER ROW: Stat badges (Views, Likes, Comments, Ratings) -->
                             <div class="grid grid-cols-4 gap-1 text-center mt-3 border-t border-gray-100 dark:border-gray-700 pt-2.5 text-gray-600 dark:text-gray-300 font-black shrink-0">
                                 <span title="Views" class="flex items-center justify-center gap-0.5"><i class="fas fa-eye text-blue-500 text-sm sm:text-base"></i> <span class="text-xs sm:text-sm">${f.views || 0}</span></span>
                                 
@@ -2101,7 +2065,6 @@
                                 <span title="Ratings" class="flex items-center justify-center gap-0.5"><i class="fas fa-star text-yellow-500 text-sm sm:text-base"></i> <span id="rating-count-home-${f.id}" class="text-xs sm:text-sm">${f.ratingCount || 0}</span></span>
                             </div>
 
-                            <!-- LOWER ROW: Copy and Share buttons -->
                             <div class="grid grid-cols-2 gap-1 mt-2 mb-2 shrink-0">
                                 <button onclick="event.stopPropagation(); window.copyToClip('${f.id}')" class="flex items-center justify-center gap-1 py-1 px-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-[10px] sm:text-[11px] font-bold transition-all font-bold">
                                     <i class="fas fa-copy text-[9px] sm:text-xs"></i> <span data-key="copy_link">${getTxt('copy_link')}</span>
