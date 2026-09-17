@@ -622,9 +622,9 @@
                 toast_unlocked: "सफलतापूर्वक अनलॉक!", 
                 toast_progress: "कार्य: {done}/{req}",
                 change_language: "भाषा बदलें",
-                dark_mode: "डार्क मोड",
-                light_mode: "लाइट मोड",
-                menu_header: "মেन्यू",
+                dark_mode: "ডार्क मोड",
+                light_mode: "লাইট मोड",
+                menu_header: "মেনিউ",
                 social_profiles_title: "सोशल प्रोफाइल",
                 options_title: "विकल्प",
                 nav_home: "होम",
@@ -1446,7 +1446,7 @@
             }
         };
 
-        // HANDLE 4-IN-1 AD TRIGGER & UNLOCK
+        // HANDLE 3-IN-1 AD TRIGGER & UNLOCK (FIXED GIGAPUB EXECUTION)
         async function handleStickyBtnClick(fileObj) {
             const id = fileObj.id;
             const reqAds = parseInt(fileObj.requiredAds || 0);
@@ -1511,18 +1511,39 @@
             const btn = document.getElementById('details-sticky-unlock-btn');
             btn.disabled = true;
 
-            const adType = fileObj.adNetwork || 'monetag';
+            const adType = fileObj.adNetwork || 'gigapub';
 
             try {
                 btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${getTxt('toast_ad_load')}`;
                 showToast('toast_ad_load');
                 
-                // 1. GIGAPUB
+                // 1. GIGAPUB REWARDED EXECUTION
                 if(adType === 'gigapub') {
-                    if (window.GigaPub && typeof window.GigaPub.showRewarded === 'function') {
-                        await window.GigaPub.showRewarded({ appId: "8208" });
+                    const gigapubId = fileObj.adCustomId ? fileObj.adCustomId.trim() : "8208";
+                    const showMethodName = `show_${gigapubId}`;
+
+                    if (typeof window[showMethodName] === 'function') {
+                        await window[showMethodName]();
+                    } else if (typeof window.show_8208 === 'function') {
+                        await window.show_8208();
+                    } else if (window.GigaPub && typeof window.GigaPub.showRewarded === 'function') {
+                        await window.GigaPub.showRewarded({ appId: gigapubId });
                     } else {
-                        window.open("https://ad.gigapub.tech/script?id=8208", "_blank");
+                        // Dynamically load script safely if not initialized
+                        await new Promise((resolve, reject) => {
+                            const script = document.createElement('script');
+                            script.src = `https://ad.gigapub.tech/script?id=${gigapubId}`;
+                            script.onload = async () => {
+                                if (typeof window[showMethodName] === 'function') {
+                                    await window[showMethodName]();
+                                    resolve();
+                                } else {
+                                    resolve();
+                                }
+                            };
+                            script.onerror = () => reject(new Error("AdBlocked"));
+                            document.head.appendChild(script);
+                        });
                     }
                 } 
                 // 2. DIRECT LINK
@@ -1530,7 +1551,7 @@
                     const link = fileObj.adCustomId || "https://google.com";
                     window.open(link, '_blank');
                 } 
-                // 3. MONETAG REWARDED SDK / ADSTERRA (DEFAULT)
+                // 3. MONETAG REWARDED SDK (DEFAULT)
                 else {
                     if (typeof show_11816971 !== 'function') {
                         throw new Error("AdBlocked");
