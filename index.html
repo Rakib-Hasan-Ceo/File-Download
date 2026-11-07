@@ -860,28 +860,35 @@
         let appConfig = {};
         let tgUser = {};
 
+        // BULLETPROOF TELEGRAM CHAT ID / USERNAME RESOLVER
         const getChatIdOrUsername = (input) => {
             if (!input) return "";
-            let val = input.trim();
+            let val = String(input).trim();
+            val = val.replace(/\/+$/, ''); // Trailing slash remover
             if (/^-?\d+$/.test(val)) return val; 
-            if (val.includes('/') && !val.includes('joinchat')) {
-                const parts = val.split('/');
-                const lastPart = parts[parts.length - 1].split('?')[0];
-                if (lastPart) val = lastPart;
-            } else if (val.includes('joinchat')) {
-                return val;
+            
+            const match = val.match(/(?:t\.me|telegram\.me)\/([a-zA-Z0-9_]+)/i);
+            if (match && match[1] && !match[1].startsWith('+') && match[1] !== 'joinchat') {
+                return '@' + match[1];
             }
-            val = val.replace('@', '');
-            return '@' + val;
+            if (val.startsWith('@')) return val;
+            if (/^[a-zA-Z0-9_]{3,}$/.test(val)) return '@' + val;
+            return val;
         };
 
         const checkRequiredChannelsLive = async () => {
-            if (!appConfig.channel1Url && !appConfig.channel2Url) return true; 
-            const botToken = appConfig.botToken;
-            if (!botToken) return true; 
+            const ch1Enabled = appConfig.channel1Enabled !== false && appConfig.channel1Enabled !== 'false';
+            const ch2Enabled = appConfig.channel2Enabled !== false && appConfig.channel2Enabled !== 'false';
 
-            const ch1User = getChatIdOrUsername(appConfig.channel1Url);
-            const ch2User = getChatIdOrUsername(appConfig.channel2Url);
+            const ch1Valid = ch1Enabled && appConfig.channel1Url && appConfig.channel1Url.trim() !== '';
+            const ch2Valid = ch2Enabled && appConfig.channel2Url && appConfig.channel2Url.trim() !== '';
+
+            if (!ch1Valid && !ch2Valid) return { ok: true }; 
+            const botToken = appConfig.botToken;
+            if (!botToken) return { ok: true }; 
+
+            const ch1User = ch1Valid ? getChatIdOrUsername(appConfig.channel1Url) : null;
+            const ch2User = ch2Valid ? getChatIdOrUsername(appConfig.channel2Url) : null;
 
             try {
                 let joined1 = true;
@@ -891,24 +898,32 @@
                     const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(ch1User)}&user_id=${tgUser.id}`);
                     const data = await res.json();
                     if (data.ok) {
-                        const status = data.result.status;
-                        joined1 = (status === 'member' || status === 'administrator' || status === 'creator');
-                    } else { joined1 = false; }
+                        const s = data.result.status;
+                        joined1 = (s === 'member' || s === 'administrator' || s === 'creator' || (s === 'restricted' && data.result.is_member !== false));
+                    } else { 
+                        joined1 = false; 
+                    }
                 }
 
                 if (ch2User) {
                     const res = await fetch(`https://api.telegram.org/bot${botToken}/getChatMember?chat_id=${encodeURIComponent(ch2User)}&user_id=${tgUser.id}`);
                     const data = await res.json();
                     if (data.ok) {
-                        const status = data.result.status;
-                        joined2 = (status === 'member' || status === 'administrator' || status === 'creator');
-                    } else { joined2 = false; }
+                        const s = data.result.status;
+                        joined2 = (s === 'member' || s === 'administrator' || s === 'creator' || (s === 'restricted' && data.result.is_member !== false));
+                    } else { 
+                        joined2 = false; 
+                    }
                 }
 
-                return (joined1 && joined2);
+                return {
+                    ok: (joined1 && joined2),
+                    failed1: !joined1,
+                    failed2: !joined2
+                };
             } catch (e) {
                 console.error("Membership check failed: ", e);
-                return true; 
+                return { ok: true }; 
             }
         };
 
@@ -927,14 +942,20 @@
             btn.disabled = true;
             btn.textContent = "যাচাই করা হচ্ছে...";
 
-            const isVerified = await checkRequiredChannelsLive();
-            if (isVerified) {
+            const check = await checkRequiredChannelsLive();
+            if (check.ok) {
                 localStorage.setItem(`channelVerified_${tgUser.id}`, 'true');
                 document.getElementById('channel-verify-screen').classList.add('hidden');
                 document.getElementById('channel-verify-screen').classList.remove('flex');
                 showToast("স্বাগতম! চ্যানেল ভেরিফিকেশন সফল হয়েছে।", {}, true);
             } else {
-                window.showAlert("আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে সবগুলো চ্যানেলে জয়েন করে আবার চেষ্টা করুন।");
+                let alertMsg = "আপনি এখনো সবগুলো চ্যানেলে জয়েন করেননি! দয়া করে চ্যানেলে জয়েন করে আবার চেষ্টা করুন।";
+                if (check.failed1 && !check.failed2) {
+                    alertMsg = "আপনি ১ম অফিশিয়াল চ্যানেলে জয়েন করেননি! দয়া করে জয়েন করুন।";
+                } else if (!check.failed1 && check.failed2) {
+                    alertMsg = "আপনি সাপোর্ট গ্রুপ বা ২য় চ্যানেলে জয়েন করেননি! দয়া করে জয়েন করুন।";
+                }
+                window.showAlert(alertMsg);
             }
             btn.disabled = false;
             btn.textContent = "VERIFY MEMBERSHIP";
@@ -1012,7 +1033,6 @@
             }
         }
 
-        // DYNAMIC USER RANK BADGE CALCULATOR
         function updateUserBadge(totalUnlocks, totalRefers) {
             let badgeText = "🥉 Starter Member";
             let badgeClass = "px-3 py-1 bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 text-[10px] font-black rounded-full shadow-sm";
@@ -1038,7 +1058,6 @@
             if(tgBadge) { tgBadge.textContent = smallBadge; }
         }
 
-        // CATEGORY FILTER CONTROLLER
         window.filterCategory = (cat, btnEl) => {
             document.querySelectorAll('.category-chip').forEach(b => b.classList.remove('active'));
             if(btnEl) btnEl.classList.add('active');
@@ -1047,12 +1066,13 @@
             document.querySelectorAll('.file-card').forEach(c => {
                 const title = c.querySelector('h3')?.innerText.toLowerCase() || '';
                 const desc = c.querySelector('p')?.innerText.toLowerCase() || '';
+                const fileCat = c.getAttribute('data-cat') || '';
                 let match = false;
 
                 if (cat === 'all') match = true;
-                else if (cat === 'apps' && (title.includes('app') || desc.includes('app') || title.includes('apk') || desc.includes('apk'))) match = true;
-                else if (cat === 'bots' && (title.includes('bot') || desc.includes('bot') || title.includes('script') || desc.includes('script'))) match = true;
-                else if (cat === 'tools' && (title.includes('tool') || desc.includes('tool') || title.includes('file') || desc.includes('file'))) match = true;
+                else if (cat === 'apps' && (fileCat === 'apps' || title.includes('app') || desc.includes('app') || title.includes('apk') || desc.includes('apk'))) match = true;
+                else if (cat === 'bots' && (fileCat === 'bots' || title.includes('bot') || desc.includes('bot') || title.includes('script') || desc.includes('script'))) match = true;
+                else if (cat === 'tools' && (fileCat === 'tools' || title.includes('tool') || desc.includes('tool') || title.includes('file') || desc.includes('file'))) match = true;
                 else match = (cat === 'all');
 
                 c.style.display = match ? 'flex' : 'none';
@@ -1062,7 +1082,6 @@
             if(visible === 0) noRes.classList.remove('hidden'); else noRes.classList.add('hidden');
         };
 
-        // BOOKMARK SYSTEM
         window.toggleBookmark = (fileId) => {
             let bookmarks = JSON.parse(localStorage.getItem('my_bookmarks') || '[]');
             const idx = bookmarks.indexOf(fileId);
@@ -1080,7 +1099,6 @@
             localStorage.setItem('my_bookmarks', JSON.stringify(bookmarks));
         };
 
-        // TOP 10 LEADERBOARD VIEWER
         window.openLeaderboard = async () => {
             const modal = document.getElementById('leaderboard-modal');
             const list = document.getElementById('leaderboard-list-container');
@@ -1142,7 +1160,6 @@
             }
         };
 
-        // DETAILED OVERLAY CONTROLLERS
         window.openDetailsOverlay = async (id, focusCommentBox = false) => {
             detailsActiveFileId = id;
             editingReviewDocId = null; 
@@ -1157,7 +1174,6 @@
             document.getElementById('details-downloads-badge').innerHTML = `📥 ${fileObj.downloadCount || 0}`;
             document.getElementById('details-description').textContent = fileObj.description || getTxt('no_description');
 
-            // Bookmark button icon status
             let bookmarks = JSON.parse(localStorage.getItem('my_bookmarks') || '[]');
             const bmBtn = document.getElementById('btn-bookmark-toggle');
             if (bmBtn) {
@@ -1168,7 +1184,6 @@
                 }
             }
 
-            // Related Files Injection
             const relGrid = document.getElementById('related-files-grid');
             if(relGrid) {
                 relGrid.innerHTML = '';
@@ -1581,7 +1596,6 @@
             });
         }
 
-        // UPDATE STICKY UNLOCK BTN AND PER-FILE DUAL PROGRESS
         async function updateDetailsStickyBtn(fileObj) {
             const btn = document.getElementById('details-sticky-unlock-btn');
             const id = fileObj.id;
@@ -1676,7 +1690,6 @@
             }
         };
 
-        // FIXED 100% REWARDED AD CONTROLLER (GIGAPUB showGiga + MONETAG)
         async function handleStickyBtnClick(fileObj) {
             const id = fileObj.id;
             const reqAds = parseInt(fileObj.requiredAds || 0);
@@ -1716,7 +1729,6 @@
                         timestamp: new Date()
                     });
 
-                    // Track unlock count for leaderboard
                     if (tgUser && tgUser.id) {
                         await updateDoc(doc(db, "users", String(tgUser.id)), {
                             unlockCount: increment(1)
@@ -1756,7 +1768,6 @@
                 
                 let adSuccess = false;
 
-                // 1. GIGAPUB (showGiga SDK)
                 if(adType === 'gigapub') {
                     if (typeof window.showGiga === 'function') {
                         await window.showGiga();
@@ -1772,13 +1783,11 @@
                         throw new Error("AdBlocked");
                     }
                 } 
-                // 2. DIRECT LINK
                 else if(adType === 'directlink') {
                     const link = fileObj.adCustomId || "https://google.com";
                     window.open(link, '_blank');
                     adSuccess = true;
                 } 
-                // 3. MONETAG REWARDED SDK
                 else {
                     if (typeof show_11816971 !== 'function') {
                         throw new Error("AdBlocked");
@@ -1823,7 +1832,7 @@
         window.copyFileReferralLink = () => {
             if(!detailsActiveFileId) return;
             const uid = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
-            const botUser = "FileVaultDLBot"; 
+            const botUser = appConfig.botUsername || "FileVaultDLBot"; 
             const refLink = `https://t.me/${botUser}?startapp=ref_${detailsActiveFileId}_${uid}`;
             
             navigator.clipboard.writeText(refLink).then(() => {
@@ -1836,7 +1845,7 @@
         window.shareFileReferralLink = () => {
             if(!detailsActiveFileId) return;
             const uid = (tgUser && tgUser.id) ? String(tgUser.id) : userDeviceId;
-            const botUser = "FileVaultDLBot"; 
+            const botUser = appConfig.botUsername || "FileVaultDLBot"; 
             const refLink = `https://t.me/${botUser}?startapp=ref_${detailsActiveFileId}_${uid}`;
             const msg = `📁 এই ফাইলটি বিজ্ঞাপন ছাড়া ফ্রিতে আনলক করতে নিচের লিংকে ক্লিক করে টেলিগ্রাম বটে প্রবেশ করুন:\n${refLink}`;
             
@@ -2057,7 +2066,6 @@
                 } catch(e) { console.error("Error writing user: ", e); }
             }
 
-            // Real-time Active Online Users Tracker
             try {
                 const tenMinsAgo = new Date(Date.now() - 5 * 60 * 1000);
                 const activeQuery = query(collection(db, "users"));
@@ -2174,16 +2182,32 @@
                     }
                 }
 
-                const isVerifiedLive = await checkRequiredChannelsLive();
-                if (!isVerifiedLive) {
+                const checkLive = await checkRequiredChannelsLive();
+                if (!checkLive.ok) {
                     const screen = document.getElementById('channel-verify-screen');
                     const btn1 = document.getElementById('cv-channel1-btn');
                     const btn2 = document.getElementById('cv-channel2-btn');
                     const title1 = document.getElementById('cv-ch1-title');
                     const title2 = document.getElementById('cv-ch2-title');
                     
-                    if (appConfig.channel1Url) { btn1.href = appConfig.channel1Url; if (appConfig.channel1Name) title1.textContent = appConfig.channel1Name; } else { btn1.style.display = 'none'; }
-                    if (appConfig.channel2Url) { btn2.href = appConfig.channel2Url; if (appConfig.channel2Name) title2.textContent = appConfig.channel2Name; } else { btn2.style.display = 'none'; }
+                    const ch1Enabled = appConfig.channel1Enabled !== false && appConfig.channel1Enabled !== 'false';
+                    const ch2Enabled = appConfig.channel2Enabled !== false && appConfig.channel2Enabled !== 'false';
+
+                    if (ch1Enabled && appConfig.channel1Url) { 
+                        btn1.href = appConfig.channel1Url; 
+                        if (appConfig.channel1Name) title1.textContent = appConfig.channel1Name; 
+                        btn1.style.display = 'flex';
+                    } else { 
+                        btn1.style.display = 'none'; 
+                    }
+
+                    if (ch2Enabled && appConfig.channel2Url) { 
+                        btn2.href = appConfig.channel2Url; 
+                        if (appConfig.channel2Name) title2.textContent = appConfig.channel2Name; 
+                        btn2.style.display = 'flex';
+                    } else { 
+                        btn2.style.display = 'none'; 
+                    }
                     
                     screen.classList.remove('hidden');
                     screen.classList.add('flex');
@@ -2308,7 +2332,8 @@
 
                     const card = document.createElement('div');
                     card.className = "file-card bg-white dark:bg-darkCard rounded-2xl shadow-lg border border-gray-155 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer";
-                    
+                    card.setAttribute('data-cat', f.category || 'tools');
+
                     card.onclick = (e) => {
                         if (e.target.closest('.react-wrapper') || e.target.closest('.share-wrapper') || e.target.closest('.comment-btn-trigger') || e.target.closest('.likers-btn-trigger')) {
                             return;
@@ -2460,7 +2485,8 @@
 
         window.getShareUrl = (id) => {
             if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-                return "https://t.me/FileVaultDLBot?startapp=" + id;
+                const botUser = appConfig.botUsername || "FileVaultDLBot";
+                return `https://t.me/${botUser}?startapp=` + id;
             }
             return window.location.origin + window.location.pathname + "?v=" + id;
         };
@@ -2552,7 +2578,7 @@
 
         window.removeReact = async (id) => {
             const menu = document.getElementById('react-menu-' + id);
-            if(menu) menu.classList.add('hidden');
+            if(menu) menu.classList.add('hidden'); 
             
             const currentReact = localStorage.getItem('react_' + id);
             if(currentReact) {
